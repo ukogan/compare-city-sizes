@@ -733,23 +733,24 @@
         }
 
         function updatePinStyles() {
-            // Reset all pins
+            // Reset all pins by removing selection classes
             Object.values(cityPins).forEach(pin => {
-                pin.getElement().className = 'city-pin';
+                const element = pin.getElement();
+                element.classList.remove('base-selected', 'overlay-selected', 'both-selected');
             });
 
             // Style selected pins
             if (selectedBaseCity && cityPins[selectedBaseCity.id]) {
                 const basePin = cityPins[selectedBaseCity.id].getElement();
                 if (selectedOverlayCity && selectedBaseCity.id === selectedOverlayCity.id) {
-                    basePin.className = 'city-pin both-selected';
+                    basePin.classList.add('both-selected');
                 } else {
-                    basePin.className = 'city-pin base-selected';
+                    basePin.classList.add('base-selected');
                 }
             }
 
             if (selectedOverlayCity && selectedOverlayCity.id !== selectedBaseCity?.id && cityPins[selectedOverlayCity.id]) {
-                cityPins[selectedOverlayCity.id].getElement().className = 'city-pin overlay-selected';
+                cityPins[selectedOverlayCity.id].getElement().classList.add('overlay-selected');
             }
         }
 
