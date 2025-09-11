@@ -122,6 +122,12 @@
             border-radius: 20px;
             border: 2px solid transparent;
             transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .selection-step:hover {
+            transform: scale(1.02);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .selection-step.active {
@@ -709,6 +715,19 @@
         }
 
         function selectCity(city) {
+            // Check for deselection
+            if (selectedBaseCity && city.id === selectedBaseCity.id) {
+                // Deselect base city
+                deselectBaseCity();
+                return;
+            }
+            
+            if (selectedOverlayCity && city.id === selectedOverlayCity.id) {
+                // Deselect overlay city
+                deselectOverlayCity();
+                return;
+            }
+
             if (selectionStep === 'base') {
                 // Select as base city
                 selectedBaseCity = city;
@@ -733,6 +752,45 @@
                     compareCities();
                 }
             }
+        }
+
+        function deselectBaseCity() {
+            selectedBaseCity = null;
+            baseCitySelect.value = '';
+            selectionStep = 'base';
+            updatePinStyles();
+            updateSelectionStatus();
+            
+            // Clear comparison if both were selected
+            if (selectedOverlayCity) {
+                clearComparison();
+            }
+        }
+
+        function deselectOverlayCity() {
+            selectedOverlayCity = null;
+            overlayCitySelect.value = '';
+            selectionStep = 'overlay';
+            updatePinStyles();
+            updateSelectionStatus();
+            
+            // Clear comparison
+            clearComparison();
+        }
+
+        function clearComparison() {
+            // Clear the maps
+            baseLayer.clearLayers();
+            overlayLayer.clearLayers();
+            
+            // Clear results
+            const results = document.getElementById('comparison-results');
+            if (results) {
+                results.innerHTML = '';
+            }
+            
+            // Reset map view
+            map.setView([40.7128, -74.0060], 10);
         }
 
         function updatePinStyles() {
@@ -790,6 +848,24 @@
 
         // Initialize the world map when page loads
         loadCitiesDatabase();
+
+        // Add click handlers for selection pills
+        document.addEventListener('DOMContentLoaded', function() {
+            const baseStep = document.querySelector('#baseStatus').parentElement;
+            const overlayStep = document.querySelector('#overlayStatus').parentElement;
+
+            baseStep.addEventListener('click', function() {
+                if (selectedBaseCity) {
+                    deselectBaseCity();
+                }
+            });
+
+            overlayStep.addEventListener('click', function() {
+                if (selectedOverlayCity) {
+                    deselectOverlayCity();
+                }
+            });
+        });
 
         // Transformation controls (gesture-only)
 
