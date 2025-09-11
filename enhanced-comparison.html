@@ -2,15 +2,30 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Enhanced City Size Comparison Tool</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
+        * {
+            -webkit-tap-highlight-color: transparent;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
             margin: 0;
             padding: 20px;
             background: #f5f5f5;
+            touch-action: pan-x pan-y;
+        }
+        
+        /* Mobile-first responsive design */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
         }
         
         .container {
@@ -45,10 +60,12 @@
         }
         
         select, button {
-            padding: 8px 12px;
+            padding: 12px 16px;
             border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
+            border-radius: 8px;
+            font-size: 16px;
+            min-height: 44px;
+            min-width: 44px;
         }
         
         button {
@@ -57,6 +74,7 @@
             border: none;
             cursor: pointer;
             font-weight: 600;
+            transition: all 0.2s ease;
         }
         
         button:hover {
@@ -137,6 +155,61 @@
             border-top: 1px solid #ddd;
             display: none;
         }
+        
+        /* Collapsible controls for mobile */
+        .collapsible-header {
+            display: none;
+            padding: 12px 16px;
+            background: #f8f9fa;
+            border: none;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            text-align: left;
+            font-size: 16px;
+        }
+        
+        .collapsible-content {
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        @media (max-width: 768px) {
+            .collapsible-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            
+            .collapsible-content.collapsed {
+                max-height: 0;
+                padding-top: 0;
+                padding-bottom: 0;
+                margin-top: 0;
+                border-top: none;
+            }
+            
+            .collapsible-content.expanded {
+                max-height: 1000px;
+            }
+            
+            .controls {
+                padding: 15px;
+            }
+            
+            .control-group {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+            
+            .control-group label {
+                min-width: auto;
+                margin-bottom: 5px;
+            }
+        }
 
         #transformControls h4 {
             margin: 0 0 15px 0;
@@ -195,7 +268,12 @@
             
             <!-- Transformation Controls -->
             <div id="transformControls">
-                <h4>Transform Overlay City:</h4>
+                <button class="collapsible-header" onclick="toggleControls(this)">
+                    Transform Overlay City
+                    <span>▼</span>
+                </button>
+                <div class="collapsible-content expanded">
+                <h4 style="display: none;">Transform Overlay City:</h4>
                 
                 <div class="control-group">
                     <label>Rotation:</label>
@@ -224,6 +302,7 @@
                     <input type="range" id="moveStep" min="0.01" max="0.5" value="0.1" step="0.01">
                     <span id="moveStepValue">0.10°</span>
                 </div>
+                </div> <!-- Close collapsible-content -->
             </div>
         </div>
         
@@ -253,8 +332,11 @@
             }
         };
 
-        // Initialize map
-        const map = L.map('map').setView([40.7128, -74.0060], 10);
+        // Initialize map with touch-friendly settings
+        const map = L.map('map', {
+            touchZoom: false, // We'll handle touch gestures manually
+            doubleClickZoom: false
+        }).setView([40.7128, -74.0060], 10);
         
         L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
             maxZoom: 19,
@@ -661,6 +743,153 @@
             
             if (compareBtn.disabled === false) {
                 compareCities();
+            }
+        }
+
+        // Touch gesture handling for mobile devices
+        const mapContainer = map.getContainer();
+        let gestureState = {
+            lastTapTime: 0,
+            startDistance: 0,
+            startAngle: 0,
+            startScale: 1,
+            startRotation: 0,
+            isGesturing: false
+        };
+
+        // Add gesture indicator for visual feedback
+        const gestureIndicator = document.createElement('div');
+        gestureIndicator.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 24px;
+            font-size: 15px;
+            font-weight: 500;
+            z-index: 1000;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        `;
+        document.body.appendChild(gestureIndicator);
+
+        function showGestureIndicator(message) {
+            gestureIndicator.textContent = message;
+            gestureIndicator.style.opacity = '1';
+            clearTimeout(gestureIndicator.hideTimeout);
+            gestureIndicator.hideTimeout = setTimeout(() => {
+                gestureIndicator.style.opacity = '0';
+            }, 1500);
+        }
+
+        // Touch event handlers
+        mapContainer.addEventListener('touchstart', function(e) {
+            if (e.touches.length === 1) {
+                // Single touch - check for double tap
+                const now = Date.now();
+                const timeDiff = now - gestureState.lastTapTime;
+                
+                if (timeDiff < 500 && timeDiff > 0) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    resetPosition();
+                    resetRotation();
+                    showGestureIndicator('🔄 Double-tap reset!');
+                }
+                gestureState.lastTapTime = now;
+                
+            } else if (e.touches.length === 2) {
+                // Two-finger gesture
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const touch1 = e.touches[0];
+                const touch2 = e.touches[1];
+                
+                gestureState.startDistance = Math.hypot(
+                    touch2.clientX - touch1.clientX,
+                    touch2.clientY - touch1.clientY
+                );
+                
+                gestureState.startAngle = Math.atan2(
+                    touch2.clientY - touch1.clientY,
+                    touch2.clientX - touch1.clientX
+                ) * 180 / Math.PI;
+                
+                gestureState.startRotation = overlayRotation;
+                gestureState.isGesturing = true;
+                
+                showGestureIndicator('🤌 Two-finger gesture');
+            }
+        }, { passive: false });
+
+        mapContainer.addEventListener('touchmove', function(e) {
+            if (e.touches.length === 2 && gestureState.isGesturing) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const touch1 = e.touches[0];
+                const touch2 = e.touches[1];
+                
+                // Calculate current distance for scaling (future feature)
+                const currentDistance = Math.hypot(
+                    touch2.clientX - touch1.clientX,
+                    touch2.clientY - touch1.clientY
+                );
+                
+                // Calculate rotation
+                const currentAngle = Math.atan2(
+                    touch2.clientY - touch1.clientY,
+                    touch2.clientX - touch1.clientX
+                ) * 180 / Math.PI;
+                
+                let deltaAngle = currentAngle - gestureState.startAngle;
+                if (deltaAngle > 180) deltaAngle -= 360;
+                if (deltaAngle < -180) deltaAngle += 360;
+                
+                if (Math.abs(deltaAngle) > 2) {
+                    let newRotation = gestureState.startRotation + Math.round(deltaAngle);
+                    if (newRotation > 180) newRotation -= 360;
+                    if (newRotation < -180) newRotation += 360;
+                    
+                    overlayRotation = newRotation;
+                    rotationSlider.value = overlayRotation;
+                    rotationValue.textContent = overlayRotation + '°';
+                    updateOverlayDisplay();
+                    showGestureIndicator(`🔄 Rotate: ${overlayRotation}°`);
+                }
+            }
+        }, { passive: false });
+
+        mapContainer.addEventListener('touchend', function(e) {
+            if (e.touches.length < 2) {
+                gestureState.isGesturing = false;
+                gestureState.startDistance = 0;
+                gestureState.startAngle = 0;
+                
+                if (e.touches.length === 0) {
+                    showGestureIndicator('✋ Gesture complete');
+                }
+            }
+        }, { passive: false });
+
+        // Collapsible controls functionality
+        function toggleControls(button) {
+            const content = button.nextElementSibling;
+            const icon = button.querySelector('span');
+            
+            if (content.classList.contains('collapsed')) {
+                content.classList.remove('collapsed');
+                content.classList.add('expanded');
+                icon.textContent = '▼';
+            } else {
+                content.classList.remove('expanded');
+                content.classList.add('collapsed');
+                icon.textContent = '▶';
             }
         }
 
