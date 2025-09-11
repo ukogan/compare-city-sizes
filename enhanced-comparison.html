@@ -109,8 +109,47 @@
 
         .selection-status {
             display: flex;
-            gap: 20px;
+            align-items: center;
+            gap: 15px;
             margin-bottom: 15px;
+        }
+
+        .swap-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: #f5f5f5;
+            border: 2px solid #ddd;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #666;
+        }
+
+        .swap-button:hover {
+            background: #e3f2fd;
+            border-color: #1976d2;
+            color: #1976d2;
+            transform: scale(1.1);
+        }
+
+        .swap-button:active {
+            transform: scale(0.95);
+        }
+
+        .swap-button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .swap-button:disabled:hover {
+            background: #f5f5f5;
+            border-color: #ddd;
+            color: #666;
+            transform: none;
         }
 
         .selection-step {
@@ -542,6 +581,14 @@
                     <span class="step-number">1</span>
                     <span class="step-text" id="baseStatus">Select base city</span>
                 </div>
+                <button class="swap-button" id="swapCitiesBtn" title="Swap base and overlay cities">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17 17l4-4-4-4"/>
+                        <path d="M7 7l-4 4 4 4"/>
+                        <path d="M21 13H3"/>
+                        <path d="M3 11h18"/>
+                    </svg>
+                </button>
                 <div class="selection-step">
                     <span class="step-number">2</span>
                     <span class="step-text" id="overlayStatus">Select overlay city</span>
@@ -793,6 +840,41 @@
             map.setView([40.7128, -74.0060], 10);
         }
 
+        function swapCities() {
+            if (!selectedBaseCity || !selectedOverlayCity) {
+                return; // Can't swap if both cities aren't selected
+            }
+
+            // Swap the cities
+            const tempCity = selectedBaseCity;
+            selectedBaseCity = selectedOverlayCity;
+            selectedOverlayCity = tempCity;
+
+            // Update the hidden selects
+            baseCitySelect.value = selectedBaseCity.id;
+            overlayCitySelect.value = selectedOverlayCity.id;
+
+            // Update visual states
+            updatePinStyles();
+            updateSelectionStatus();
+            updateSwapButtonState();
+
+            // Re-trigger comparison with swapped cities
+            updateButtons();
+            if (compareBtn.disabled === false) {
+                compareCities();
+            }
+        }
+
+        function updateSwapButtonState() {
+            const swapBtn = document.getElementById('swapCitiesBtn');
+            if (selectedBaseCity && selectedOverlayCity) {
+                swapBtn.disabled = false;
+            } else {
+                swapBtn.disabled = true;
+            }
+        }
+
         function updatePinStyles() {
             // Reset all pins by removing selection classes
             Object.values(cityPins).forEach(pin => {
@@ -844,15 +926,19 @@
                     overlayStep.classList.add('active');
                 }
             }
+
+            // Update swap button state
+            updateSwapButtonState();
         }
 
         // Initialize the world map when page loads
         loadCitiesDatabase();
 
-        // Add click handlers for selection pills
+        // Add click handlers for selection pills and swap button
         document.addEventListener('DOMContentLoaded', function() {
             const baseStep = document.querySelector('#baseStatus').parentElement;
             const overlayStep = document.querySelector('#overlayStatus').parentElement;
+            const swapButton = document.querySelector('#swapCitiesBtn');
 
             baseStep.addEventListener('click', function() {
                 if (selectedBaseCity) {
@@ -865,6 +951,13 @@
                     deselectOverlayCity();
                 }
             });
+
+            swapButton.addEventListener('click', function() {
+                swapCities();
+            });
+
+            // Initialize swap button state
+            updateSwapButtonState();
         });
 
         // Transformation controls (gesture-only)
