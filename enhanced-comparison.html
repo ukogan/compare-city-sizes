@@ -627,7 +627,9 @@
         const overlayLayer = L.layerGroup().addTo(map);
 
         // Initialize world map for city selection
-        const worldMap = L.map('worldMap').setView([20, 0], 2);
+        const worldMap = L.map('worldMap', {
+            zoomControl: true // Enable zoom controls for world map
+        }).setView([20, 0], 2);
         
         L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
             maxZoom: 10,
