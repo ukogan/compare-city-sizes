@@ -1,0 +1,904 @@
+{
+  "cities": [
+    {
+      "id": "london",
+      "name": "London",
+      "country": "United Kingdom",
+      "coordinates": [51.5074, -0.1278],
+      "population": 9540576,
+      "hasDetailedBoundary": true,
+      "boundaryFile": "london-boundary.geojson"
+    },
+    {
+      "id": "new-york",
+      "name": "New York",
+      "country": "United States",
+      "coordinates": [40.7128, -74.0060],
+      "population": 8336817,
+      "hasDetailedBoundary": true,
+      "boundaryFile": "nyc-boroughs.geojson"
+    },
+    {
+      "id": "paris",
+      "name": "Paris",
+      "country": "France",
+      "coordinates": [48.8566, 2.3522],
+      "population": 2161000,
+      "hasDetailedBoundary": true,
+      "boundaryFile": "paris-boundary.geojson"
+    },
+    {
+      "id": "tokyo",
+      "name": "Tokyo",
+      "country": "Japan",
+      "coordinates": [35.6762, 139.6503],
+      "population": 13960000,
+      "hasDetailedBoundary": true,
+      "boundaryFile": "tokyo-boundary.geojson"
+    },
+    {
+      "id": "singapore",
+      "name": "Singapore",
+      "country": "Singapore",
+      "coordinates": [1.3521, 103.8198],
+      "population": 5896686,
+      "hasDetailedBoundary": true,
+      "boundaryFile": "singapore-boundary.geojson"
+    },
+    {
+      "id": "rome",
+      "name": "Rome",
+      "country": "Italy",
+      "coordinates": [41.9028, 12.4964],
+      "population": 2873000,
+      "hasDetailedBoundary": true,
+      "boundaryFile": "rome-boundary.geojson"
+    },
+    {
+      "id": "madrid",
+      "name": "Madrid",
+      "country": "Spain",
+      "coordinates": [40.4168, -3.7038],
+      "population": 3223000,
+      "hasDetailedBoundary": true,
+      "boundaryFile": "madrid-boundary.geojson"
+    },
+    {
+      "id": "barcelona",
+      "name": "Barcelona",
+      "country": "Spain",
+      "coordinates": [41.3851, 2.1734],
+      "population": 1620000,
+      "hasDetailedBoundary": true,
+      "boundaryFile": "barcelona-boundary.geojson"
+    },
+    {
+      "id": "berlin",
+      "name": "Berlin",
+      "country": "Germany",
+      "coordinates": [52.5200, 13.4050],
+      "population": 3669000,
+      "hasDetailedBoundary": true,
+      "boundaryFile": "berlin-boundary.geojson"
+    },
+    {
+      "id": "sydney",
+      "name": "Sydney",
+      "country": "Australia",
+      "coordinates": [-33.8688, 151.2093],
+      "population": 5312000,
+      "hasDetailedBoundary": true,
+      "boundaryFile": "sydney-boundary.geojson"
+    },
+    {
+      "id": "amsterdam",
+      "name": "Amsterdam",
+      "country": "Netherlands",
+      "coordinates": [52.3676, 4.9041],
+      "population": 872757,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "amsterdam-basic.geojson"
+    },
+    {
+      "id": "san-francisco",
+      "name": "San Francisco",
+      "country": "United States",
+      "coordinates": [37.7749, -122.4194],
+      "population": 884363,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "san-francisco-basic.geojson"
+    },
+    {
+      "id": "dubai",
+      "name": "Dubai",
+      "country": "United Arab Emirates",
+      "coordinates": [25.2048, 55.2708],
+      "population": 3331420,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "dubai-basic.geojson"
+    },
+    {
+      "id": "los-angeles",
+      "name": "Los Angeles",
+      "country": "United States",
+      "coordinates": [34.0522, -118.2437],
+      "population": 3971883,
+      "hasDetailedBoundary": true,
+      "boundaryFile": "los-angeles-city-only.geojson"
+    },
+    {
+      "id": "toronto",
+      "name": "Toronto",
+      "country": "Canada",
+      "coordinates": [43.6532, -79.3832],
+      "population": 2794356,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "toronto-basic.geojson"
+    },
+    {
+      "id": "seoul",
+      "name": "Seoul",
+      "country": "South Korea",
+      "coordinates": [37.5665, 126.9780],
+      "population": 9776000,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "seoul-basic.geojson"
+    },
+    {
+      "id": "chicago",
+      "name": "Chicago",
+      "country": "United States",
+      "coordinates": [41.8781, -87.6298],
+      "population": 2695598,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "chicago-basic.geojson"
+    },
+    {
+      "id": "vienna",
+      "name": "Vienna",
+      "country": "Austria",
+      "coordinates": [48.2082, 16.3738],
+      "population": 1897491,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "vienna-basic.geojson"
+    },
+    {
+      "id": "seattle",
+      "name": "Seattle",
+      "country": "United States",
+      "coordinates": [47.6062, -122.3321],
+      "population": 749256,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "seattle-basic.geojson"
+    },
+    {
+      "id": "milan",
+      "name": "Milan",
+      "country": "Italy",
+      "coordinates": [45.4642, 9.1900],
+      "population": 1374000,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "milan-basic.geojson"
+    },
+    {
+      "id": "boston",
+      "name": "Boston",
+      "country": "United States",
+      "coordinates": [42.3601, -71.0589],
+      "population": 695506,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "boston-basic.geojson"
+    },
+    {
+      "id": "vancouver",
+      "name": "Vancouver",
+      "country": "Canada",
+      "coordinates": [49.2827, -123.1207],
+      "population": 662248,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "vancouver-basic.geojson"
+    },
+    {
+      "id": "miami",
+      "name": "Miami",
+      "country": "United States",
+      "coordinates": [25.7617, -80.1918],
+      "population": 470914,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "miami-basic.geojson"
+    },
+    {
+      "id": "stockholm",
+      "name": "Stockholm",
+      "country": "Sweden",
+      "coordinates": [59.3293, 18.0686],
+      "population": 975551,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "stockholm-basic.geojson"
+    },
+    {
+      "id": "melbourne",
+      "name": "Melbourne",
+      "country": "Australia",
+      "coordinates": [-37.8136, 144.9631],
+      "population": 5159211,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "melbourne-basic.geojson"
+    },
+    {
+      "id": "oslo",
+      "name": "Oslo",
+      "country": "Norway",
+      "coordinates": [59.9139, 10.7522],
+      "population": 709037,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "oslo-basic.geojson"
+    },
+    {
+      "id": "munich",
+      "name": "Munich",
+      "country": "Germany",
+      "coordinates": [48.1351, 11.5820],
+      "population": 1488202,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "munich-basic.geojson"
+    },
+    {
+      "id": "istanbul",
+      "name": "Istanbul",
+      "country": "Turkey",
+      "coordinates": [41.0082, 28.9784],
+      "population": 15519267,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "istanbul-basic.geojson"
+    },
+    {
+      "id": "las-vegas",
+      "name": "Las Vegas",
+      "country": "United States",
+      "coordinates": [36.1699, -115.1398],
+      "population": 651319,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "las-vegas-basic.geojson"
+    },
+    {
+      "id": "helsinki",
+      "name": "Helsinki",
+      "country": "Finland",
+      "coordinates": [60.1699, 24.9384],
+      "population": 658457,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "helsinki-basic.geojson"
+    },
+    {
+      "id": "atlanta",
+      "name": "Atlanta",
+      "country": "United States",
+      "coordinates": [33.7490, -84.3880],
+      "population": 498715,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "atlanta-basic.geojson"
+    },
+    {
+      "id": "bangkok",
+      "name": "Bangkok",
+      "country": "Thailand",
+      "coordinates": [13.7563, 100.5018],
+      "population": 10539000,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "bangkok-basic.geojson"
+    },
+    {
+      "id": "prague",
+      "name": "Prague",
+      "country": "Czech Republic",
+      "coordinates": [50.0755, 14.4378],
+      "population": 1318000,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "prague-basic.geojson"
+    },
+    {
+      "id": "washington",
+      "name": "Washington",
+      "country": "United States",
+      "coordinates": [38.9072, -77.0369],
+      "population": 689545,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "washington-basic.geojson"
+    },
+    {
+      "id": "montreal",
+      "name": "Montreal",
+      "country": "Canada",
+      "coordinates": [45.5017, -73.5673],
+      "population": 1762949,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "montreal-basic.geojson"
+    },
+    {
+      "id": "beijing",
+      "name": "Beijing",
+      "country": "China",
+      "coordinates": [39.9042, 116.4074],
+      "population": 21542000,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "beijing-basic.geojson"
+    },
+    {
+      "id": "orlando",
+      "name": "Orlando",
+      "country": "United States",
+      "coordinates": [28.5383, -81.3792],
+      "population": 307573,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "orlando-basic.geojson"
+    },
+    {
+      "id": "st-louis",
+      "name": "St. Louis",
+      "country": "United States",
+      "coordinates": [38.6270, -90.1994],
+      "population": 301578,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "st-louis-basic.geojson"
+    },
+    {
+      "id": "portland",
+      "name": "Portland",
+      "country": "United States",
+      "coordinates": [45.5152, -122.6784],
+      "population": 652503,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "portland-basic.geojson"
+    },
+    {
+      "id": "houston",
+      "name": "Houston",
+      "country": "United States",
+      "coordinates": [29.7604, -95.3698],
+      "population": 2304580,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "houston-basic.geojson"
+    },
+    {
+      "id": "dublin",
+      "name": "Dublin",
+      "country": "Ireland",
+      "coordinates": [53.3498, -6.2603],
+      "population": 592713,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "dublin-basic.geojson"
+    },
+    {
+      "id": "osaka",
+      "name": "Osaka",
+      "country": "Japan",
+      "coordinates": [34.6937, 135.5023],
+      "population": 2691000,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "osaka-basic.geojson"
+    },
+    {
+      "id": "philadelphia",
+      "name": "Philadelphia",
+      "country": "United States",
+      "coordinates": [39.9526, -75.1652],
+      "population": 1603797,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "philadelphia-basic.geojson"
+    },
+    {
+      "id": "denver",
+      "name": "Denver",
+      "country": "United States",
+      "coordinates": [39.7392, -104.9903],
+      "population": 715522,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "denver-basic.geojson"
+    },
+    {
+      "id": "copenhagen",
+      "name": "Copenhagen",
+      "country": "Denmark",
+      "coordinates": [55.6761, 12.5683],
+      "population": 660000,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "copenhagen-basic.geojson"
+    },
+    {
+      "id": "san-diego",
+      "name": "San Diego",
+      "country": "United States",
+      "coordinates": [32.7157, -117.1611],
+      "population": 1423851,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "san-diego-basic.geojson"
+    },
+    {
+      "id": "auckland",
+      "name": "Auckland",
+      "country": "New Zealand",
+      "coordinates": [-36.8485, 174.7633],
+      "population": 1695200,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "auckland-basic.geojson"
+    },
+    {
+      "id": "frankfurt",
+      "name": "Frankfurt",
+      "country": "Germany",
+      "coordinates": [50.1109, 8.6821],
+      "population": 753056,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "frankfurt-basic.geojson"
+    },
+    {
+      "id": "zurich",
+      "name": "Zurich",
+      "country": "Switzerland",
+      "coordinates": [47.3769, 8.5417],
+      "population": 421878,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "zurich-basic.geojson"
+    },
+    {
+      "id": "kuala-lumpur",
+      "name": "Kuala Lumpur",
+      "country": "Malaysia",
+      "coordinates": [3.1390, 101.6869],
+      "population": 1588750,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "kuala-lumpur-basic.geojson"
+    },
+    {
+      "id": "minneapolis",
+      "name": "Minneapolis",
+      "country": "United States",
+      "coordinates": [44.9778, -93.2650],
+      "population": 429954,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "minneapolis-basic.geojson"
+    },
+    {
+      "id": "ottawa",
+      "name": "Ottawa",
+      "country": "Canada",
+      "coordinates": [45.4215, -75.6972],
+      "population": 1017449,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "ottawa-basic.geojson"
+    },
+    {
+      "id": "austin",
+      "name": "Austin",
+      "country": "United States",
+      "coordinates": [30.2672, -97.7431],
+      "population": 978908,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "austin-basic.geojson"
+    },
+    {
+      "id": "calgary",
+      "name": "Calgary",
+      "country": "Canada",
+      "coordinates": [51.0447, -114.0719],
+      "population": 1306784,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "calgary-basic.geojson"
+    },
+    {
+      "id": "dallas",
+      "name": "Dallas",
+      "country": "United States",
+      "coordinates": [32.7767, -96.7970],
+      "population": 1343573,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "dallas-basic.geojson"
+    },
+    {
+      "id": "brussels",
+      "name": "Brussels",
+      "country": "Belgium",
+      "coordinates": [50.8503, 4.3517],
+      "population": 1218255,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "brussels-basic.geojson"
+    },
+    {
+      "id": "lisbon",
+      "name": "Lisbon",
+      "country": "Portugal",
+      "coordinates": [38.7223, -9.1393],
+      "population": 547733,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "lisbon-basic.geojson"
+    },
+    {
+      "id": "honolulu",
+      "name": "Honolulu",
+      "country": "United States",
+      "coordinates": [21.3099, -157.8581],
+      "population": 347397,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "honolulu-basic.geojson"
+    },
+    {
+      "id": "detroit",
+      "name": "Detroit",
+      "country": "United States",
+      "coordinates": [42.3314, -83.0458],
+      "population": 639111,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "detroit-basic.geojson"
+    },
+    {
+      "id": "krakow",
+      "name": "Krakow",
+      "country": "Poland",
+      "coordinates": [50.0647, 19.9450],
+      "population": 779115,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "krakow-basic.geojson"
+    },
+    {
+      "id": "shanghai",
+      "name": "Shanghai",
+      "country": "China",
+      "coordinates": [31.2304, 121.4737],
+      "population": 24183300,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "shanghai-basic.geojson"
+    },
+    {
+      "id": "san-jose",
+      "name": "San Jose",
+      "country": "United States",
+      "coordinates": [37.3382, -121.8863],
+      "population": 1035317,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "san-jose-basic.geojson"
+    },
+    {
+      "id": "new-orleans",
+      "name": "New Orleans",
+      "country": "United States",
+      "coordinates": [29.9511, -90.0715],
+      "population": 383997,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "new-orleans-basic.geojson"
+    },
+    {
+      "id": "nashville",
+      "name": "Nashville",
+      "country": "United States",
+      "coordinates": [36.1627, -86.7816],
+      "population": 689447,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "nashville-basic.geojson"
+    },
+    {
+      "id": "edmonton",
+      "name": "Edmonton",
+      "country": "Canada",
+      "coordinates": [53.5444, -113.4909],
+      "population": 1010899,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "edmonton-basic.geojson"
+    },
+    {
+      "id": "salt-lake-city",
+      "name": "Salt Lake City",
+      "country": "United States",
+      "coordinates": [40.7608, -111.8910],
+      "population": 200567,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "salt-lake-city-basic.geojson"
+    },
+    {
+      "id": "baltimore",
+      "name": "Baltimore",
+      "country": "United States",
+      "coordinates": [39.2904, -76.6122],
+      "population": 585708,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "baltimore-basic.geojson"
+    },
+    {
+      "id": "bordeaux",
+      "name": "Bordeaux",
+      "country": "France",
+      "coordinates": [44.8378, -0.5792],
+      "population": 254436,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "bordeaux-basic.geojson"
+    },
+    {
+      "id": "gothenburg",
+      "name": "Gothenburg",
+      "country": "Sweden",
+      "coordinates": [57.7089, 11.9746],
+      "population": 579281,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "gothenburg-basic.geojson"
+    },
+    {
+      "id": "cleveland",
+      "name": "Cleveland",
+      "country": "United States",
+      "coordinates": [41.4993, -81.6944],
+      "population": 383793,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "cleveland-basic.geojson"
+    },
+    {
+      "id": "valencia",
+      "name": "Valencia",
+      "country": "Spain",
+      "coordinates": [39.4699, -0.3763],
+      "population": 794288,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "valencia-basic.geojson"
+    },
+    {
+      "id": "glasgow",
+      "name": "Glasgow",
+      "country": "United Kingdom",
+      "coordinates": [55.8642, -4.2518],
+      "population": 635640,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "glasgow-basic.geojson"
+    },
+    {
+      "id": "doha",
+      "name": "Doha",
+      "country": "Qatar",
+      "coordinates": [25.2854, 51.5310],
+      "population": 956460,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "doha-basic.geojson"
+    },
+    {
+      "id": "warsaw",
+      "name": "Warsaw",
+      "country": "Poland",
+      "coordinates": [52.2297, 21.0122],
+      "population": 1790658,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "warsaw-basic.geojson"
+    },
+    {
+      "id": "sao-paulo",
+      "name": "São Paulo",
+      "country": "Brazil",
+      "coordinates": [-23.5558, -46.6396],
+      "population": 12396372,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "sao-paulo-basic.geojson"
+    },
+    {
+      "id": "taipei",
+      "name": "Taipei",
+      "country": "Taiwan",
+      "coordinates": [25.0330, 121.5654],
+      "population": 2646204,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "taipei-basic.geojson"
+    },
+    {
+      "id": "tucson",
+      "name": "Tucson",
+      "country": "United States",
+      "coordinates": [32.2226, -110.9747],
+      "population": 548073,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "tucson-basic.geojson"
+    },
+    {
+      "id": "pittsburgh",
+      "name": "Pittsburgh",
+      "country": "United States",
+      "coordinates": [40.4406, -79.9959],
+      "population": 302971,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "pittsburgh-basic.geojson"
+    },
+    {
+      "id": "charlotte",
+      "name": "Charlotte",
+      "country": "United States",
+      "coordinates": [35.2271, -80.8431],
+      "population": 885708,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "charlotte-basic.geojson"
+    },
+    {
+      "id": "lyon",
+      "name": "Lyon",
+      "country": "France",
+      "coordinates": [45.7640, 4.8357],
+      "population": 518635,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "lyon-basic.geojson"
+    },
+    {
+      "id": "nagoya",
+      "name": "Nagoya",
+      "country": "Japan",
+      "coordinates": [35.1815, 136.9066],
+      "population": 2327557,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "nagoya-basic.geojson"
+    },
+    {
+      "id": "porto",
+      "name": "Porto",
+      "country": "Portugal",
+      "coordinates": [41.1579, -8.6291],
+      "population": 231962,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "porto-basic.geojson"
+    },
+    {
+      "id": "perth",
+      "name": "Perth",
+      "country": "Australia",
+      "coordinates": [-31.9505, 115.8605],
+      "population": 2192229,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "perth-basic.geojson"
+    },
+    {
+      "id": "bilbao",
+      "name": "Bilbao",
+      "country": "Spain",
+      "coordinates": [43.2627, -2.9253],
+      "population": 346843,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "bilbao-basic.geojson"
+    },
+    {
+      "id": "cape-town",
+      "name": "Cape Town",
+      "country": "South Africa",
+      "coordinates": [-33.9249, 18.4241],
+      "population": 4618000,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "cape-town-basic.geojson"
+    },
+    {
+      "id": "sapporo",
+      "name": "Sapporo",
+      "country": "Japan",
+      "coordinates": [43.0642, 141.3469],
+      "population": 1973395,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "sapporo-basic.geojson"
+    },
+    {
+      "id": "athens",
+      "name": "Athens",
+      "country": "Greece",
+      "coordinates": [37.9755, 23.7348],
+      "population": 664046,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "athens-basic.geojson"
+    },
+    {
+      "id": "hamburg",
+      "name": "Hamburg",
+      "country": "Germany",
+      "coordinates": [53.5511, 9.9937],
+      "population": 1945532,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "hamburg-basic.geojson"
+    },
+    {
+      "id": "phoenix",
+      "name": "Phoenix",
+      "country": "United States",
+      "coordinates": [33.4484, -112.0740],
+      "population": 1680992,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "phoenix-basic.geojson"
+    },
+    {
+      "id": "brisbane",
+      "name": "Brisbane",
+      "country": "Australia",
+      "coordinates": [-27.4698, 153.0251],
+      "population": 2560720,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "brisbane-basic.geojson"
+    },
+    {
+      "id": "tampa",
+      "name": "Tampa",
+      "country": "United States",
+      "coordinates": [27.9506, -82.4572],
+      "population": 384959,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "tampa-basic.geojson"
+    },
+    {
+      "id": "naples",
+      "name": "Naples",
+      "country": "Italy",
+      "coordinates": [40.8518, 14.2681],
+      "population": 967069,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "naples-basic.geojson"
+    },
+    {
+      "id": "richmond",
+      "name": "Richmond",
+      "country": "United States",
+      "coordinates": [37.5407, -77.4360],
+      "population": 230436,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "richmond-basic.geojson"
+    },
+    {
+      "id": "birmingham",
+      "name": "Birmingham",
+      "country": "United Kingdom",
+      "coordinates": [52.4862, -1.8904],
+      "population": 1144919,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "birmingham-basic.geojson"
+    },
+    {
+      "id": "raleigh",
+      "name": "Raleigh",
+      "country": "United States",
+      "coordinates": [35.7796, -78.6382],
+      "population": 474069,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "raleigh-basic.geojson"
+    },
+    {
+      "id": "rochester",
+      "name": "Rochester",
+      "country": "United States",
+      "coordinates": [43.1566, -77.6088],
+      "population": 211328,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "rochester-basic.geojson"
+    },
+    {
+      "id": "hong-kong",
+      "name": "Hong Kong",
+      "country": "Hong Kong",
+      "coordinates": [22.3193, 114.1694],
+      "population": 7496981,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "hong-kong-basic.geojson"
+    },
+    {
+      "id": "nantes",
+      "name": "Nantes",
+      "country": "France",
+      "coordinates": [47.2184, -1.5536],
+      "population": 320732,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "nantes-basic.geojson"
+    },
+    {
+      "id": "toulouse",
+      "name": "Toulouse",
+      "country": "France",
+      "coordinates": [43.6047, 1.4442],
+      "population": 498003,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "toulouse-basic.geojson"
+    },
+    {
+      "id": "rio-de-janeiro",
+      "name": "Rio de Janeiro",
+      "country": "Brazil",
+      "coordinates": [-22.9068, -43.1729],
+      "population": 6748000,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "rio-de-janeiro-basic.geojson"
+    }
+  ]
+}
