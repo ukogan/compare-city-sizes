@@ -891,8 +891,8 @@
             document.getElementById('rotationValue').textContent = `${currentRotation}°`;
             document.getElementById('rotationInfo').textContent = `${currentRotation}°`;
             
-            // Apply rotation to overlay
-            // In real implementation, would transform the polygon
+            // Apply rotation to overlay polygon
+            applyTransformToOverlay();
         }
 
         function updateScale(value) {
@@ -900,6 +900,9 @@
             document.getElementById('scaleSlider').value = currentScale;
             document.getElementById('scaleValue').textContent = `${currentScale}%`;
             document.getElementById('scaleInfo').textContent = `${currentScale}%`;
+            
+            // Apply scale to overlay polygon
+            applyTransformToOverlay();
         }
 
         function updateOpacity(value) {
@@ -909,6 +912,23 @@
             
             // Apply opacity to overlay
             nycBounds.setStyle({ fillOpacity: currentOpacity / 100 * 0.3 });
+        }
+        
+        function applyTransformToOverlay() {
+            // Apply CSS transform to the overlay polygon (nycBounds)
+            const overlayElement = nycBounds.getElement();
+            if (overlayElement) {
+                const scaleValue = currentScale / 100;
+                
+                // Apply transform to the SVG path element
+                overlayElement.style.transform = `rotate(${currentRotation}deg) scale(${scaleValue})`;
+                overlayElement.style.transformOrigin = 'center';
+                overlayElement.style.transition = 'transform 0.1s ease-out';
+                
+                console.log(`Applied transform: rotate(${currentRotation}deg) scale(${scaleValue})`);
+            } else {
+                console.log('Overlay element not found for transformation');
+            }
         }
 
         function moveOverlay(direction) {
