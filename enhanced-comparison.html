@@ -781,6 +781,7 @@
                 baseCitySelect.value = city.id;
                 updatePinStyles();
                 updateSelectionStatus();
+                updateMapView(); // Zoom to base city
                 selectionStep = 'overlay';
             } else if (selectionStep === 'overlay') {
                 // Select as overlay city
@@ -807,6 +808,7 @@
             selectionStep = 'base';
             updatePinStyles();
             updateSelectionStatus();
+            updateMapView(); // Zoom back to world view
             
             // Clear comparison if both were selected
             if (selectedOverlayCity) {
@@ -836,8 +838,7 @@
                 results.innerHTML = '';
             }
             
-            // Reset map view
-            map.setView([40.7128, -74.0060], 10);
+            // Don't reset map view here - let updateMapView() handle it based on base city selection
         }
 
         function swapCities() {
@@ -858,6 +859,7 @@
             updatePinStyles();
             updateSelectionStatus();
             updateSwapButtonState();
+            updateMapView(); // Zoom to new base city
 
             // Re-trigger comparison with swapped cities
             updateButtons();
@@ -872,6 +874,17 @@
                 swapBtn.disabled = false;
             } else {
                 swapBtn.disabled = true;
+            }
+        }
+
+        function updateMapView() {
+            if (selectedBaseCity) {
+                // Zoom to base city
+                const [lat, lng] = selectedBaseCity.coordinates;
+                map.setView([lat, lng], 11, { animate: true, duration: 0.8 });
+            } else {
+                // Zoom back to world view
+                map.setView([40.7128, -74.0060], 3, { animate: true, duration: 0.8 });
             }
         }
 
