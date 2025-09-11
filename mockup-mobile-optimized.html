@@ -1022,95 +1022,20 @@
             document.getElementById('tutorialOverlay').classList.remove('active');
         }
 
-        // Touch gesture handling
-        let touchStartDistance = 0;
-        let touchStartAngle = 0;
-        let lastTouchTime = 0;
-
-        map.on('touchstart', function(e) {
-            const currentTime = new Date().getTime();
-            const tapLength = currentTime - lastTouchTime;
-            
-            // Improve double tap detection for mobile
-            if (tapLength < 500 && tapLength > 0 && e.originalEvent.touches.length === 1) {
-                e.originalEvent.preventDefault();
-                e.originalEvent.stopPropagation();
-                resetTransform();
-                showGesture('🔄 Double-tap reset!');
-                return false;
-            }
-            lastTouchTime = currentTime;
-            
-            if (e.originalEvent.touches.length === 2) {
-                const touch1 = e.originalEvent.touches[0];
-                const touch2 = e.originalEvent.touches[1];
-                
-                touchStartDistance = Math.hypot(
-                    touch2.clientX - touch1.clientX,
-                    touch2.clientY - touch1.clientY
-                );
-                
-                touchStartAngle = Math.atan2(
-                    touch2.clientY - touch1.clientY,
-                    touch2.clientX - touch1.clientX
-                ) * 180 / Math.PI;
-            }
-        });
-
-        map.on('touchmove', function(e) {
-            if (e.originalEvent.touches.length === 2) {
-                e.originalEvent.preventDefault();
-                e.originalEvent.stopPropagation();
-                
-                const touch1 = e.originalEvent.touches[0];
-                const touch2 = e.originalEvent.touches[1];
-                
-                // Calculate scale (make more sensitive)
-                const currentDistance = Math.hypot(
-                    touch2.clientX - touch1.clientX,
-                    touch2.clientY - touch1.clientY
-                );
-                const scaleRatio = currentDistance / touchStartDistance;
-                const scale = Math.round(scaleRatio * currentScale);
-                
-                if (Math.abs(scale - currentScale) > 1) {
-                    updateScale(Math.min(200, Math.max(50, scale)));
-                    showGesture(`📏 Scale: ${currentScale}%`);
-                }
-                
-                // Calculate rotation (make more sensitive)
-                const currentAngle = Math.atan2(
-                    touch2.clientY - touch1.clientY,
-                    touch2.clientX - touch1.clientX
-                ) * 180 / Math.PI;
-                const deltaAngle = currentAngle - touchStartAngle;
-                
-                if (Math.abs(deltaAngle) > 1) {
-                    let newRotation = currentRotation + Math.round(deltaAngle);
-                    if (newRotation > 180) newRotation -= 360;
-                    if (newRotation < -180) newRotation += 360;
-                    updateRotation(newRotation);
-                    showGesture(`🔄 Rotate: ${currentRotation}°`);
-                    touchStartAngle = currentAngle;
-                }
-                
-                return false;
-            }
-        });
+        // Disable Leaflet's touch handling to prevent conflicts with our direct listeners
+        map.touchZoom.disable();
+        map.doubleClickZoom.disable();
         
-        // Add touchend handler to clean up
-        map.on('touchend', function(e) {
-            if (e.originalEvent.touches.length === 0) {
-                // All fingers lifted - reset for next gesture
-                touchStartDistance = 0;
-                touchStartAngle = 0;
-            }
-        });
+        // Note: Custom gesture handling is now done via direct touch listeners on map container
 
         // Add direct touch listeners to map container for better gesture detection
         const mapContainer = map.getContainer();
         let directTouchStart = null;
         let directLastTap = 0;
+        let directStartDistance = 0;
+        let directStartAngle = 0;
+        let directStartScale = currentScale;
+        let directStartRotation = currentRotation;
         
         mapContainer.addEventListener('touchstart', function(e) {
             if (e.touches.length === 1) {
@@ -1122,13 +1047,31 @@
                     e.preventDefault();
                     e.stopPropagation();
                     resetTransform();
-                    showGesture('🔄 Double-tap reset (direct)!');
+                    showGesture('🔄 Double-tap reset!');
                 }
                 directLastTap = now;
             } else if (e.touches.length === 2) {
-                // Two finger gesture
+                // Two finger gesture - store initial values
                 e.preventDefault();
-                showGesture('🤌 Two fingers detected');
+                e.stopPropagation();
+                
+                const touch1 = e.touches[0];
+                const touch2 = e.touches[1];
+                
+                directStartDistance = Math.hypot(
+                    touch2.clientX - touch1.clientX,
+                    touch2.clientY - touch1.clientY
+                );
+                
+                directStartAngle = Math.atan2(
+                    touch2.clientY - touch1.clientY,
+                    touch2.clientX - touch1.clientX
+                ) * 180 / Math.PI;
+                
+                directStartScale = currentScale;
+                directStartRotation = currentRotation;
+                
+                showGesture('🤌 Two-finger gesture started');
             }
         }, { passive: false });
         
@@ -1136,6 +1079,59 @@
             if (e.touches.length === 2) {
                 e.preventDefault();
                 e.stopPropagation();
+                
+                const touch1 = e.touches[0];
+                const touch2 = e.touches[1];
+                
+                // Calculate current distance and scale
+                const currentDistance = Math.hypot(
+                    touch2.clientX - touch1.clientX,
+                    touch2.clientY - touch1.clientY
+                );
+                
+                if (directStartDistance > 0) {
+                    const scaleRatio = currentDistance / directStartDistance;
+                    const newScale = Math.round(directStartScale * scaleRatio);
+                    const clampedScale = Math.min(200, Math.max(50, newScale));
+                    
+                    if (Math.abs(clampedScale - currentScale) > 1) {
+                        updateScale(clampedScale);
+                        showGesture(`📏 Scale: ${currentScale}%`);
+                    }
+                }
+                
+                // Calculate current angle and rotation
+                const currentAngle = Math.atan2(
+                    touch2.clientY - touch1.clientY,
+                    touch2.clientX - touch1.clientX
+                ) * 180 / Math.PI;
+                
+                let deltaAngle = currentAngle - directStartAngle;
+                // Normalize angle difference
+                if (deltaAngle > 180) deltaAngle -= 360;
+                if (deltaAngle < -180) deltaAngle += 360;
+                
+                if (Math.abs(deltaAngle) > 1) {
+                    let newRotation = directStartRotation + Math.round(deltaAngle);
+                    if (newRotation > 180) newRotation -= 360;
+                    if (newRotation < -180) newRotation += 360;
+                    
+                    if (Math.abs(newRotation - currentRotation) > 1) {
+                        updateRotation(newRotation);
+                        showGesture(`🔄 Rotate: ${currentRotation}°`);
+                    }
+                }
+            }
+        }, { passive: false });
+        
+        mapContainer.addEventListener('touchend', function(e) {
+            if (e.touches.length < 2) {
+                // Reset gesture tracking when fingers are lifted
+                directStartDistance = 0;
+                directStartAngle = 0;
+                if (e.touches.length === 0) {
+                    showGesture('✋ Gesture complete');
+                }
             }
         }, { passive: false });
 
