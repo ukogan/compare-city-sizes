@@ -503,27 +503,15 @@
             Compare actual city boundaries with rotation and translation controls
         </p>
         
-        <div class="controls">
-            <div class="control-group">
-                <label for="baseCity">Base City:</label>
-                <select id="baseCity">
-                    <option value="">Loading cities...</option>
-                </select>
-            </div>
-            
-            <div class="control-group">
-                <label for="overlayCity">Overlay City:</label>
-                <select id="overlayCity">
-                    <option value="">Loading cities...</option>
-                </select>
-            </div>
-            
-            <div class="control-group">
-                <button id="compareBtn" disabled>Compare Cities</button>
-                <button id="swapBtn" disabled>Swap Cities</button>
-            </div>
-            
-        </div>
+        <!-- Hidden elements for backend functionality -->
+        <select id="baseCity" style="display: none;">
+            <option value="">Loading cities...</option>
+        </select>
+        <select id="overlayCity" style="display: none;">
+            <option value="">Loading cities...</option>
+        </select>
+        <button id="compareBtn" style="display: none;">Compare Cities</button>
+        <button id="swapBtn" style="display: none;">Swap Cities</button>
         
         <!-- World Map City Selection -->
         <div class="world-map-section">
