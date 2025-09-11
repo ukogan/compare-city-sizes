@@ -497,7 +497,7 @@
                     • Shift + Scroll: Rotate overlay<br>
                     • Cmd + Scroll: Rotate overlay (Mac)<br>
                     • Click + Drag: Move overlay position<br>
-                    • Plain Scroll: Zoom map
+                    • <em>Map zoom disabled for gestures</em>
                 </div>
                 <div class="help-section">
                     <strong>Keyboard:</strong><br>
@@ -532,11 +532,14 @@
             }
         };
 
-        // Initialize map with custom input handling
+        // Initialize map with all zoom disabled for gesture focus
         const map = L.map('map', {
-            touchZoom: false, // We'll handle touch gestures manually
+            touchZoom: false,
             doubleClickZoom: false,
-            scrollWheelZoom: false // Disable scroll zoom to prevent conflicts
+            scrollWheelZoom: false,
+            boxZoom: false,
+            keyboard: false,
+            zoomControl: false // Remove zoom buttons entirely
         }).setView([40.7128, -74.0060], 10);
         
         L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
@@ -1158,18 +1161,22 @@
             }
         }, { passive: false });
 
-        // Enhanced trackpad and desktop input support
+        // Simplified trackpad and desktop input support (zoom disabled)
         mapContainer.addEventListener('wheel', function(e) {
             e.preventDefault();
             e.stopPropagation();
             
+            if (!currentOverlay || !currentBase) {
+                showGestureIndicator(`💡 Load cities first, then use Shift + scroll to rotate`);
+                return;
+            }
+            
             const delta = e.deltaY;
             const isRotationGesture = e.shiftKey || e.metaKey; // Shift or Cmd key for rotation
-            const isMapZoom = !isRotationGesture && !currentOverlay; // Plain scroll when no overlay = map zoom
             
-            if (currentOverlay && currentBase && isRotationGesture) {
+            if (isRotationGesture) {
                 // Trackpad rotation with Shift/Cmd key
-                const rotationSensitivity = 0.3; // Reduced sensitivity for better control
+                const rotationSensitivity = 0.2; // Further reduced for precise control
                 const rotationChange = Math.round(delta * rotationSensitivity);
                 
                 let newRotation = overlayRotation + rotationChange;
@@ -1189,17 +1196,8 @@
                 } else {
                     showGestureIndicator(`🖱️ Trackpad rotate: ${overlayRotation}°`);
                 }
-            } else if (isMapZoom || (!currentOverlay && !isRotationGesture)) {
-                // Allow map zoom when no overlay is active or plain scroll
-                const currentZoom = map.getZoom();
-                const zoomSensitivity = 0.002;
-                const newZoom = currentZoom - (delta * zoomSensitivity);
-                const clampedZoom = Math.max(2, Math.min(18, newZoom));
-                
-                map.setZoom(clampedZoom);
-                showGestureIndicator(`🔍 Map zoom: ${Math.round(clampedZoom)}`);
-            } else if (!isRotationGesture) {
-                // Show help message for normal scroll when overlay is active
+            } else {
+                // Show help message for normal scroll
                 showGestureIndicator(`💡 Hold Shift + scroll to rotate overlay`);
             }
         }, { passive: false });
@@ -1280,12 +1278,14 @@
                 case 'ArrowLeft':
                     e.preventDefault();
                     if (e.metaKey || e.ctrlKey) {
-                        // Rotate left
-                        overlayRotation = (overlayRotation - step + 360) % 360;
+                        // Rotate counter-clockwise (left)
+                        let newRotation = overlayRotation - step;
+                        if (newRotation < -180) newRotation += 360;
+                        overlayRotation = newRotation;
                         rotationSlider.value = overlayRotation;
                         rotationValue.textContent = overlayRotation + '°';
                         updateOverlayDisplay();
-                        showGestureIndicator(`⌨️ Rotate left: ${overlayRotation}°`);
+                        showGestureIndicator(`⌨️ Rotate counter-clockwise: ${overlayRotation}°`);
                     } else {
                         // Move left
                         overlayTranslation.lng -= moveStep;
@@ -1297,12 +1297,14 @@
                 case 'ArrowRight':
                     e.preventDefault();
                     if (e.metaKey || e.ctrlKey) {
-                        // Rotate right
-                        overlayRotation = (overlayRotation + step) % 360;
+                        // Rotate clockwise (right)
+                        let newRotation = overlayRotation + step;
+                        if (newRotation > 180) newRotation -= 360;
+                        overlayRotation = newRotation;
                         rotationSlider.value = overlayRotation;
                         rotationValue.textContent = overlayRotation + '°';
                         updateOverlayDisplay();
-                        showGestureIndicator(`⌨️ Rotate right: ${overlayRotation}°`);
+                        showGestureIndicator(`⌨️ Rotate clockwise: ${overlayRotation}°`);
                     } else {
                         // Move right
                         overlayTranslation.lng += moveStep;
