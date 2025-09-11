@@ -1278,14 +1278,14 @@
                 case 'ArrowLeft':
                     e.preventDefault();
                     if (e.metaKey || e.ctrlKey) {
-                        // Rotate counter-clockwise (left)
-                        let newRotation = overlayRotation - step;
-                        if (newRotation < -180) newRotation += 360;
+                        // Rotate counter-clockwise (left) - FIXED: invert direction
+                        let newRotation = overlayRotation + step;
+                        if (newRotation > 180) newRotation -= 360;
                         overlayRotation = newRotation;
                         rotationSlider.value = overlayRotation;
                         rotationValue.textContent = overlayRotation + '°';
                         updateOverlayDisplay();
-                        showGestureIndicator(`⌨️ Rotate counter-clockwise: ${overlayRotation}°`);
+                        showGestureIndicator(`⌨️ Rotate left (counter-clockwise): ${overlayRotation}°`);
                     } else {
                         // Move left
                         overlayTranslation.lng -= moveStep;
@@ -1297,14 +1297,14 @@
                 case 'ArrowRight':
                     e.preventDefault();
                     if (e.metaKey || e.ctrlKey) {
-                        // Rotate clockwise (right)
-                        let newRotation = overlayRotation + step;
-                        if (newRotation > 180) newRotation -= 360;
+                        // Rotate clockwise (right) - FIXED: invert direction  
+                        let newRotation = overlayRotation - step;
+                        if (newRotation < -180) newRotation += 360;
                         overlayRotation = newRotation;
                         rotationSlider.value = overlayRotation;
                         rotationValue.textContent = overlayRotation + '°';
                         updateOverlayDisplay();
-                        showGestureIndicator(`⌨️ Rotate clockwise: ${overlayRotation}°`);
+                        showGestureIndicator(`⌨️ Rotate right (clockwise): ${overlayRotation}°`);
                     } else {
                         // Move right
                         overlayTranslation.lng += moveStep;
