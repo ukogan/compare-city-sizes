@@ -1127,8 +1127,8 @@
                 if (deltaAngle < -180) deltaAngle += 360;
                 
                 if (Math.abs(deltaAngle) > 2) {
-                    // Apply delta angle directly (core rotation math handles direction)
-                    let newRotation = gestureState.startRotation + Math.round(deltaAngle);
+                    // Invert delta to match core rotation math (clockwise finger movement = clockwise rotation)
+                    let newRotation = gestureState.startRotation - Math.round(deltaAngle);
                     if (newRotation > 180) newRotation -= 360;
                     if (newRotation < -180) newRotation += 360;
                     
