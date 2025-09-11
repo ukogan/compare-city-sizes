@@ -297,6 +297,87 @@
             50% { opacity: 1; }
             100% { opacity: 0.7; }
         }
+        
+        /* Input Methods Help Panel */
+        .input-help-panel {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .help-toggle {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #007AFF;
+            color: white;
+            border: none;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s ease;
+        }
+        
+        .help-toggle:hover {
+            background: #0056CC;
+            transform: scale(1.05);
+        }
+        
+        .help-content {
+            position: absolute;
+            bottom: 50px;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            min-width: 250px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+        
+        .help-content.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        
+        .help-content h4 {
+            margin: 0 0 12px 0;
+            color: #333;
+            font-size: 16px;
+        }
+        
+        .help-section {
+            margin-bottom: 12px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        
+        .help-section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .help-section strong {
+            color: #007AFF;
+        }
+        
+        @media (max-width: 768px) {
+            .input-help-panel {
+                bottom: 80px;
+                right: 15px;
+            }
+            
+            .help-content {
+                right: -100px;
+                min-width: 200px;
+            }
+        }
 
         #transformControls button {
             min-width: 40px;
@@ -398,6 +479,31 @@
             <div class="transform-stat">
                 <span class="transform-label">Status:</span>
                 <span class="transform-value" id="previewStatus">Ready</span>
+            </div>
+        </div>
+        
+        <!-- Input Methods Help Panel -->
+        <div class="input-help-panel" id="inputHelpPanel">
+            <button class="help-toggle" onclick="toggleInputHelp()">?</button>
+            <div class="help-content" id="helpContent">
+                <h4>Input Methods</h4>
+                <div class="help-section">
+                    <strong>Touch (Mobile):</strong><br>
+                    • Two fingers: Rotate overlay<br>
+                    • Double-tap: Reset transformations
+                </div>
+                <div class="help-section">
+                    <strong>Trackpad/Mouse:</strong><br>
+                    • Shift + Scroll: Rotate overlay<br>
+                    • Drag: Move overlay position<br>
+                    • Cmd + Scroll: Rotate (Mac)
+                </div>
+                <div class="help-section">
+                    <strong>Keyboard:</strong><br>
+                    • Arrow keys: Move overlay<br>
+                    • Cmd/Ctrl + Arrows: Rotate<br>
+                    • R or Escape: Reset all
+                </div>
             </div>
         </div>
         
@@ -1016,7 +1122,8 @@
                 if (deltaAngle < -180) deltaAngle += 360;
                 
                 if (Math.abs(deltaAngle) > 2) {
-                    let newRotation = gestureState.startRotation + Math.round(deltaAngle);
+                    // Invert delta angle to make rotation intuitive (clockwise finger movement = clockwise rotation)
+                    let newRotation = gestureState.startRotation - Math.round(deltaAngle);
                     if (newRotation > 180) newRotation -= 360;
                     if (newRotation < -180) newRotation += 360;
                     
@@ -1049,6 +1156,180 @@
             }
         }, { passive: false });
 
+        // Trackpad and desktop input support
+        mapContainer.addEventListener('wheel', function(e) {
+            if (!currentOverlay || !currentBase) return;
+            
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const delta = e.deltaY;
+            const isRotationGesture = e.shiftKey || e.metaKey; // Shift or Cmd key for rotation
+            const isScaleGesture = e.ctrlKey; // Ctrl key for scaling (future)
+            
+            if (isRotationGesture) {
+                // Trackpad rotation with Shift/Cmd key
+                const rotationSensitivity = 0.5; // degrees per pixel
+                const rotationChange = Math.round(delta * rotationSensitivity);
+                
+                let newRotation = overlayRotation + rotationChange;
+                if (newRotation > 180) newRotation -= 360;
+                if (newRotation < -180) newRotation += 360;
+                
+                // Check for snap-to-grid
+                const snappedRotation = showSnapGuide(newRotation);
+                
+                overlayRotation = snappedRotation;
+                rotationSlider.value = overlayRotation;
+                rotationValue.textContent = overlayRotation + '°';
+                updateOverlayDisplay();
+                
+                if (snappedRotation !== newRotation) {
+                    showGestureIndicator(`📐 Trackpad snap: ${snappedRotation}°`);
+                } else {
+                    showGestureIndicator(`🖱️ Trackpad rotate: ${overlayRotation}°`);
+                }
+            }
+        }, { passive: false });
+
+        // Pointer events for better device support
+        let pointerState = {
+            isPointerDown: false,
+            startPointer: null,
+            isDragging: false,
+            dragStartTranslation: null
+        };
+
+        mapContainer.addEventListener('pointerdown', function(e) {
+            if (!currentOverlay || !currentBase) return;
+            
+            // Only handle left mouse button or primary pointer
+            if (e.button !== 0 && e.pointerType === 'mouse') return;
+            
+            pointerState.isPointerDown = true;
+            pointerState.startPointer = { x: e.clientX, y: e.clientY };
+            pointerState.dragStartTranslation = { ...overlayTranslation };
+            pointerState.isDragging = false;
+            
+            // Visual feedback for pointer down
+            showGestureIndicator('👆 Pointer down - drag to move');
+        }, { passive: false });
+
+        mapContainer.addEventListener('pointermove', function(e) {
+            if (!pointerState.isPointerDown || !currentOverlay || !currentBase) return;
+            
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const deltaX = e.clientX - pointerState.startPointer.x;
+            const deltaY = e.clientY - pointerState.startPointer.y;
+            const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+            
+            // Start dragging if moved more than 5 pixels
+            if (distance > 5) {
+                pointerState.isDragging = true;
+                
+                // Convert pixel movement to coordinate movement
+                const sensitivity = 0.001; // degrees per pixel
+                const newTranslation = {
+                    lng: pointerState.dragStartTranslation.lng + (deltaX * sensitivity),
+                    lat: pointerState.dragStartTranslation.lat - (deltaY * sensitivity) // Invert Y for map coordinates
+                };
+                
+                overlayTranslation = newTranslation;
+                updateOverlayDisplay();
+                
+                showGestureIndicator(`📍 Position: ${newTranslation.lng.toFixed(3)}, ${newTranslation.lat.toFixed(3)}`);
+            }
+        }, { passive: false });
+
+        mapContainer.addEventListener('pointerup', function(e) {
+            if (pointerState.isDragging) {
+                showGestureIndicator('✋ Drag complete');
+            }
+            
+            pointerState.isPointerDown = false;
+            pointerState.isDragging = false;
+            pointerState.startPointer = null;
+            pointerState.dragStartTranslation = null;
+        }, { passive: false });
+
+        // Keyboard shortcuts for desktop users
+        document.addEventListener('keydown', function(e) {
+            if (!currentOverlay || !currentBase) return;
+            
+            // Ignore if user is typing in an input field
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            
+            const step = e.shiftKey ? 15 : 5; // Larger steps with Shift key
+            const moveStep = e.shiftKey ? 0.05 : 0.01; // Larger movement with Shift
+            
+            switch(e.key) {
+                case 'ArrowLeft':
+                    e.preventDefault();
+                    if (e.metaKey || e.ctrlKey) {
+                        // Rotate left
+                        overlayRotation = (overlayRotation - step + 360) % 360;
+                        rotationSlider.value = overlayRotation;
+                        rotationValue.textContent = overlayRotation + '°';
+                        updateOverlayDisplay();
+                        showGestureIndicator(`⌨️ Rotate left: ${overlayRotation}°`);
+                    } else {
+                        // Move left
+                        overlayTranslation.lng -= moveStep;
+                        updateOverlayDisplay();
+                        showGestureIndicator(`⌨️ Move left`);
+                    }
+                    break;
+                    
+                case 'ArrowRight':
+                    e.preventDefault();
+                    if (e.metaKey || e.ctrlKey) {
+                        // Rotate right
+                        overlayRotation = (overlayRotation + step) % 360;
+                        rotationSlider.value = overlayRotation;
+                        rotationValue.textContent = overlayRotation + '°';
+                        updateOverlayDisplay();
+                        showGestureIndicator(`⌨️ Rotate right: ${overlayRotation}°`);
+                    } else {
+                        // Move right
+                        overlayTranslation.lng += moveStep;
+                        updateOverlayDisplay();
+                        showGestureIndicator(`⌨️ Move right`);
+                    }
+                    break;
+                    
+                case 'ArrowUp':
+                    e.preventDefault();
+                    overlayTranslation.lat += moveStep;
+                    updateOverlayDisplay();
+                    showGestureIndicator(`⌨️ Move up`);
+                    break;
+                    
+                case 'ArrowDown':
+                    e.preventDefault();
+                    overlayTranslation.lat -= moveStep;
+                    updateOverlayDisplay();
+                    showGestureIndicator(`⌨️ Move down`);
+                    break;
+                    
+                case 'r':
+                case 'R':
+                    e.preventDefault();
+                    resetPosition();
+                    resetRotation();
+                    showGestureIndicator(`⌨️ Reset all transformations`);
+                    break;
+                    
+                case 'Escape':
+                    e.preventDefault();
+                    resetPosition();
+                    resetRotation();
+                    showGestureIndicator(`⌨️ Escape - Reset`);
+                    break;
+            }
+        });
+
         // Collapsible controls functionality
         function toggleControls(button) {
             const content = button.nextElementSibling;
@@ -1063,6 +1344,12 @@
                 content.classList.add('collapsed');
                 icon.textContent = '▶';
             }
+        }
+        
+        // Input help panel functionality
+        function toggleInputHelp() {
+            const helpContent = document.getElementById('helpContent');
+            helpContent.classList.toggle('active');
         }
 
         // Initialize
