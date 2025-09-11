@@ -6,8 +6,8 @@
       "country": "United Kingdom",
       "coordinates": [51.5074, -0.1278],
       "population": 9540576,
-      "hasDetailedBoundary": true,
-      "boundaryFile": "london-boundary.geojson"
+      "hasDetailedBoundary": false,
+      "boundaryFile": "london-basic.geojson"
     },
     {
       "id": "new-york",
@@ -24,8 +24,8 @@
       "country": "France",
       "coordinates": [48.8566, 2.3522],
       "population": 2161000,
-      "hasDetailedBoundary": true,
-      "boundaryFile": "paris-boundary.geojson"
+      "hasDetailedBoundary": false,
+      "boundaryFile": "paris-basic.geojson"
     },
     {
       "id": "tokyo",
@@ -33,8 +33,8 @@
       "country": "Japan",
       "coordinates": [35.6762, 139.6503],
       "population": 13960000,
-      "hasDetailedBoundary": true,
-      "boundaryFile": "tokyo-boundary.geojson"
+      "hasDetailedBoundary": false,
+      "boundaryFile": "tokyo-basic.geojson"
     },
     {
       "id": "singapore",
@@ -42,8 +42,8 @@
       "country": "Singapore",
       "coordinates": [1.3521, 103.8198],
       "population": 5896686,
-      "hasDetailedBoundary": true,
-      "boundaryFile": "singapore-boundary.geojson"
+      "hasDetailedBoundary": false,
+      "boundaryFile": "singapore-basic.geojson"
     },
     {
       "id": "rome",
@@ -51,8 +51,8 @@
       "country": "Italy",
       "coordinates": [41.9028, 12.4964],
       "population": 2873000,
-      "hasDetailedBoundary": true,
-      "boundaryFile": "rome-boundary.geojson"
+      "hasDetailedBoundary": false,
+      "boundaryFile": "rome-basic.geojson"
     },
     {
       "id": "madrid",
@@ -60,8 +60,8 @@
       "country": "Spain",
       "coordinates": [40.4168, -3.7038],
       "population": 3223000,
-      "hasDetailedBoundary": true,
-      "boundaryFile": "madrid-boundary.geojson"
+      "hasDetailedBoundary": false,
+      "boundaryFile": "madrid-basic.geojson"
     },
     {
       "id": "barcelona",
@@ -69,8 +69,8 @@
       "country": "Spain",
       "coordinates": [41.3851, 2.1734],
       "population": 1620000,
-      "hasDetailedBoundary": true,
-      "boundaryFile": "barcelona-boundary.geojson"
+      "hasDetailedBoundary": false,
+      "boundaryFile": "barcelona-basic.geojson"
     },
     {
       "id": "berlin",
@@ -78,8 +78,8 @@
       "country": "Germany",
       "coordinates": [52.5200, 13.4050],
       "population": 3669000,
-      "hasDetailedBoundary": true,
-      "boundaryFile": "berlin-boundary.geojson"
+      "hasDetailedBoundary": false,
+      "boundaryFile": "berlin-basic.geojson"
     },
     {
       "id": "sydney",
@@ -87,8 +87,8 @@
       "country": "Australia",
       "coordinates": [-33.8688, 151.2093],
       "population": 5312000,
-      "hasDetailedBoundary": true,
-      "boundaryFile": "sydney-boundary.geojson"
+      "hasDetailedBoundary": false,
+      "boundaryFile": "sydney-basic.geojson"
     },
     {
       "id": "amsterdam",
