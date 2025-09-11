@@ -607,14 +607,14 @@
             };
         }
 
-        // Initialize map with all zoom disabled for gesture focus
+        // Initialize map with gesture controls and zoom buttons
         const map = L.map('map', {
             touchZoom: false,
             doubleClickZoom: false,
             scrollWheelZoom: false,
             boxZoom: false,
             keyboard: false,
-            zoomControl: false // Remove zoom buttons entirely
+            zoomControl: true // Enable zoom buttons for main comparison map
         }).setView([40.7128, -74.0060], 10);
         
         L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
