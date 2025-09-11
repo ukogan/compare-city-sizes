@@ -134,6 +134,16 @@
             border-color: #4caf50;
         }
 
+        .selection-step.base-completed {
+            background: #e8f5e8;
+            border-color: #4caf50;
+        }
+
+        .selection-step.overlay-completed {
+            background: #fff3e0;
+            border-color: #ff9800;
+        }
+
         .step-number {
             display: flex;
             align-items: center;
@@ -151,8 +161,13 @@
             background: #1976d2;
         }
 
-        .selection-step.completed .step-number {
+        .selection-step.completed .step-number,
+        .selection-step.base-completed .step-number {
             background: #4caf50;
+        }
+
+        .selection-step.overlay-completed .step-number {
+            background: #ff9800;
         }
 
         .step-text {
@@ -748,25 +763,25 @@
             const baseStep = baseStatus.parentElement;
             const overlayStep = overlayStatus.parentElement;
 
+            // Reset all step classes
+            baseStep.classList.remove('completed', 'base-completed', 'overlay-completed', 'active');
+            overlayStep.classList.remove('completed', 'base-completed', 'overlay-completed', 'active');
+
             // Update base city status
             if (selectedBaseCity) {
                 baseStatus.textContent = `${selectedBaseCity.name}, ${selectedBaseCity.country}`;
-                baseStep.classList.add('completed');
-                baseStep.classList.remove('active');
+                baseStep.classList.add('base-completed');
             } else {
                 baseStatus.textContent = 'Select base city';
-                baseStep.classList.remove('completed');
                 baseStep.classList.add('active');
             }
 
             // Update overlay city status
             if (selectedOverlayCity) {
                 overlayStatus.textContent = `${selectedOverlayCity.name}, ${selectedOverlayCity.country}`;
-                overlayStep.classList.add('completed');
-                overlayStep.classList.remove('active');
+                overlayStep.classList.add('overlay-completed');
             } else {
                 overlayStatus.textContent = 'Select overlay city';
-                overlayStep.classList.remove('completed');
                 if (selectedBaseCity) {
                     overlayStep.classList.add('active');
                 }
