@@ -495,8 +495,9 @@
                 <div class="help-section">
                     <strong>Trackpad/Mouse:</strong><br>
                     • Shift + Scroll: Rotate overlay<br>
-                    • Drag: Move overlay position<br>
-                    • Cmd + Scroll: Rotate (Mac)
+                    • Cmd + Scroll: Rotate overlay (Mac)<br>
+                    • Click + Drag: Move overlay position<br>
+                    • Plain Scroll: Zoom map
                 </div>
                 <div class="help-section">
                     <strong>Keyboard:</strong><br>
@@ -531,10 +532,11 @@
             }
         };
 
-        // Initialize map with touch-friendly settings
+        // Initialize map with custom input handling
         const map = L.map('map', {
             touchZoom: false, // We'll handle touch gestures manually
-            doubleClickZoom: false
+            doubleClickZoom: false,
+            scrollWheelZoom: false // Disable scroll zoom to prevent conflicts
         }).setView([40.7128, -74.0060], 10);
         
         L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
@@ -1156,20 +1158,18 @@
             }
         }, { passive: false });
 
-        // Trackpad and desktop input support
+        // Enhanced trackpad and desktop input support
         mapContainer.addEventListener('wheel', function(e) {
-            if (!currentOverlay || !currentBase) return;
-            
             e.preventDefault();
             e.stopPropagation();
             
             const delta = e.deltaY;
             const isRotationGesture = e.shiftKey || e.metaKey; // Shift or Cmd key for rotation
-            const isScaleGesture = e.ctrlKey; // Ctrl key for scaling (future)
+            const isMapZoom = !isRotationGesture && !currentOverlay; // Plain scroll when no overlay = map zoom
             
-            if (isRotationGesture) {
+            if (currentOverlay && currentBase && isRotationGesture) {
                 // Trackpad rotation with Shift/Cmd key
-                const rotationSensitivity = 0.5; // degrees per pixel
+                const rotationSensitivity = 0.3; // Reduced sensitivity for better control
                 const rotationChange = Math.round(delta * rotationSensitivity);
                 
                 let newRotation = overlayRotation + rotationChange;
@@ -1189,6 +1189,18 @@
                 } else {
                     showGestureIndicator(`🖱️ Trackpad rotate: ${overlayRotation}°`);
                 }
+            } else if (isMapZoom || (!currentOverlay && !isRotationGesture)) {
+                // Allow map zoom when no overlay is active or plain scroll
+                const currentZoom = map.getZoom();
+                const zoomSensitivity = 0.002;
+                const newZoom = currentZoom - (delta * zoomSensitivity);
+                const clampedZoom = Math.max(2, Math.min(18, newZoom));
+                
+                map.setZoom(clampedZoom);
+                showGestureIndicator(`🔍 Map zoom: ${Math.round(clampedZoom)}`);
+            } else if (!isRotationGesture) {
+                // Show help message for normal scroll when overlay is active
+                showGestureIndicator(`💡 Hold Shift + scroll to rotate overlay`);
             }
         }, { passive: false });
 
