@@ -107,11 +107,56 @@
             font-size: 1.2em;
         }
 
+        .map-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+
         .selection-status {
             display: flex;
             align-items: center;
             gap: 15px;
-            margin-bottom: 15px;
+        }
+
+        .continent-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .continent-pill {
+            padding: 6px 12px;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 16px;
+            font-size: 0.85em;
+            font-weight: 500;
+            color: #495057;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .continent-pill:hover {
+            background: #e3f2fd;
+            border-color: #90caf9;
+            color: #1976d2;
+            transform: translateY(-1px);
+        }
+
+        .continent-pill.active {
+            background: #1976d2;
+            border-color: #1565c0;
+            color: white;
+        }
+
+        .continent-pill.active:hover {
+            background: #1565c0;
+            border-color: #0d47a1;
         }
 
         .swap-button {
@@ -576,22 +621,32 @@
         <!-- World Map City Selection -->
         <div class="world-map-section">
             <h3>Select Cities by Clicking on the Map</h3>
-            <div class="selection-status">
-                <div class="selection-step">
-                    <span class="step-number">1</span>
-                    <span class="step-text" id="baseStatus">Select base city</span>
+            <div class="map-controls">
+                <div class="selection-status">
+                    <div class="selection-step">
+                        <span class="step-number">1</span>
+                        <span class="step-text" id="baseStatus">Select base city</span>
+                    </div>
+                    <button class="swap-button" id="swapCitiesBtn" title="Swap base and overlay cities">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 17l4-4-4-4"/>
+                            <path d="M7 7l-4 4 4 4"/>
+                            <path d="M21 13H3"/>
+                            <path d="M3 11h18"/>
+                        </svg>
+                    </button>
+                    <div class="selection-step">
+                        <span class="step-number">2</span>
+                        <span class="step-text" id="overlayStatus">Select overlay city</span>
+                    </div>
                 </div>
-                <button class="swap-button" id="swapCitiesBtn" title="Swap base and overlay cities">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M17 17l4-4-4-4"/>
-                        <path d="M7 7l-4 4 4 4"/>
-                        <path d="M21 13H3"/>
-                        <path d="M3 11h18"/>
-                    </svg>
-                </button>
-                <div class="selection-step">
-                    <span class="step-number">2</span>
-                    <span class="step-text" id="overlayStatus">Select overlay city</span>
+                <div class="continent-nav">
+                    <div class="continent-pill" data-continent="north-america">North America</div>
+                    <div class="continent-pill" data-continent="south-america">South America</div>
+                    <div class="continent-pill" data-continent="europe">Europe</div>
+                    <div class="continent-pill" data-continent="asia">Asia</div>
+                    <div class="continent-pill" data-continent="africa">Africa</div>
+                    <div class="continent-pill" data-continent="oceania">Oceania</div>
                 </div>
             </div>
             <div id="worldMap"></div>
@@ -698,6 +753,17 @@
         let selectionStep = 'base'; // 'base' or 'overlay'
         const cityPins = {};
         let citiesDatabase = null;
+        let selectedContinent = null;
+
+        // Continent coordinates and zoom levels for world map navigation
+        const continentViews = {
+            'north-america': { center: [45, -100], zoom: 3 },
+            'south-america': { center: [-15, -60], zoom: 3 },
+            'europe': { center: [54, 15], zoom: 4 },
+            'asia': { center: [30, 100], zoom: 3 },
+            'africa': { center: [0, 20], zoom: 3 },
+            'oceania': { center: [-25, 140], zoom: 4 }
+        };
 
         // UI elements
         const baseCitySelect = document.getElementById('baseCity');
@@ -989,6 +1055,32 @@
         overlayCitySelect.addEventListener('change', updateButtons);
         compareBtn.addEventListener('click', compareCities);
         swapBtn.addEventListener('click', swapCities);
+        
+        // Continent navigation event handlers
+        document.querySelectorAll('.continent-pill').forEach(pill => {
+            pill.addEventListener('click', function() {
+                const continent = this.getAttribute('data-continent');
+                
+                // Check if this continent is already selected
+                if (selectedContinent === continent) {
+                    // Deselect continent - zoom back to world view
+                    selectedContinent = null;
+                    this.classList.remove('active');
+                    worldMap.setView([40.7128, -74.0060], 3, { animate: true, duration: 0.8 });
+                } else {
+                    // Clear previous selection
+                    document.querySelectorAll('.continent-pill').forEach(p => p.classList.remove('active'));
+                    
+                    // Select new continent
+                    selectedContinent = continent;
+                    this.classList.add('active');
+                    
+                    // Zoom to continent
+                    const view = continentViews[continent];
+                    worldMap.setView(view.center, view.zoom, { animate: true, duration: 0.8 });
+                }
+            });
+        });
 
 
         function updateButtons() {
