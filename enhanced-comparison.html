@@ -1177,7 +1177,7 @@
             if (isRotationGesture) {
                 // Trackpad rotation with Shift/Cmd key
                 const rotationSensitivity = 0.2; // Further reduced for precise control
-                const rotationChange = Math.round(delta * rotationSensitivity);
+                const rotationChange = Math.round(-delta * rotationSensitivity); // Negate for intuitive direction
                 
                 let newRotation = overlayRotation + rotationChange;
                 if (newRotation > 180) newRotation -= 360;
