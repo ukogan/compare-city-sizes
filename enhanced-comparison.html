@@ -220,6 +220,83 @@
             width: 200px;
             margin: 0 10px;
         }
+        
+        /* Enhanced Visual Feedback */
+        .transformation-preview {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            font-size: 14px;
+            min-width: 200px;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s ease;
+        }
+        
+        .transformation-preview.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .transform-stat {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            padding: 4px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        .transform-stat:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        
+        .transform-label {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .transform-value {
+            color: #007AFF;
+            font-weight: 500;
+        }
+        
+        /* Boundary highlight effects */
+        .boundary-highlight {
+            animation: boundaryPulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes boundaryPulse {
+            0%, 100% { 
+                stroke-width: 2;
+                stroke-opacity: 0.8;
+            }
+            50% { 
+                stroke-width: 4;
+                stroke-opacity: 1;
+            }
+        }
+        
+        /* Snap guides */
+        .snap-guide {
+            stroke: #FF9500;
+            stroke-width: 2;
+            stroke-dasharray: 5, 5;
+            opacity: 0.7;
+            animation: snapGuideFlash 0.5s ease-in-out;
+        }
+        
+        @keyframes snapGuideFlash {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
 
         #transformControls button {
             min-width: 40px;
@@ -307,6 +384,22 @@
         </div>
         
         <div id="map"></div>
+        
+        <!-- Enhanced Visual Feedback Panel -->
+        <div class="transformation-preview" id="transformationPreview">
+            <div class="transform-stat">
+                <span class="transform-label">Rotation:</span>
+                <span class="transform-value" id="previewRotation">0°</span>
+            </div>
+            <div class="transform-stat">
+                <span class="transform-label">Position:</span>
+                <span class="transform-value" id="previewPosition">Center</span>
+            </div>
+            <div class="transform-stat">
+                <span class="transform-label">Status:</span>
+                <span class="transform-value" id="previewStatus">Ready</span>
+            </div>
+        </div>
         
         <div class="info-panel">
             <div id="status" class="loading">Select two cities to begin comparison...</div>
@@ -453,7 +546,7 @@
                 overlayTranslation
             );
             
-            // Add transformed overlay to map
+            // Add transformed overlay to map with enhanced styling
             const overlayGeoJsonLayer = L.geoJSON(transformedOverlay, {
                 style: {
                     color: overlayCity.color,
@@ -465,6 +558,72 @@
                 }
             });
             overlayLayer.addLayer(overlayGeoJsonLayer);
+            
+            // Update transformation preview
+            updateTransformationPreview();
+            
+            // Add smooth transition effect
+            const overlayElement = overlayGeoJsonLayer.getElement?.();
+            if (overlayElement) {
+                overlayElement.style.transition = 'all 0.2s ease-out';
+            }
+        }
+        
+        function updateTransformationPreview() {
+            const preview = document.getElementById('transformationPreview');
+            const rotationElement = document.getElementById('previewRotation');
+            const positionElement = document.getElementById('previewPosition');
+            const statusElement = document.getElementById('previewStatus');
+            
+            if (currentOverlay && currentBase) {
+                preview.classList.add('active');
+                rotationElement.textContent = `${overlayRotation}°`;
+                
+                // Calculate position description
+                const totalOffset = Math.sqrt(overlayTranslation.lat ** 2 + overlayTranslation.lng ** 2);
+                if (totalOffset < 0.05) {
+                    positionElement.textContent = 'Center';
+                } else {
+                    positionElement.textContent = `Offset ${totalOffset.toFixed(2)}°`;
+                }
+                
+                // Update status based on transformation
+                if (overlayRotation === 0 && totalOffset < 0.05) {
+                    statusElement.textContent = 'Original';
+                } else {
+                    statusElement.textContent = 'Transformed';
+                }
+            } else {
+                preview.classList.remove('active');
+            }
+        }
+        
+        function highlightBoundary(layer, highlight = true) {
+            if (!layer) return;
+            
+            const element = layer.getElement?.();
+            if (element) {
+                if (highlight) {
+                    element.classList.add('boundary-highlight');
+                } else {
+                    element.classList.remove('boundary-highlight');
+                }
+            }
+        }
+        
+        function showSnapGuide(rotation) {
+            // Show snap guides at common angles (0°, 45°, 90°, etc.)
+            const snapAngles = [0, 45, 90, 135, 180, 225, 270, 315];
+            const snapThreshold = 5; // degrees
+            
+            for (const snapAngle of snapAngles) {
+                const diff = Math.abs(((rotation - snapAngle + 180) % 360) - 180);
+                if (diff < snapThreshold) {
+                    showGestureIndicator(`📐 Snap to ${snapAngle}°`);
+                    return snapAngle;
+                }
+            }
+            return rotation;
         }
 
         async function loadCityBoundary(cityKey) {
@@ -638,7 +797,7 @@
                 
                 status.innerHTML = '<div class="spinner"></div>Creating comparison visualization...';
                 
-                // Add base city to map
+                // Add base city to map with enhanced styling
                 console.log('Adding base city to map:', baseBoundaryData);
                 const baseGeoJsonLayer = L.geoJSON(baseBoundaryData, {
                     style: {
@@ -650,6 +809,11 @@
                     }
                 });
                 baseLayer.addLayer(baseGeoJsonLayer);
+                
+                // Highlight boundary briefly when loaded
+                setTimeout(() => highlightBoundary(baseGeoJsonLayer, true), 500);
+                setTimeout(() => highlightBoundary(baseGeoJsonLayer, false), 3000);
+                
                 console.log('Base city layer added successfully');
                 
                 // Calculate areas for comparison
@@ -856,11 +1020,19 @@
                     if (newRotation > 180) newRotation -= 360;
                     if (newRotation < -180) newRotation += 360;
                     
-                    overlayRotation = newRotation;
+                    // Check for snap-to-grid
+                    const snappedRotation = showSnapGuide(newRotation);
+                    
+                    overlayRotation = snappedRotation;
                     rotationSlider.value = overlayRotation;
                     rotationValue.textContent = overlayRotation + '°';
                     updateOverlayDisplay();
-                    showGestureIndicator(`🔄 Rotate: ${overlayRotation}°`);
+                    
+                    if (snappedRotation !== newRotation) {
+                        showGestureIndicator(`📐 Snapped to ${snappedRotation}°`);
+                    } else {
+                        showGestureIndicator(`🔄 Rotate: ${overlayRotation}°`);
+                    }
                 }
             }
         }, { passive: false });
