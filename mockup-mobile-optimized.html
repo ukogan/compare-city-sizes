@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>City Compare - Mobile Optimized</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        :root {
+            --primary-color: #007AFF;
+            --primary-hover: #0056CC;
+            --success-color: #34C759;
+            --warning-color: #FF9500;
+            --danger-color: #FF3B30;
+            --overlay-tokyo: #FF6B6B;
+            --overlay-nyc: #45B7D1;
+            --safe-area-inset-top: env(safe-area-inset-top);
+            --safe-area-inset-bottom: env(safe-area-inset-bottom);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: #000;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
+            touch-action: none;
+        }
+
+        /* Mobile App Header */
+        .mobile-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 1000;
+            padding-top: var(--safe-area-inset-top);
+            border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            min-height: 44px;
+        }
+
+        .header-title {
+            font-size: 17px;
+            font-weight: 600;
+            color: #000;
+            text-align: center;
+            flex: 1;
+        }
+
+        .header-button {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: none;
+            color: var(--primary-color);
+            font-size: 20px;
+            cursor: pointer;
+            border-radius: 22px;
+            transition: background 0.2s;
+        }
+
+        .header-button:active {
+            background: rgba(0, 122, 255, 0.1);
+        }
+
+        /* City Selection Bar */
+        .city-selection-bar {
+            background: white;
+            padding: 12px 16px;
+            display: flex;
+            gap: 10px;
+            border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .city-select-button {
+            flex: 1;
+            padding: 12px;
+            background: #f2f2f7;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            color: #000;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .city-select-button:active {
+            background: #e5e5ea;
+            transform: scale(0.98);
+        }
+
+        .city-select-button.selected {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .city-label {
+            font-size: 11px;
+            opacity: 0.6;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .city-name {
+            font-weight: 600;
+        }
+
+        /* Map Container */
+        .map-container {
+            position: fixed;
+            top: calc(var(--safe-area-inset-top) + 110px);
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Gesture Overlay */
+        .gesture-overlay {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.75);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 24px;
+            font-size: 15px;
+            font-weight: 500;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 2000;
+            white-space: nowrap;
+        }
+
+        .gesture-overlay.active {
+            opacity: 1;
+        }
+
+        /* Bottom Sheet Control Panel */
+        .bottom-sheet {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 16px 16px 0 0;
+            box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.1);
+            z-index: 999;
+            transform: translateY(calc(100% - 80px));
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            padding-bottom: var(--safe-area-inset-bottom);
+            max-height: 70vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .bottom-sheet.expanded {
+            transform: translateY(0);
+        }
+
+        .sheet-handle {
+            padding: 12px;
+            cursor: grab;
+            touch-action: pan-y;
+        }
+
+        .sheet-handle:active {
+            cursor: grabbing;
+        }
+
+        .handle-bar {
+            width: 36px;
+            height: 5px;
+            background: #c6c6c8;
+            border-radius: 3px;
+            margin: 0 auto;
+        }
+
+        .sheet-header {
+            padding: 0 20px 16px;
+            border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .sheet-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #000;
+            margin-bottom: 8px;
+        }
+
+        .transform-info {
+            display: flex;
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        .info-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: #f2f2f7;
+            border-radius: 16px;
+            font-size: 13px;
+            color: #000;
+        }
+
+        .info-badge-icon {
+            font-size: 16px;
+        }
+
+        .info-badge-value {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .sheet-content {
+            flex: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 20px;
+        }
+
+        /* Quick Actions Grid */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .quick-action-btn {
+            aspect-ratio: 1;
+            border: none;
+            background: #f2f2f7;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .quick-action-btn:active {
+            background: #e5e5ea;
+            transform: scale(0.95);
+        }
+
+        .quick-action-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .quick-action-icon {
+            font-size: 24px;
+        }
+
+        .quick-action-label {
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        /* Sliders Section */
+        .control-section {
+            margin-bottom: 24px;
+        }
+
+        .control-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #8e8e93;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .slider-container {
+            background: #f2f2f7;
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .slider-title {
+            font-size: 15px;
+            font-weight: 500;
+            color: #000;
+        }
+
+        .slider-value {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .slider {
+            width: 100%;
+            height: 28px;
+            -webkit-appearance: none;
+            background: transparent;
+        }
+
+        .slider::-webkit-slider-track {
+            width: 100%;
+            height: 4px;
+            background: #c6c6c8;
+            border-radius: 2px;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 14px;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            margin-top: -12px;
+        }
+
+        /* Action Buttons */
+        .action-section {
+            display: flex;
+            gap: 12px;
+            padding: 20px;
+            background: white;
+            border-top: 0.5px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 16px;
+            border-radius: 12px;
+            border: none;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            min-height: 50px;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:active {
+            background: var(--primary-hover);
+            transform: scale(0.98);
+        }
+
+        .btn-secondary {
+            background: #f2f2f7;
+            color: #000;
+        }
+
+        .btn-secondary:active {
+            background: #e5e5ea;
+            transform: scale(0.98);
+        }
+
+        /* Floating Action Buttons */
+        .fab-container {
+            position: fixed;
+            bottom: calc(var(--safe-area-inset-bottom) + 100px);
+            right: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 998;
+        }
+
+        .fab {
+            width: 56px;
+            height: 56px;
+            border-radius: 28px;
+            background: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .fab:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .fab.primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* Gesture Tutorial Overlay */
+        .tutorial-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 3000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .tutorial-overlay.active {
+            display: flex;
+        }
+
+        .tutorial-card {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            max-width: 320px;
+            text-align: center;
+        }
+
+        .tutorial-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .tutorial-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .tutorial-description {
+            font-size: 15px;
+            color: #8e8e93;
+            line-height: 1.4;
+            margin-bottom: 24px;
+        }
+
+        .tutorial-button {
+            width: 100%;
+            padding: 16px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Loading States */
+        .skeleton {
+            background: linear-gradient(90deg, #f2f2f7 25%, #e5e5ea 50%, #f2f2f7 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Haptic Feedback Simulation */
+        .haptic {
+            animation: haptic 0.1s;
+        }
+
+        @keyframes haptic {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(0.98); }
+        }
+
+        /* Accessibility */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        /* Focus styles for keyboard navigation */
+        button:focus-visible,
+        .city-select-button:focus-visible,
+        .quick-action-btn:focus-visible {
+            outline: 3px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+
+        /* Landscape Orientation Adjustments */
+        @media (orientation: landscape) {
+            .bottom-sheet {
+                max-width: 400px;
+                right: auto;
+                border-radius: 16px 0 0 0;
+            }
+
+            .map-container {
+                right: 400px;
+            }
+
+            .fab-container {
+                right: 416px;
+            }
+        }
+
+        /* High Contrast Mode */
+        @media (prefers-contrast: high) {
+            .city-select-button,
+            .quick-action-btn {
+                border: 2px solid currentColor;
+            }
+        }
+
+        /* Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile Header -->
+    <header class="mobile-header">
+        <div class="header-content">
+            <button class="header-button" onclick="showMenu()" aria-label="Menu">☰</button>
+            <h1 class="header-title">City Comparison</h1>
+            <button class="header-button" onclick="showSearch()" aria-label="Search">🔍</button>
+        </div>
+        
+        <!-- City Selection Bar -->
+        <div class="city-selection-bar">
+            <button class="city-select-button selected" onclick="selectCityType('base')">
+                <div>
+                    <span class="city-label">BASE CITY</span>
+                    <span class="city-name">Tokyo</span>
+                </div>
+                <span>▼</span>
+            </button>
+            <button class="city-select-button" onclick="selectCityType('overlay')">
+                <div>
+                    <span class="city-label">OVERLAY</span>
+                    <span class="city-name">New York</span>
+                </div>
+                <span>▼</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Map Container -->
+    <div class="map-container">
+        <div id="map"></div>
+    </div>
+
+    <!-- Gesture Overlay -->
+    <div class="gesture-overlay" id="gestureOverlay">
+        <span id="gestureText">Ready</span>
+    </div>
+
+    <!-- Floating Action Buttons -->
+    <div class="fab-container">
+        <button class="fab" onclick="resetView()" aria-label="Reset view">
+            ⟲
+        </button>
+        <button class="fab primary" onclick="swapCities()" aria-label="Swap cities">
+            ⇄
+        </button>
+    </div>
+
+    <!-- Bottom Sheet Control Panel -->
+    <div class="bottom-sheet" id="bottomSheet">
+        <div class="sheet-handle" id="sheetHandle">
+            <div class="handle-bar"></div>
+        </div>
+        
+        <div class="sheet-header">
+            <h2 class="sheet-title">Transform Controls</h2>
+            <div class="transform-info">
+                <div class="info-badge">
+                    <span class="info-badge-icon">↻</span>
+                    <span>Rotation: <span class="info-badge-value" id="rotationInfo">0°</span></span>
+                </div>
+                <div class="info-badge">
+                    <span class="info-badge-icon">⊡</span>
+                    <span>Scale: <span class="info-badge-value" id="scaleInfo">100%</span></span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="sheet-content">
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <button class="quick-action-btn" onclick="quickRotate(-90)">
+                    <span class="quick-action-icon">↺</span>
+                    <span class="quick-action-label">-90°</span>
+                </button>
+                <button class="quick-action-btn" onclick="quickRotate(-45)">
+                    <span class="quick-action-icon">↺</span>
+                    <span class="quick-action-label">-45°</span>
+                </button>
+                <button class="quick-action-btn" onclick="quickRotate(45)">
+                    <span class="quick-action-icon">↻</span>
+                    <span class="quick-action-label">+45°</span>
+                </button>
+                <button class="quick-action-btn" onclick="moveOverlay('up')">
+                    <span class="quick-action-icon">↑</span>
+                    <span class="quick-action-label">Up</span>
+                </button>
+                <button class="quick-action-btn" onclick="centerOverlay()">
+                    <span class="quick-action-icon">⊙</span>
+                    <span class="quick-action-label">Center</span>
+                </button>
+                <button class="quick-action-btn" onclick="moveOverlay('down')">
+                    <span class="quick-action-icon">↓</span>
+                    <span class="quick-action-label">Down</span>
+                </button>
+                <button class="quick-action-btn" onclick="moveOverlay('left')">
+                    <span class="quick-action-icon">←</span>
+                    <span class="quick-action-label">Left</span>
+                </button>
+                <button class="quick-action-btn active" onclick="snapToGrid()">
+                    <span class="quick-action-icon">⊞</span>
+                    <span class="quick-action-label">Snap</span>
+                </button>
+                <button class="quick-action-btn" onclick="moveOverlay('right')">
+                    <span class="quick-action-icon">→</span>
+                    <span class="quick-action-label">Right</span>
+                </button>
+            </div>
+
+            <!-- Fine Controls -->
+            <div class="control-section">
+                <div class="control-label">Fine Adjustments</div>
+                
+                <div class="slider-container">
+                    <div class="slider-header">
+                        <span class="slider-title">Rotation</span>
+                        <span class="slider-value" id="rotationValue">0°</span>
+                    </div>
+                    <input type="range" class="slider" id="rotationSlider" 
+                           min="-180" max="180" value="0" 
+                           oninput="updateRotation(this.value)">
+                </div>
+            </div>
+
+            <div class="control-section">
+                <div class="slider-container">
+                    <div class="slider-header">
+                        <span class="slider-title">Scale</span>
+                        <span class="slider-value" id="scaleValue">100%</span>
+                    </div>
+                    <input type="range" class="slider" id="scaleSlider" 
+                           min="50" max="200" value="100" 
+                           oninput="updateScale(this.value)">
+                </div>
+            </div>
+
+            <div class="control-section">
+                <div class="slider-container">
+                    <div class="slider-header">
+                        <span class="slider-title">Opacity</span>
+                        <span class="slider-value" id="opacityValue">70%</span>
+                    </div>
+                    <input type="range" class="slider" id="opacitySlider" 
+                           min="20" max="100" value="70" 
+                           oninput="updateOpacity(this.value)">
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-section">
+            <button class="action-btn btn-secondary" onclick="resetAll()">
+                Reset All
+            </button>
+            <button class="action-btn btn-primary" onclick="saveComparison()">
+                Save Image
+            </button>
+        </div>
+    </div>
+
+    <!-- Gesture Tutorial Overlay -->
+    <div class="tutorial-overlay" id="tutorialOverlay">
+        <div class="tutorial-card">
+            <div class="tutorial-icon">✌️</div>
+            <h3 class="tutorial-title">Use Gestures to Transform</h3>
+            <p class="tutorial-description">
+                • Tap overlay to select<br>
+                • Pinch to rotate & scale<br>
+                • Drag to move<br>
+                • Double-tap to reset
+            </p>
+            <button class="tutorial-button" onclick="closeTutorial()">Got it!</button>
+        </div>
+    </div>
+
+    <!-- Leaflet Map -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Initialize map
+        const map = L.map('map', {
+            center: [35.6762, 139.6503],
+            zoom: 10,
+            zoomControl: false,
+            attributionControl: false
+        });
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19
+        }).addTo(map);
+
+        // Add minimal zoom control
+        L.control.zoom({
+            position: 'topright'
+        }).addTo(map);
+
+        // Demo city boundaries
+        const tokyoBounds = L.polygon([
+            [35.4, 139.2], [35.4, 139.9], [35.9, 140.0], 
+            [36.0, 139.6], [35.9, 139.2], [35.4, 139.2]
+        ], {
+            color: '#FF6B6B',
+            weight: 2,
+            fillOpacity: 0.2
+        }).addTo(map);
+
+        const nycBounds = L.polygon([
+            [35.5, 139.3], [35.5, 139.8], [35.8, 139.85],
+            [35.85, 139.5], [35.8, 139.3], [35.5, 139.3]
+        ], {
+            color: '#45B7D1',
+            weight: 3,
+            fillOpacity: 0.3,
+            dashArray: '10, 5'
+        }).addTo(map);
+
+        // State management
+        let currentRotation = 0;
+        let currentScale = 100;
+        let currentOpacity = 70;
+        let isSheetExpanded = false;
+
+        // Bottom sheet drag handling
+        const bottomSheet = document.getElementById('bottomSheet');
+        const sheetHandle = document.getElementById('sheetHandle');
+        let startY = 0;
+        let currentY = 0;
+        let isDragging = false;
+
+        sheetHandle.addEventListener('touchstart', handleTouchStart, { passive: true });
+        sheetHandle.addEventListener('touchmove', handleTouchMove, { passive: false });
+        sheetHandle.addEventListener('touchend', handleTouchEnd);
+        sheetHandle.addEventListener('click', toggleSheet);
+
+        function handleTouchStart(e) {
+            startY = e.touches[0].clientY;
+            isDragging = true;
+            bottomSheet.style.transition = 'none';
+        }
+
+        function handleTouchMove(e) {
+            if (!isDragging) return;
+            e.preventDefault();
+            
+            currentY = e.touches[0].clientY;
+            const deltaY = currentY - startY;
+            
+            if (deltaY > 0) {
+                const maxTranslate = window.innerHeight * 0.7;
+                const translate = Math.min(deltaY, maxTranslate);
+                bottomSheet.style.transform = `translateY(${translate}px)`;
+            }
+        }
+
+        function handleTouchEnd() {
+            isDragging = false;
+            bottomSheet.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+            
+            const deltaY = currentY - startY;
+            if (deltaY > 100) {
+                collapseSheet();
+            } else {
+                expandSheet();
+            }
+        }
+
+        function toggleSheet() {
+            if (isSheetExpanded) {
+                collapseSheet();
+            } else {
+                expandSheet();
+            }
+        }
+
+        function expandSheet() {
+            bottomSheet.classList.add('expanded');
+            bottomSheet.style.transform = '';
+            isSheetExpanded = true;
+        }
+
+        function collapseSheet() {
+            bottomSheet.classList.remove('expanded');
+            bottomSheet.style.transform = '';
+            isSheetExpanded = false;
+        }
+
+        // Gesture feedback
+        function showGesture(text) {
+            const overlay = document.getElementById('gestureOverlay');
+            document.getElementById('gestureText').textContent = text;
+            overlay.classList.add('active');
+            
+            // Add haptic feedback (if supported)
+            if (navigator.vibrate) {
+                navigator.vibrate(10);
+            }
+            
+            clearTimeout(overlay.hideTimeout);
+            overlay.hideTimeout = setTimeout(() => {
+                overlay.classList.remove('active');
+            }, 1500);
+        }
+
+        // Transform controls
+        function quickRotate(degrees) {
+            currentRotation += degrees;
+            if (currentRotation > 180) currentRotation -= 360;
+            if (currentRotation < -180) currentRotation += 360;
+            
+            updateRotation(currentRotation);
+            showGesture(`Rotated ${degrees > 0 ? '+' : ''}${degrees}°`);
+        }
+
+        function updateRotation(value) {
+            currentRotation = parseInt(value);
+            document.getElementById('rotationSlider').value = currentRotation;
+            document.getElementById('rotationValue').textContent = `${currentRotation}°`;
+            document.getElementById('rotationInfo').textContent = `${currentRotation}°`;
+            
+            // Apply rotation to overlay
+            // In real implementation, would transform the polygon
+        }
+
+        function updateScale(value) {
+            currentScale = parseInt(value);
+            document.getElementById('scaleSlider').value = currentScale;
+            document.getElementById('scaleValue').textContent = `${currentScale}%`;
+            document.getElementById('scaleInfo').textContent = `${currentScale}%`;
+        }
+
+        function updateOpacity(value) {
+            currentOpacity = parseInt(value);
+            document.getElementById('opacitySlider').value = currentOpacity;
+            document.getElementById('opacityValue').textContent = `${currentOpacity}%`;
+            
+            // Apply opacity to overlay
+            nycBounds.setStyle({ fillOpacity: currentOpacity / 100 * 0.3 });
+        }
+
+        function moveOverlay(direction) {
+            const step = 0.01;
+            let message = '';
+            
+            switch(direction) {
+                case 'up':
+                    message = 'Moved up';
+                    break;
+                case 'down':
+                    message = 'Moved down';
+                    break;
+                case 'left':
+                    message = 'Moved left';
+                    break;
+                case 'right':
+                    message = 'Moved right';
+                    break;
+            }
+            
+            showGesture(message);
+            document.querySelector(`.quick-action-btn:nth-child(${
+                direction === 'up' ? 4 : 
+                direction === 'down' ? 6 : 
+                direction === 'left' ? 7 : 9
+            })`).classList.add('haptic');
+            
+            setTimeout(() => {
+                document.querySelectorAll('.quick-action-btn').forEach(btn => {
+                    btn.classList.remove('haptic');
+                });
+            }, 100);
+        }
+
+        function centerOverlay() {
+            showGesture('Centered overlay');
+            resetTransform();
+        }
+
+        function snapToGrid() {
+            showGesture('Snapped to grid');
+            const btn = document.querySelector('.quick-action-btn.active');
+            btn.classList.add('haptic');
+            setTimeout(() => btn.classList.remove('haptic'), 100);
+        }
+
+        function resetView() {
+            map.setView([35.6762, 139.6503], 10);
+            showGesture('Reset view');
+        }
+
+        function swapCities() {
+            showGesture('Cities swapped');
+            // Swap animation would go here
+        }
+
+        function resetAll() {
+            currentRotation = 0;
+            currentScale = 100;
+            currentOpacity = 70;
+            
+            updateRotation(0);
+            updateScale(100);
+            updateOpacity(70);
+            
+            showGesture('Reset all transforms');
+        }
+
+        function resetTransform() {
+            currentRotation = 0;
+            currentScale = 100;
+            
+            updateRotation(0);
+            updateScale(100);
+        }
+
+        function saveComparison() {
+            showGesture('Saving image...');
+            // In real implementation, would capture map as image
+            setTimeout(() => {
+                showGesture('Image saved to gallery');
+            }, 1000);
+        }
+
+        function selectCityType(type) {
+            const buttons = document.querySelectorAll('.city-select-button');
+            buttons.forEach(btn => btn.classList.remove('selected'));
+            
+            if (type === 'base') {
+                buttons[0].classList.add('selected');
+            } else {
+                buttons[1].classList.add('selected');
+            }
+            
+            showGesture(`Selecting ${type} city`);
+            // Would open city search modal
+        }
+
+        function showMenu() {
+            showGesture('Menu');
+            // Would open menu modal
+        }
+
+        function showSearch() {
+            showGesture('Search cities');
+            // Would open search modal
+        }
+
+        function closeTutorial() {
+            document.getElementById('tutorialOverlay').classList.remove('active');
+        }
+
+        // Touch gesture handling
+        let touchStartDistance = 0;
+        let touchStartAngle = 0;
+        let lastTouchTime = 0;
+
+        map.on('touchstart', function(e) {
+            const currentTime = new Date().getTime();
+            const tapLength = currentTime - lastTouchTime;
+            
+            // Double tap detection
+            if (tapLength < 300 && tapLength > 0) {
+                resetTransform();
+                showGesture('Reset transform');
+                e.preventDefault();
+                return;
+            }
+            lastTouchTime = currentTime;
+            
+            if (e.originalEvent.touches.length === 2) {
+                const touch1 = e.originalEvent.touches[0];
+                const touch2 = e.originalEvent.touches[1];
+                
+                touchStartDistance = Math.hypot(
+                    touch2.clientX - touch1.clientX,
+                    touch2.clientY - touch1.clientY
+                );
+                
+                touchStartAngle = Math.atan2(
+                    touch2.clientY - touch1.clientY,
+                    touch2.clientX - touch1.clientX
+                ) * 180 / Math.PI;
+            }
+        });
+
+        map.on('touchmove', function(e) {
+            if (e.originalEvent.touches.length === 2) {
+                e.originalEvent.preventDefault();
+                
+                const touch1 = e.originalEvent.touches[0];
+                const touch2 = e.originalEvent.touches[1];
+                
+                // Calculate scale
+                const currentDistance = Math.hypot(
+                    touch2.clientX - touch1.clientX,
+                    touch2.clientY - touch1.clientY
+                );
+                const scale = Math.round((currentDistance / touchStartDistance) * currentScale);
+                
+                if (Math.abs(scale - currentScale) > 2) {
+                    updateScale(Math.min(200, Math.max(50, scale)));
+                    showGesture(`Scale: ${currentScale}%`);
+                }
+                
+                // Calculate rotation
+                const currentAngle = Math.atan2(
+                    touch2.clientY - touch1.clientY,
+                    touch2.clientX - touch1.clientX
+                ) * 180 / Math.PI;
+                const deltaAngle = currentAngle - touchStartAngle;
+                
+                if (Math.abs(deltaAngle) > 2) {
+                    let newRotation = currentRotation + Math.round(deltaAngle);
+                    if (newRotation > 180) newRotation -= 360;
+                    if (newRotation < -180) newRotation += 360;
+                    updateRotation(newRotation);
+                    showGesture(`Rotate: ${currentRotation}°`);
+                    touchStartAngle = currentAngle;
+                }
+            }
+        });
+
+        // Show tutorial on first load
+        if (!localStorage.getItem('tutorialShown')) {
+            setTimeout(() => {
+                document.getElementById('tutorialOverlay').classList.add('active');
+                localStorage.setItem('tutorialShown', 'true');
+            }, 1000);
+        }
+
+        // Initialize
+        showGesture('Ready for gestures');
+    </script>
+</body>
+</html>

@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City Search Interface - Enhanced Selection Mockup</title>
+    <style>
+        :root {
+            --primary-color: #007AFF;
+            --primary-hover: #0056CC;
+            --success-color: #34C759;
+            --warning-color: #FF9500;
+            --danger-color: #FF3B30;
+            --panel-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            --focus-ring: 0 0 0 3px rgba(0, 122, 255, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .search-container {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 800px;
+            width: 100%;
+            overflow: hidden;
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .search-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 30px;
+            text-align: center;
+            color: white;
+        }
+
+        .search-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .search-subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .search-body {
+            padding: 30px;
+        }
+
+        .search-input-group {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 16px 50px 16px 20px;
+            font-size: 18px;
+            border: 2px solid #e5e5e7;
+            border-radius: 12px;
+            transition: all 0.3s;
+            background: #f5f5f7;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background: white;
+            box-shadow: var(--focus-ring);
+        }
+
+        .search-input::placeholder {
+            color: #86868b;
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #86868b;
+            font-size: 20px;
+            pointer-events: none;
+        }
+
+        .filter-section {
+            margin-bottom: 25px;
+        }
+
+        .filter-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #86868b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .filter-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .filter-chip {
+            padding: 8px 16px;
+            border: 1px solid #d2d2d7;
+            border-radius: 20px;
+            background: white;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #1d1d1f;
+            position: relative;
+        }
+
+        .filter-chip:hover {
+            background: #f5f5f7;
+            transform: scale(1.05);
+        }
+
+        .filter-chip.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .filter-chip .count {
+            font-size: 11px;
+            opacity: 0.7;
+            margin-left: 4px;
+        }
+
+        .results-section {
+            margin-top: 30px;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .results-count {
+            font-size: 14px;
+            color: #86868b;
+        }
+
+        .sort-dropdown {
+            padding: 8px 12px;
+            border: 1px solid #d2d2d7;
+            border-radius: 8px;
+            background: white;
+            font-size: 14px;
+            cursor: pointer;
+            color: #1d1d1f;
+        }
+
+        .city-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 16px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        /* Custom scrollbar */
+        .city-grid::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .city-grid::-webkit-scrollbar-track {
+            background: #f5f5f7;
+            border-radius: 4px;
+        }
+
+        .city-grid::-webkit-scrollbar-thumb {
+            background: #d2d2d7;
+            border-radius: 4px;
+        }
+
+        .city-grid::-webkit-scrollbar-thumb:hover {
+            background: #86868b;
+        }
+
+        .city-item {
+            background: white;
+            border: 2px solid #e5e5e7;
+            border-radius: 12px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .city-item:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .city-item.selected {
+            border-color: var(--success-color);
+            background: linear-gradient(135deg, rgba(52, 199, 89, 0.05) 0%, rgba(52, 199, 89, 0.1) 100%);
+        }
+
+        .city-item.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 24px;
+            height: 24px;
+            background: var(--success-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .city-flag {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .city-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 4px;
+        }
+
+        .city-country {
+            font-size: 13px;
+            color: #86868b;
+            margin-bottom: 8px;
+        }
+
+        .city-stats {
+            display: flex;
+            gap: 12px;
+            font-size: 12px;
+            color: #636366;
+        }
+
+        .city-stat {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .stat-icon {
+            font-size: 14px;
+        }
+
+        .recent-section {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid #e5e5e7;
+        }
+
+        .recent-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .recent-cities {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+
+        .recent-city {
+            min-width: 140px;
+            padding: 12px;
+            background: #f5f5f7;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .recent-city:hover {
+            background: #e5e5e7;
+            transform: scale(1.05);
+        }
+
+        .recent-city-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: #1d1d1f;
+            margin-top: 4px;
+        }
+
+        .favorites-toggle {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: transparent;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #d2d2d7;
+            transition: all 0.2s;
+            z-index: 10;
+        }
+
+        .city-item:hover .favorites-toggle {
+            color: #86868b;
+        }
+
+        .favorites-toggle.active {
+            color: var(--warning-color);
+        }
+
+        .data-quality-badge {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .quality-high {
+            background: rgba(52, 199, 89, 0.1);
+            color: var(--success-color);
+        }
+
+        .quality-medium {
+            background: rgba(255, 149, 0, 0.1);
+            color: var(--warning-color);
+        }
+
+        .quality-low {
+            background: rgba(255, 59, 48, 0.1);
+            color: var(--danger-color);
+        }
+
+        .loading-state {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #e5e5e7;
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: #86868b;
+            font-size: 14px;
+        }
+
+        .action-footer {
+            padding: 20px 30px;
+            background: #f5f5f7;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .selection-info {
+            font-size: 14px;
+            color: #636366;
+        }
+
+        .selection-info strong {
+            color: #1d1d1f;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #1d1d1f;
+            border: 1px solid #d2d2d7;
+        }
+
+        .btn-secondary:hover {
+            background: #f5f5f7;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Focus indicators for accessibility */
+        button:focus-visible,
+        input:focus-visible,
+        .city-item:focus-visible,
+        .filter-chip:focus-visible {
+            outline: 3px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .search-container {
+                margin: 0;
+                border-radius: 0;
+                min-height: 100vh;
+            }
+
+            .city-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .action-footer {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .action-buttons {
+                width: 100%;
+            }
+
+            .btn {
+                flex: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="search-container">
+        <div class="search-header">
+            <h1 class="search-title">Select Cities to Compare</h1>
+            <p class="search-subtitle">Choose from 100+ major cities worldwide with high-quality boundary data</p>
+        </div>
+
+        <div class="search-body">
+            <!-- Search Input -->
+            <div class="search-input-group">
+                <input 
+                    type="text" 
+                    class="search-input" 
+                    placeholder="Search by city name, country, or region..."
+                    id="searchInput"
+                    autocomplete="off"
+                />
+                <span class="search-icon">🔍</span>
+            </div>
+
+            <!-- Filters -->
+            <div class="filter-section">
+                <div class="filter-title">Filter by Region</div>
+                <div class="filter-chips">
+                    <button class="filter-chip active" onclick="toggleFilter(this, 'all')">
+                        All Regions <span class="count">(127)</span>
+                    </button>
+                    <button class="filter-chip" onclick="toggleFilter(this, 'asia')">
+                        Asia <span class="count">(42)</span>
+                    </button>
+                    <button class="filter-chip" onclick="toggleFilter(this, 'europe')">
+                        Europe <span class="count">(35)</span>
+                    </button>
+                    <button class="filter-chip" onclick="toggleFilter(this, 'americas')">
+                        Americas <span class="count">(28)</span>
+                    </button>
+                    <button class="filter-chip" onclick="toggleFilter(this, 'africa')">
+                        Africa <span class="count">(15)</span>
+                    </button>
+                    <button class="filter-chip" onclick="toggleFilter(this, 'oceania')">
+                        Oceania <span class="count">(7)</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <div class="filter-title">Filter by Population</div>
+                <div class="filter-chips">
+                    <button class="filter-chip" onclick="toggleFilter(this, 'mega')">
+                        10M+ <span class="count">(23)</span>
+                    </button>
+                    <button class="filter-chip" onclick="toggleFilter(this, 'large')">
+                        5-10M <span class="count">(31)</span>
+                    </button>
+                    <button class="filter-chip" onclick="toggleFilter(this, 'medium')">
+                        1-5M <span class="count">(48)</span>
+                    </button>
+                    <button class="filter-chip" onclick="toggleFilter(this, 'small')">
+                        &lt;1M <span class="count">(25)</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Results -->
+            <div class="results-section">
+                <div class="results-header">
+                    <span class="results-count">Showing 12 cities</span>
+                    <select class="sort-dropdown">
+                        <option>Sort by Population ↓</option>
+                        <option>Sort by Area ↓</option>
+                        <option>Sort by Name A-Z</option>
+                        <option>Recently Added</option>
+                    </select>
+                </div>
+
+                <div class="city-grid" id="cityGrid">
+                    <!-- Tokyo -->
+                    <div class="city-item selected" tabindex="0" onclick="selectCity(this)">
+                        <button class="favorites-toggle active" onclick="toggleFavorite(event, this)">★</button>
+                        <div class="city-flag">🇯🇵</div>
+                        <div class="city-name">Tokyo</div>
+                        <div class="city-country">Japan</div>
+                        <div class="city-stats">
+                            <span class="city-stat">
+                                <span class="stat-icon">👥</span> 37.4M
+                            </span>
+                            <span class="city-stat">
+                                <span class="stat-icon">📏</span> 2,194 km²
+                            </span>
+                        </div>
+                        <div class="data-quality-badge quality-high">High Quality</div>
+                    </div>
+
+                    <!-- New York -->
+                    <div class="city-item" tabindex="0" onclick="selectCity(this)">
+                        <button class="favorites-toggle" onclick="toggleFavorite(event, this)">☆</button>
+                        <div class="city-flag">🇺🇸</div>
+                        <div class="city-name">New York</div>
+                        <div class="city-country">United States</div>
+                        <div class="city-stats">
+                            <span class="city-stat">
+                                <span class="stat-icon">👥</span> 8.3M
+                            </span>
+                            <span class="city-stat">
+                                <span class="stat-icon">📏</span> 783 km²
+                            </span>
+                        </div>
+                        <div class="data-quality-badge quality-high">High Quality</div>
+                    </div>
+
+                    <!-- London -->
+                    <div class="city-item" tabindex="0" onclick="selectCity(this)">
+                        <button class="favorites-toggle active" onclick="toggleFavorite(event, this)">★</button>
+                        <div class="city-flag">🇬🇧</div>
+                        <div class="city-name">London</div>
+                        <div class="city-country">United Kingdom</div>
+                        <div class="city-stats">
+                            <span class="city-stat">
+                                <span class="stat-icon">👥</span> 9.0M
+                            </span>
+                            <span class="city-stat">
+                                <span class="stat-icon">📏</span> 1,572 km²
+                            </span>
+                        </div>
+                        <div class="data-quality-badge quality-high">High Quality</div>
+                    </div>
+
+                    <!-- Paris -->
+                    <div class="city-item" tabindex="0" onclick="selectCity(this)">
+                        <button class="favorites-toggle" onclick="toggleFavorite(event, this)">☆</button>
+                        <div class="city-flag">🇫🇷</div>
+                        <div class="city-name">Paris</div>
+                        <div class="city-country">France</div>
+                        <div class="city-stats">
+                            <span class="city-stat">
+                                <span class="stat-icon">👥</span> 2.1M
+                            </span>
+                            <span class="city-stat">
+                                <span class="stat-icon">📏</span> 105 km²
+                            </span>
+                        </div>
+                        <div class="data-quality-badge quality-high">High Quality</div>
+                    </div>
+
+                    <!-- Shanghai -->
+                    <div class="city-item" tabindex="0" onclick="selectCity(this)">
+                        <button class="favorites-toggle" onclick="toggleFavorite(event, this)">☆</button>
+                        <div class="city-flag">🇨🇳</div>
+                        <div class="city-name">Shanghai</div>
+                        <div class="city-country">China</div>
+                        <div class="city-stats">
+                            <span class="city-stat">
+                                <span class="stat-icon">👥</span> 24.3M
+                            </span>
+                            <span class="city-stat">
+                                <span class="stat-icon">📏</span> 6,341 km²
+                            </span>
+                        </div>
+                        <div class="data-quality-badge quality-high">High Quality</div>
+                    </div>
+
+                    <!-- Mumbai -->
+                    <div class="city-item" tabindex="0" onclick="selectCity(this)">
+                        <button class="favorites-toggle" onclick="toggleFavorite(event, this)">☆</button>
+                        <div class="city-flag">🇮🇳</div>
+                        <div class="city-name">Mumbai</div>
+                        <div class="city-country">India</div>
+                        <div class="city-stats">
+                            <span class="city-stat">
+                                <span class="stat-icon">👥</span> 20.4M
+                            </span>
+                            <span class="city-stat">
+                                <span class="stat-icon">📏</span> 603 km²
+                            </span>
+                        </div>
+                        <div class="data-quality-badge quality-medium">Medium Quality</div>
+                    </div>
+
+                    <!-- São Paulo -->
+                    <div class="city-item" tabindex="0" onclick="selectCity(this)">
+                        <button class="favorites-toggle" onclick="toggleFavorite(event, this)">☆</button>
+                        <div class="city-flag">🇧🇷</div>
+                        <div class="city-name">São Paulo</div>
+                        <div class="city-country">Brazil</div>
+                        <div class="city-stats">
+                            <span class="city-stat">
+                                <span class="stat-icon">👥</span> 12.3M
+                            </span>
+                            <span class="city-stat">
+                                <span class="stat-icon">📏</span> 1,521 km²
+                            </span>
+                        </div>
+                        <div class="data-quality-badge quality-high">High Quality</div>
+                    </div>
+
+                    <!-- Sydney -->
+                    <div class="city-item" tabindex="0" onclick="selectCity(this)">
+                        <button class="favorites-toggle" onclick="toggleFavorite(event, this)">☆</button>
+                        <div class="city-flag">🇦🇺</div>
+                        <div class="city-name">Sydney</div>
+                        <div class="city-country">Australia</div>
+                        <div class="city-stats">
+                            <span class="city-stat">
+                                <span class="stat-icon">👥</span> 5.3M
+                            </span>
+                            <span class="city-stat">
+                                <span class="stat-icon">📏</span> 12,368 km²
+                            </span>
+                        </div>
+                        <div class="data-quality-badge quality-high">High Quality</div>
+                    </div>
+
+                    <!-- Dubai -->
+                    <div class="city-item" tabindex="0" onclick="selectCity(this)">
+                        <button class="favorites-toggle" onclick="toggleFavorite(event, this)">☆</button>
+                        <div class="city-flag">🇦🇪</div>
+                        <div class="city-name">Dubai</div>
+                        <div class="city-country">UAE</div>
+                        <div class="city-stats">
+                            <span class="city-stat">
+                                <span class="stat-icon">👥</span> 3.3M
+                            </span>
+                            <span class="city-stat">
+                                <span class="stat-icon">📏</span> 4,114 km²
+                            </span>
+                        </div>
+                        <div class="data-quality-badge quality-medium">Medium Quality</div>
+                    </div>
+
+                    <!-- Singapore -->
+                    <div class="city-item" tabindex="0" onclick="selectCity(this)">
+                        <button class="favorites-toggle" onclick="toggleFavorite(event, this)">☆</button>
+                        <div class="city-flag">🇸🇬</div>
+                        <div class="city-name">Singapore</div>
+                        <div class="city-country">Singapore</div>
+                        <div class="city-stats">
+                            <span class="city-stat">
+                                <span class="stat-icon">👥</span> 5.7M
+                            </span>
+                            <span class="city-stat">
+                                <span class="stat-icon">📏</span> 728 km²
+                            </span>
+                        </div>
+                        <div class="data-quality-badge quality-high">High Quality</div>
+                    </div>
+
+                    <!-- Mexico City -->
+                    <div class="city-item" tabindex="0" onclick="selectCity(this)">
+                        <button class="favorites-toggle" onclick="toggleFavorite(event, this)">☆</button>
+                        <div class="city-flag">🇲🇽</div>
+                        <div class="city-name">Mexico City</div>
+                        <div class="city-country">Mexico</div>
+                        <div class="city-stats">
+                            <span class="city-stat">
+                                <span class="stat-icon">👥</span> 9.2M
+                            </span>
+                            <span class="city-stat">
+                                <span class="stat-icon">📏</span> 1,485 km²
+                            </span>
+                        </div>
+                        <div class="data-quality-badge quality-high">High Quality</div>
+                    </div>
+
+                    <!-- Cairo -->
+                    <div class="city-item" tabindex="0" onclick="selectCity(this)">
+                        <button class="favorites-toggle" onclick="toggleFavorite(event, this)">☆</button>
+                        <div class="city-flag">🇪🇬</div>
+                        <div class="city-name">Cairo</div>
+                        <div class="city-country">Egypt</div>
+                        <div class="city-stats">
+                            <span class="city-stat">
+                                <span class="stat-icon">👥</span> 20.5M
+                            </span>
+                            <span class="city-stat">
+                                <span class="stat-icon">📏</span> 3,085 km²
+                            </span>
+                        </div>
+                        <div class="data-quality-badge quality-low">Low Quality</div>
+                    </div>
+                </div>
+
+                <!-- Loading State (hidden by default) -->
+                <div class="loading-state" id="loadingState" style="display: none;">
+                    <div class="loading-spinner"></div>
+                    <div class="loading-text">Discovering city data with Claude API...</div>
+                </div>
+            </div>
+
+            <!-- Recent/Favorites Section -->
+            <div class="recent-section">
+                <h3 class="recent-title">
+                    <span>🕐</span> Recently Compared
+                </h3>
+                <div class="recent-cities">
+                    <div class="recent-city" onclick="quickSelect('Tokyo', 'Los Angeles')">
+                        <div style="font-size: 24px;">🇯🇵 ↔ 🇺🇸</div>
+                        <div class="recent-city-name">Tokyo vs LA</div>
+                    </div>
+                    <div class="recent-city" onclick="quickSelect('London', 'Paris')">
+                        <div style="font-size: 24px;">🇬🇧 ↔ 🇫🇷</div>
+                        <div class="recent-city-name">London vs Paris</div>
+                    </div>
+                    <div class="recent-city" onclick="quickSelect('New York', 'Singapore')">
+                        <div style="font-size: 24px;">🇺🇸 ↔ 🇸🇬</div>
+                        <div class="recent-city-name">NYC vs Singapore</div>
+                    </div>
+                    <div class="recent-city" onclick="quickSelect('Shanghai', 'Mumbai')">
+                        <div style="font-size: 24px;">🇨🇳 ↔ 🇮🇳</div>
+                        <div class="recent-city-name">Shanghai vs Mumbai</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="action-footer">
+            <div class="selection-info">
+                <strong>2 cities selected</strong> • Base: Tokyo • Overlay: None
+            </div>
+            <div class="action-buttons">
+                <button class="btn btn-secondary" onclick="clearSelection()">Clear Selection</button>
+                <button class="btn btn-primary" onclick="proceedToComparison()">Compare Cities</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedCities = [];
+        let favoritesCities = new Set(['Tokyo', 'London']);
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const cities = document.querySelectorAll('.city-item');
+            let visibleCount = 0;
+
+            cities.forEach(city => {
+                const name = city.querySelector('.city-name').textContent.toLowerCase();
+                const country = city.querySelector('.city-country').textContent.toLowerCase();
+                
+                if (name.includes(searchTerm) || country.includes(searchTerm)) {
+                    city.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    city.style.display = 'none';
+                }
+            });
+
+            // Update results count
+            document.querySelector('.results-count').textContent = `Showing ${visibleCount} cities`;
+
+            // Show loading state if searching for a city not in database
+            if (searchTerm.length > 3 && visibleCount === 0) {
+                setTimeout(() => {
+                    document.getElementById('loadingState').style.display = 'block';
+                    document.getElementById('cityGrid').style.display = 'none';
+                    
+                    // Simulate API call
+                    setTimeout(() => {
+                        document.getElementById('loadingState').style.display = 'none';
+                        document.getElementById('cityGrid').style.display = 'grid';
+                        addNewCity(searchTerm);
+                    }, 2000);
+                }, 500);
+            }
+        });
+
+        // Filter functionality
+        function toggleFilter(element, filter) {
+            // Remove active from all chips in the same section
+            const section = element.parentElement;
+            section.querySelectorAll('.filter-chip').forEach(chip => {
+                chip.classList.remove('active');
+            });
+            
+            // Add active to clicked chip
+            element.classList.add('active');
+            
+            // Filter cities (simplified for demo)
+            console.log(`Filtering by: ${filter}`);
+        }
+
+        // City selection
+        function selectCity(element) {
+            element.classList.toggle('selected');
+            
+            const cityName = element.querySelector('.city-name').textContent;
+            
+            if (element.classList.contains('selected')) {
+                if (selectedCities.length < 2) {
+                    selectedCities.push(cityName);
+                } else {
+                    // Remove oldest selection
+                    const oldestCity = selectedCities.shift();
+                    document.querySelectorAll('.city-item').forEach(item => {
+                        if (item.querySelector('.city-name').textContent === oldestCity) {
+                            item.classList.remove('selected');
+                        }
+                    });
+                    selectedCities.push(cityName);
+                }
+            } else {
+                selectedCities = selectedCities.filter(c => c !== cityName);
+            }
+            
+            updateSelectionInfo();
+        }
+
+        // Toggle favorite
+        function toggleFavorite(event, element) {
+            event.stopPropagation();
+            element.classList.toggle('active');
+            
+            const cityName = element.parentElement.querySelector('.city-name').textContent;
+            
+            if (element.classList.contains('active')) {
+                element.textContent = '★';
+                favoritesCities.add(cityName);
+            } else {
+                element.textContent = '☆';
+                favoritesCities.delete(cityName);
+            }
+        }
+
+        // Update selection info
+        function updateSelectionInfo() {
+            const info = document.querySelector('.selection-info');
+            
+            if (selectedCities.length === 0) {
+                info.innerHTML = '<strong>No cities selected</strong>';
+            } else if (selectedCities.length === 1) {
+                info.innerHTML = `<strong>1 city selected</strong> • Base: ${selectedCities[0]}`;
+            } else {
+                info.innerHTML = `<strong>2 cities selected</strong> • Base: ${selectedCities[0]} • Overlay: ${selectedCities[1]}`;
+            }
+            
+            // Enable/disable compare button
+            const compareBtn = document.querySelector('.btn-primary');
+            compareBtn.disabled = selectedCities.length !== 2;
+        }
+
+        // Quick select from recent
+        function quickSelect(city1, city2) {
+            // Clear current selection
+            document.querySelectorAll('.city-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            selectedCities = [];
+            
+            // Select the two cities
+            document.querySelectorAll('.city-item').forEach(item => {
+                const cityName = item.querySelector('.city-name').textContent;
+                if (cityName === city1 || cityName === city2) {
+                    item.classList.add('selected');
+                    selectedCities.push(cityName);
+                }
+            });
+            
+            updateSelectionInfo();
+        }
+
+        // Clear selection
+        function clearSelection() {
+            document.querySelectorAll('.city-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            selectedCities = [];
+            updateSelectionInfo();
+        }
+
+        // Proceed to comparison
+        function proceedToComparison() {
+            if (selectedCities.length === 2) {
+                console.log(`Comparing ${selectedCities[0]} with ${selectedCities[1]}`);
+                // Would navigate to main comparison view
+                window.location.href = 'mockup-main-comparison.html';
+            }
+        }
+
+        // Add new city (simulated)
+        function addNewCity(searchTerm) {
+            const cityGrid = document.getElementById('cityGrid');
+            const newCity = document.createElement('div');
+            newCity.className = 'city-item';
+            newCity.tabIndex = 0;
+            newCity.onclick = function() { selectCity(this); };
+            
+            newCity.innerHTML = `
+                <button class="favorites-toggle" onclick="toggleFavorite(event, this)">☆</button>
+                <div class="city-flag">🌍</div>
+                <div class="city-name">${searchTerm.charAt(0).toUpperCase() + searchTerm.slice(1)}</div>
+                <div class="city-country">Discovered via Claude API</div>
+                <div class="city-stats">
+                    <span class="city-stat">
+                        <span class="stat-icon">👥</span> Loading...
+                    </span>
+                    <span class="city-stat">
+                        <span class="stat-icon">📏</span> Loading...
+                    </span>
+                </div>
+                <div class="data-quality-badge quality-medium">API Sourced</div>
+            `;
+            
+            cityGrid.insertBefore(newCity, cityGrid.firstChild);
+            document.querySelector('.results-count').textContent = `Showing ${cityGrid.children.length} cities`;
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && e.target.classList.contains('city-item')) {
+                selectCity(e.target);
+            }
+        });
+
+        // Initialize
+        updateSelectionInfo();
+    </script>
+</body>
+</html>

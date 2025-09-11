@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City Comparison - Gesture-Friendly Interface Mockup</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        :root {
+            --primary-color: #007AFF;
+            --primary-hover: #0056CC;
+            --success-color: #34C759;
+            --warning-color: #FF9500;
+            --danger-color: #FF3B30;
+            --overlay-tokyo: #FF6B6B;
+            --overlay-nyc: #45B7D1;
+            --overlay-la: #4ECDC4;
+            --panel-shadow: 0 2px 12px rgba(0,0,0,0.1);
+            --button-min-size: 44px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: #f5f5f7;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header Bar */
+        .header {
+            background: white;
+            border-bottom: 1px solid #e5e5e7;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 1000;
+        }
+
+        .header h1 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1d1d1f;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Search Bar - Integrated into header */
+        .city-search-container {
+            display: flex;
+            gap: 10px;
+            flex: 1;
+            max-width: 600px;
+            margin: 0 20px;
+        }
+
+        .city-search-input {
+            position: relative;
+            flex: 1;
+        }
+
+        .city-search-input input {
+            width: 100%;
+            padding: 10px 40px 10px 15px;
+            border: 1px solid #d2d2d7;
+            border-radius: 10px;
+            font-size: 15px;
+            background: #f5f5f7;
+            transition: all 0.2s;
+        }
+
+        .city-search-input input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+        }
+
+        .city-search-input .search-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #86868b;
+        }
+
+        .city-search-label {
+            position: absolute;
+            top: -8px;
+            left: 12px;
+            background: white;
+            padding: 0 5px;
+            font-size: 11px;
+            color: #86868b;
+            font-weight: 500;
+        }
+
+        /* Main Layout */
+        .main-container {
+            flex: 1;
+            display: flex;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Map Container */
+        #map {
+            flex: 1;
+            position: relative;
+        }
+
+        /* Gesture Indicator Overlay */
+        .gesture-indicator {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 20px;
+            font-size: 16px;
+            font-weight: 500;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 2000;
+        }
+
+        .gesture-indicator.active {
+            opacity: 1;
+        }
+
+        /* Floating Control Panel */
+        .control-panel {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--panel-shadow);
+            width: 320px;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+
+        .control-panel.collapsed {
+            transform: translateX(340px);
+        }
+
+        .panel-header {
+            padding: 16px;
+            border-bottom: 1px solid #e5e5e7;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .panel-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1d1d1f;
+        }
+
+        .panel-toggle {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: #f5f5f7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .panel-toggle:hover {
+            background: #e5e5e7;
+        }
+
+        .panel-content {
+            padding: 16px;
+        }
+
+        /* Transform Controls */
+        .transform-section {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #86868b;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .transform-controls {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .transform-btn {
+            min-height: var(--button-min-size);
+            padding: 10px;
+            border: 1px solid #d2d2d7;
+            border-radius: 10px;
+            background: white;
+            color: #1d1d1f;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .transform-btn:hover {
+            background: #f5f5f7;
+            transform: scale(1.02);
+        }
+
+        .transform-btn:active {
+            transform: scale(0.98);
+        }
+
+        .transform-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* Value Display */
+        .value-display {
+            background: #f5f5f7;
+            border-radius: 10px;
+            padding: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .value-label {
+            font-size: 14px;
+            color: #86868b;
+        }
+
+        .value-amount {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        /* Slider Controls */
+        .slider-control {
+            margin-bottom: 16px;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #e5e5e7;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            flex: 1;
+            min-height: var(--button-min-size);
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
+        .btn-secondary {
+            background: #f5f5f7;
+            color: #1d1d1f;
+            border: 1px solid #d2d2d7;
+        }
+
+        .btn-secondary:hover {
+            background: #e5e5e7;
+        }
+
+        /* Gesture Instructions */
+        .gesture-help {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: var(--panel-shadow);
+            max-width: 280px;
+            z-index: 1000;
+        }
+
+        .gesture-help-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #1d1d1f;
+        }
+
+        .gesture-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: #636366;
+        }
+
+        .gesture-icon {
+            width: 32px;
+            height: 32px;
+            background: #f5f5f7;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        /* City Info Cards */
+        .city-info-cards {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 12px;
+            z-index: 999;
+        }
+
+        .city-card {
+            background: white;
+            border-radius: 12px;
+            padding: 12px 16px;
+            box-shadow: var(--panel-shadow);
+            min-width: 140px;
+        }
+
+        .city-card-label {
+            font-size: 11px;
+            color: #86868b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .city-card-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 4px;
+        }
+
+        .city-card-meta {
+            font-size: 12px;
+            color: #636366;
+        }
+
+        .city-card.base {
+            border-left: 4px solid var(--overlay-tokyo);
+        }
+
+        .city-card.overlay {
+            border-left: 4px solid var(--overlay-nyc);
+        }
+
+        /* Mobile Toggle Button */
+        .mobile-menu-toggle {
+            display: none;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: var(--button-min-size);
+            height: var(--button-min-size);
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--panel-shadow);
+            border: none;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        /* Focus Indicators */
+        button:focus-visible,
+        input:focus-visible,
+        .transform-btn:focus-visible {
+            outline: 3px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+
+        /* Loading State */
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #e5e5e7;
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .control-panel {
+                width: 100%;
+                top: auto;
+                bottom: 0;
+                right: 0;
+                border-radius: 16px 16px 0 0;
+                transform: translateY(calc(100% - 60px));
+            }
+
+            .control-panel.expanded {
+                transform: translateY(0);
+            }
+
+            .control-panel.collapsed {
+                transform: translateY(calc(100% - 60px));
+            }
+
+            .gesture-help {
+                display: none;
+            }
+
+            .city-info-cards {
+                bottom: 80px;
+                right: 10px;
+                left: 10px;
+                justify-content: center;
+            }
+
+            .city-search-container {
+                display: none;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .header {
+                padding: 12px 16px;
+            }
+
+            .header h1 {
+                font-size: 18px;
+            }
+        }
+
+        /* Accessibility - High Contrast Mode */
+        @media (prefers-contrast: high) {
+            .transform-btn {
+                border-width: 2px;
+            }
+
+            .value-display {
+                border: 2px solid #1d1d1f;
+            }
+        }
+
+        /* Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header with Integrated Search -->
+    <header class="header">
+        <h1>🗺️ City Comparison</h1>
+        
+        <div class="city-search-container">
+            <div class="city-search-input">
+                <span class="city-search-label">Base City</span>
+                <input type="text" placeholder="Search cities..." value="Tokyo, Japan" />
+                <span class="search-icon">🔍</span>
+            </div>
+            <div class="city-search-input">
+                <span class="city-search-label">Overlay City</span>
+                <input type="text" placeholder="Search cities..." value="New York City, USA" />
+                <span class="search-icon">🔍</span>
+            </div>
+        </div>
+
+        <div class="header-actions">
+            <button class="action-btn btn-secondary" style="padding: 8px 16px; min-height: 36px;">
+                Share
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Map -->
+        <div id="map"></div>
+
+        <!-- Gesture Indicator -->
+        <div class="gesture-indicator" id="gestureIndicator">
+            Rotating: 45°
+        </div>
+
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-toggle" onclick="toggleMobilePanel()">☰</button>
+
+        <!-- Control Panel -->
+        <div class="control-panel" id="controlPanel">
+            <div class="panel-header" onclick="togglePanel()">
+                <span class="panel-title">Transform Controls</span>
+                <div class="panel-toggle">
+                    <span id="panelToggleIcon">−</span>
+                </div>
+            </div>
+
+            <div class="panel-content">
+                <!-- Rotation Controls -->
+                <div class="transform-section">
+                    <div class="section-title">Rotation</div>
+                    <div class="value-display">
+                        <span class="value-label">Current Angle</span>
+                        <span class="value-amount" id="rotationValue">0°</span>
+                    </div>
+                    <div class="transform-controls">
+                        <button class="transform-btn" onclick="rotate(-90)">↺ 90°</button>
+                        <button class="transform-btn" onclick="rotate(-45)">↺ 45°</button>
+                        <button class="transform-btn" onclick="rotate(-15)">↺ 15°</button>
+                        <button class="transform-btn" onclick="rotate(15)">↻ 15°</button>
+                        <button class="transform-btn" onclick="rotate(45)">↻ 45°</button>
+                        <button class="transform-btn" onclick="rotate(90)">↻ 90°</button>
+                    </div>
+                    <div class="slider-control">
+                        <div class="slider-label">
+                            <span>Fine Adjustment</span>
+                            <span id="rotationSliderValue">0°</span>
+                        </div>
+                        <input type="range" class="slider" id="rotationSlider" min="-180" max="180" value="0" />
+                    </div>
+                </div>
+
+                <!-- Translation Controls -->
+                <div class="transform-section">
+                    <div class="section-title">Position</div>
+                    <div class="transform-controls">
+                        <button class="transform-btn" onclick="translate(0, -1)">↑</button>
+                        <button class="transform-btn" onclick="resetTranslation()">⊙</button>
+                        <button class="transform-btn" onclick="translate(0, 1)">↓</button>
+                        <button class="transform-btn" onclick="translate(-1, 0)">←</button>
+                        <button class="transform-btn" onclick="snapToCenter()">⊕</button>
+                        <button class="transform-btn" onclick="translate(1, 0)">→</button>
+                    </div>
+                </div>
+
+                <!-- Scale Controls -->
+                <div class="transform-section">
+                    <div class="section-title">Scale</div>
+                    <div class="slider-control">
+                        <div class="slider-label">
+                            <span>Size Adjustment</span>
+                            <span id="scaleSliderValue">100%</span>
+                        </div>
+                        <input type="range" class="slider" id="scaleSlider" min="50" max="200" value="100" />
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="action-btn btn-secondary" onclick="resetAll()">
+                        Reset All
+                    </button>
+                    <button class="action-btn btn-primary" onclick="swapCities()">
+                        Swap Cities
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gesture Help -->
+        <div class="gesture-help">
+            <div class="gesture-help-title">Gesture Controls</div>
+            <div class="gesture-item">
+                <div class="gesture-icon">👆</div>
+                <span>Tap to select overlay</span>
+            </div>
+            <div class="gesture-item">
+                <div class="gesture-icon">✌️</div>
+                <span>Pinch to rotate & scale</span>
+            </div>
+            <div class="gesture-item">
+                <div class="gesture-icon">👆</div>
+                <span>Drag to move overlay</span>
+            </div>
+            <div class="gesture-item">
+                <div class="gesture-icon">👆👆</div>
+                <span>Double-tap to reset</span>
+            </div>
+        </div>
+
+        <!-- City Info Cards -->
+        <div class="city-info-cards">
+            <div class="city-card base">
+                <div class="city-card-label">Base City</div>
+                <div class="city-card-name">Tokyo</div>
+                <div class="city-card-meta">2,194 km² • Japan</div>
+            </div>
+            <div class="city-card overlay">
+                <div class="city-card-label">Overlay</div>
+                <div class="city-card-name">New York</div>
+                <div class="city-card-meta">783 km² • USA</div>
+            </div>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="loading-spinner"></div>
+        </div>
+    </div>
+
+    <!-- Leaflet Map Script -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Initialize map
+        const map = L.map('map', {
+            center: [35.6762, 139.6503],
+            zoom: 10,
+            zoomControl: false
+        });
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Add zoom control to bottom left
+        L.control.zoom({
+            position: 'bottomleft'
+        }).addTo(map);
+
+        // Demo city boundaries (simplified)
+        const tokyoBounds = L.polygon([
+            [35.4, 139.2], [35.4, 139.9], [35.9, 140.0], 
+            [36.0, 139.6], [35.9, 139.2], [35.4, 139.2]
+        ], {
+            color: '#FF6B6B',
+            weight: 2,
+            fillOpacity: 0.2
+        }).addTo(map);
+
+        const nycBounds = L.polygon([
+            [35.5, 139.3], [35.5, 139.8], [35.8, 139.85],
+            [35.85, 139.5], [35.8, 139.3], [35.5, 139.3]
+        ], {
+            color: '#45B7D1',
+            weight: 3,
+            fillOpacity: 0.3,
+            dashArray: '10, 5'
+        }).addTo(map);
+
+        // State management
+        let currentRotation = 0;
+        let currentScale = 100;
+        let gestureActive = false;
+
+        // Rotation control
+        function rotate(degrees) {
+            currentRotation += degrees;
+            if (currentRotation > 180) currentRotation -= 360;
+            if (currentRotation < -180) currentRotation += 360;
+            
+            updateRotationDisplay();
+            showGestureIndicator(`Rotating: ${currentRotation}°`);
+            
+            // Here you would apply the actual rotation to the overlay
+            console.log(`Rotating overlay by ${degrees}° to ${currentRotation}°`);
+        }
+
+        function updateRotationDisplay() {
+            document.getElementById('rotationValue').textContent = `${currentRotation}°`;
+            document.getElementById('rotationSlider').value = currentRotation;
+            document.getElementById('rotationSliderValue').textContent = `${currentRotation}°`;
+        }
+
+        // Translation control
+        function translate(dx, dy) {
+            showGestureIndicator(`Moving: ${dx > 0 ? 'Right' : dx < 0 ? 'Left' : ''} ${dy > 0 ? 'Down' : dy < 0 ? 'Up' : ''}`);
+            console.log(`Translating overlay by (${dx}, ${dy})`);
+        }
+
+        function resetTranslation() {
+            showGestureIndicator('Centering overlay');
+            console.log('Resetting translation to center');
+        }
+
+        function snapToCenter() {
+            showGestureIndicator('Snapping to center');
+            console.log('Snapping overlay to base city center');
+        }
+
+        // Scale control
+        document.getElementById('scaleSlider').addEventListener('input', function(e) {
+            currentScale = e.value;
+            document.getElementById('scaleSliderValue').textContent = `${currentScale}%`;
+            showGestureIndicator(`Scaling: ${currentScale}%`);
+        });
+
+        // Rotation slider
+        document.getElementById('rotationSlider').addEventListener('input', function(e) {
+            currentRotation = parseInt(e.value);
+            updateRotationDisplay();
+            showGestureIndicator(`Rotating: ${currentRotation}°`);
+        });
+
+        // Reset all transformations
+        function resetAll() {
+            currentRotation = 0;
+            currentScale = 100;
+            updateRotationDisplay();
+            document.getElementById('scaleSlider').value = 100;
+            document.getElementById('scaleSliderValue').textContent = '100%';
+            showGestureIndicator('Reset all transformations');
+        }
+
+        // Swap cities
+        function swapCities() {
+            showGestureIndicator('Swapping cities');
+            // Animation would happen here
+            setTimeout(() => {
+                const cards = document.querySelectorAll('.city-card');
+                cards[0].classList.toggle('base');
+                cards[0].classList.toggle('overlay');
+                cards[1].classList.toggle('base');
+                cards[1].classList.toggle('overlay');
+            }, 300);
+        }
+
+        // Show gesture indicator
+        function showGestureIndicator(text) {
+            const indicator = document.getElementById('gestureIndicator');
+            indicator.textContent = text;
+            indicator.classList.add('active');
+            
+            clearTimeout(indicator.hideTimeout);
+            indicator.hideTimeout = setTimeout(() => {
+                indicator.classList.remove('active');
+            }, 1500);
+        }
+
+        // Panel toggle
+        function togglePanel() {
+            const panel = document.getElementById('controlPanel');
+            const icon = document.getElementById('panelToggleIcon');
+            
+            if (window.innerWidth <= 768) {
+                panel.classList.toggle('expanded');
+                icon.textContent = panel.classList.contains('expanded') ? '−' : '+';
+            } else {
+                panel.classList.toggle('collapsed');
+                icon.textContent = panel.classList.contains('collapsed') ? '+' : '−';
+            }
+        }
+
+        function toggleMobilePanel() {
+            const panel = document.getElementById('controlPanel');
+            panel.classList.toggle('expanded');
+        }
+
+        // Simulate touch gestures
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let touchStartDistance = 0;
+        let touchStartAngle = 0;
+
+        map.on('touchstart', function(e) {
+            if (e.originalEvent.touches.length === 2) {
+                // Two finger gesture - rotation/scale
+                const touch1 = e.originalEvent.touches[0];
+                const touch2 = e.originalEvent.touches[1];
+                
+                touchStartDistance = Math.hypot(
+                    touch2.clientX - touch1.clientX,
+                    touch2.clientY - touch1.clientY
+                );
+                
+                touchStartAngle = Math.atan2(
+                    touch2.clientY - touch1.clientY,
+                    touch2.clientX - touch1.clientX
+                ) * 180 / Math.PI;
+                
+                gestureActive = true;
+                showGestureIndicator('Gesture detected');
+            } else if (e.originalEvent.touches.length === 1) {
+                // Single finger - translation
+                touchStartX = e.originalEvent.touches[0].clientX;
+                touchStartY = e.originalEvent.touches[0].clientY;
+            }
+        });
+
+        map.on('touchmove', function(e) {
+            if (e.originalEvent.touches.length === 2 && gestureActive) {
+                e.originalEvent.preventDefault();
+                
+                const touch1 = e.originalEvent.touches[0];
+                const touch2 = e.originalEvent.touches[1];
+                
+                // Calculate scale
+                const currentDistance = Math.hypot(
+                    touch2.clientX - touch1.clientX,
+                    touch2.clientY - touch1.clientY
+                );
+                const scale = (currentDistance / touchStartDistance) * 100;
+                
+                if (Math.abs(scale - currentScale) > 2) {
+                    currentScale = Math.round(scale);
+                    document.getElementById('scaleSlider').value = currentScale;
+                    document.getElementById('scaleSliderValue').textContent = `${currentScale}%`;
+                    showGestureIndicator(`Scaling: ${currentScale}%`);
+                }
+                
+                // Calculate rotation
+                const currentAngle = Math.atan2(
+                    touch2.clientY - touch1.clientY,
+                    touch2.clientX - touch1.clientX
+                ) * 180 / Math.PI;
+                const deltaAngle = currentAngle - touchStartAngle;
+                
+                if (Math.abs(deltaAngle) > 2) {
+                    currentRotation = Math.round(currentRotation + deltaAngle);
+                    if (currentRotation > 180) currentRotation -= 360;
+                    if (currentRotation < -180) currentRotation += 360;
+                    updateRotationDisplay();
+                    showGestureIndicator(`Rotating: ${currentRotation}°`);
+                    touchStartAngle = currentAngle;
+                }
+            }
+        });
+
+        map.on('touchend', function(e) {
+            gestureActive = false;
+        });
+
+        // Double-tap to reset
+        let lastTap = 0;
+        map.on('click', function(e) {
+            const currentTime = new Date().getTime();
+            const tapLength = currentTime - lastTap;
+            
+            if (tapLength < 500 && tapLength > 0) {
+                resetAll();
+            }
+            lastTap = currentTime;
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.target.tagName === 'INPUT') return;
+            
+            switch(e.key) {
+                case 'ArrowLeft':
+                    e.preventDefault();
+                    translate(-1, 0);
+                    break;
+                case 'ArrowRight':
+                    e.preventDefault();
+                    translate(1, 0);
+                    break;
+                case 'ArrowUp':
+                    e.preventDefault();
+                    translate(0, -1);
+                    break;
+                case 'ArrowDown':
+                    e.preventDefault();
+                    translate(0, 1);
+                    break;
+                case 'r':
+                case 'R':
+                    if (e.shiftKey) {
+                        rotate(-15);
+                    } else {
+                        rotate(15);
+                    }
+                    break;
+                case '0':
+                    resetAll();
+                    break;
+                case 'Tab':
+                    // Allow tab navigation
+                    break;
+                default:
+                    break;
+            }
+        });
+
+        // Initialize
+        showGestureIndicator('Ready for gestures');
+    </script>
+</body>
+</html>
