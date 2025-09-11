@@ -424,44 +424,6 @@
                 <button id="swapBtn" disabled>Swap Cities</button>
             </div>
             
-            <!-- Transformation Controls -->
-            <div id="transformControls">
-                <button class="collapsible-header" onclick="toggleControls(this)">
-                    Transform Overlay City
-                    <span>▼</span>
-                </button>
-                <div class="collapsible-content expanded">
-                <h4 style="display: none;">Transform Overlay City:</h4>
-                
-                <div class="control-group">
-                    <label>Rotation:</label>
-                    <input type="range" id="rotationSlider" min="0" max="360" value="0" step="1">
-                    <span id="rotationValue">0°</span>
-                    <button id="resetRotation">Reset</button>
-                </div>
-                
-                <div class="control-group">
-                    <label>Position:</label>
-                    <div class="move-grid">
-                        <button id="moveUpLeft">↖</button>
-                        <button id="moveUp">↑</button>
-                        <button id="moveUpRight">↗</button>
-                        <button id="moveLeft">←</button>
-                        <button id="resetPosition">⊙</button>
-                        <button id="moveRight">→</button>
-                        <button id="moveDownLeft">↙</button>
-                        <button id="moveDown">↓</button>
-                        <button id="moveDownRight">↘</button>
-                    </div>
-                </div>
-                
-                <div class="control-group">
-                    <label>Move Distance:</label>
-                    <input type="range" id="moveStep" min="0.01" max="0.5" value="0.1" step="0.01">
-                    <span id="moveStepValue">0.10°</span>
-                </div>
-                </div> <!-- Close collapsible-content -->
-            </div>
         </div>
         
         <div id="map"></div>
@@ -559,12 +521,7 @@
         const status = document.getElementById('status');
         const results = document.getElementById('comparison-results');
 
-        // Transformation controls
-        const rotationSlider = document.getElementById('rotationSlider');
-        const rotationValue = document.getElementById('rotationValue');
-        const moveStep = document.getElementById('moveStep');
-        const moveStepValue = document.getElementById('moveStepValue');
-        const transformControls = document.getElementById('transformControls');
+        // Transformation controls (gesture-only)
 
         // Transformation state
         let currentBase = null;
@@ -581,23 +538,6 @@
         compareBtn.addEventListener('click', compareCities);
         swapBtn.addEventListener('click', swapCities);
 
-        // Transformation control event listeners
-        rotationSlider.addEventListener('input', updateRotation);
-        moveStep.addEventListener('input', updateMoveStep);
-        
-        // Movement buttons
-        document.getElementById('moveUp').addEventListener('click', () => moveOverlay(0, 1));
-        document.getElementById('moveDown').addEventListener('click', () => moveOverlay(0, -1));
-        document.getElementById('moveLeft').addEventListener('click', () => moveOverlay(-1, 0));
-        document.getElementById('moveRight').addEventListener('click', () => moveOverlay(1, 0));
-        document.getElementById('moveUpLeft').addEventListener('click', () => moveOverlay(-1, 1));
-        document.getElementById('moveUpRight').addEventListener('click', () => moveOverlay(1, 1));
-        document.getElementById('moveDownLeft').addEventListener('click', () => moveOverlay(-1, -1));
-        document.getElementById('moveDownRight').addEventListener('click', () => moveOverlay(1, -1));
-        
-        // Reset buttons
-        document.getElementById('resetRotation').addEventListener('click', resetRotation);
-        document.getElementById('resetPosition').addEventListener('click', resetPosition);
 
         function updateButtons() {
             const hasBase = baseCitySelect.value;
@@ -608,29 +548,9 @@
             swapBtn.disabled = !(hasBase && hasOverlay);
         }
 
-        // Transformation control functions
-        function updateRotation() {
-            overlayRotation = parseInt(rotationSlider.value);
-            rotationValue.textContent = overlayRotation + '°';
-            updateOverlayDisplay();
-        }
-
-        function updateMoveStep() {
-            const step = parseFloat(moveStep.value);
-            moveStepValue.textContent = step.toFixed(2) + '°';
-        }
-
-        function moveOverlay(deltaX, deltaY) {
-            const step = parseFloat(moveStep.value);
-            overlayTranslation.lng += deltaX * step;
-            overlayTranslation.lat += deltaY * step;
-            updateOverlayDisplay();
-        }
-
+        // Transformation functions (gesture-controlled)
         function resetRotation() {
             overlayRotation = 0;
-            rotationSlider.value = 0;
-            rotationValue.textContent = '0°';
             updateOverlayDisplay();
         }
 
@@ -895,8 +815,6 @@
                 // Reset transformation state
                 overlayRotation = 0;
                 overlayTranslation = { lat: 0, lng: 0 };
-                rotationSlider.value = 0;
-                rotationValue.textContent = '0°';
                 
                 // Load both city boundaries
                 status.innerHTML = '<div class="spinner"></div>Loading base city boundary...';
@@ -1136,8 +1054,6 @@
                     const snappedRotation = showSnapGuide(newRotation);
                     
                     overlayRotation = snappedRotation;
-                    rotationSlider.value = overlayRotation;
-                    rotationValue.textContent = overlayRotation + '°';
                     updateOverlayDisplay();
                     
                     if (snappedRotation !== newRotation) {
@@ -1187,8 +1103,6 @@
                 const snappedRotation = showSnapGuide(newRotation);
                 
                 overlayRotation = snappedRotation;
-                rotationSlider.value = overlayRotation;
-                rotationValue.textContent = overlayRotation + '°';
                 updateOverlayDisplay();
                 
                 if (snappedRotation !== newRotation) {
@@ -1282,8 +1196,6 @@
                         let newRotation = overlayRotation - step;
                         if (newRotation < -180) newRotation += 360;
                         overlayRotation = newRotation;
-                        rotationSlider.value = overlayRotation;
-                        rotationValue.textContent = overlayRotation + '°';
                         updateOverlayDisplay();
                         showGestureIndicator(`⌨️ Rotate left: ${overlayRotation}°`);
                     } else {
@@ -1301,8 +1213,6 @@
                         let newRotation = overlayRotation + step;
                         if (newRotation > 180) newRotation -= 360;
                         overlayRotation = newRotation;
-                        rotationSlider.value = overlayRotation;
-                        rotationValue.textContent = overlayRotation + '°';
                         updateOverlayDisplay();
                         showGestureIndicator(`⌨️ Rotate right: ${overlayRotation}°`);
                     } else {
