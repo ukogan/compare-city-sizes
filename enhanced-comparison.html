@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced City Size Comparison Tool</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .controls {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .control-group {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        label {
+            font-weight: 600;
+            min-width: 120px;
+        }
+        
+        select, button {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        button {
+            background: #007AFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        button:hover {
+            background: #0056CC;
+        }
+        
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        #map {
+            height: 600px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        
+        .info-panel {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .loading {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+        }
+        
+        .comparison-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .stat-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007AFF;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .spinner {
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #007AFF;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Transformation controls styling */
+        #transformControls {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            display: none;
+        }
+
+        #transformControls h4 {
+            margin: 0 0 15px 0;
+            color: #333;
+        }
+
+        #transformControls input[type="range"] {
+            width: 200px;
+            margin: 0 10px;
+        }
+
+        #transformControls button {
+            min-width: 40px;
+            height: 40px;
+            font-size: 16px;
+        }
+
+        .move-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 40px);
+            gap: 5px;
+            justify-content: start;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🗺️ Enhanced City Size Comparison Tool</h1>
+        <p style="text-align: center; color: #666; margin-bottom: 30px;">
+            Compare actual city boundaries with rotation and translation controls
+        </p>
+        
+        <div class="controls">
+            <div class="control-group">
+                <label for="baseCity">Base City:</label>
+                <select id="baseCity">
+                    <option value="">Select base city...</option>
+                    <option value="new-york">New York City (5 Boroughs)</option>
+                    <option value="los-angeles">Los Angeles, CA</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label for="overlayCity">Overlay City:</label>
+                <select id="overlayCity">
+                    <option value="">Select overlay city...</option>
+                    <option value="new-york">New York City (5 Boroughs)</option>
+                    <option value="los-angeles">Los Angeles, CA</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <button id="compareBtn" disabled>Compare Cities</button>
+                <button id="swapBtn" disabled>Swap Cities</button>
+            </div>
+            
+            <!-- Transformation Controls -->
+            <div id="transformControls">
+                <h4>Transform Overlay City:</h4>
+                
+                <div class="control-group">
+                    <label>Rotation:</label>
+                    <input type="range" id="rotationSlider" min="0" max="360" value="0" step="1">
+                    <span id="rotationValue">0°</span>
+                    <button id="resetRotation">Reset</button>
+                </div>
+                
+                <div class="control-group">
+                    <label>Position:</label>
+                    <div class="move-grid">
+                        <button id="moveUpLeft">↖</button>
+                        <button id="moveUp">↑</button>
+                        <button id="moveUpRight">↗</button>
+                        <button id="moveLeft">←</button>
+                        <button id="resetPosition">⊙</button>
+                        <button id="moveRight">→</button>
+                        <button id="moveDownLeft">↙</button>
+                        <button id="moveDown">↓</button>
+                        <button id="moveDownRight">↘</button>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label>Move Distance:</label>
+                    <input type="range" id="moveStep" min="0.01" max="0.5" value="0.1" step="0.01">
+                    <span id="moveStepValue">0.10°</span>
+                </div>
+            </div>
+        </div>
+        
+        <div id="map"></div>
+        
+        <div class="info-panel">
+            <div id="status" class="loading">Select two cities to begin comparison...</div>
+            <div id="comparison-results"></div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // City data with high-resolution boundary file references
+        const CITIES = {
+            'new-york': {
+                name: 'New York City',
+                center: [40.7128, -74.0060],
+                color: '#FF6B6B',
+                boundaryFile: 'nyc-boroughs.geojson'
+            },
+            'los-angeles': {
+                name: 'Los Angeles', 
+                center: [34.0522, -118.2437],
+                color: '#4ECDC4',
+                boundaryFile: 'los-angeles-city-only.geojson'
+            }
+        };
+
+        // Initialize map
+        const map = L.map('map').setView([40.7128, -74.0060], 10);
+        
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap contributors, © CARTO'
+        }).addTo(map);
+
+        // Layer groups for cities
+        const baseLayer = L.layerGroup().addTo(map);
+        const overlayLayer = L.layerGroup().addTo(map);
+
+        // UI elements
+        const baseCitySelect = document.getElementById('baseCity');
+        const overlayCitySelect = document.getElementById('overlayCity');
+        const compareBtn = document.getElementById('compareBtn');
+        const swapBtn = document.getElementById('swapBtn');
+        const status = document.getElementById('status');
+        const results = document.getElementById('comparison-results');
+
+        // Transformation controls
+        const rotationSlider = document.getElementById('rotationSlider');
+        const rotationValue = document.getElementById('rotationValue');
+        const moveStep = document.getElementById('moveStep');
+        const moveStepValue = document.getElementById('moveStepValue');
+        const transformControls = document.getElementById('transformControls');
+
+        // Transformation state
+        let currentBase = null;
+        let currentOverlay = null;
+        let baseBoundaryData = null;
+        let overlayBoundaryData = null;
+        let originalOverlayData = null;
+        let overlayRotation = 0;
+        let overlayTranslation = { lat: 0, lng: 0 };
+
+        // Event listeners
+        baseCitySelect.addEventListener('change', updateButtons);
+        overlayCitySelect.addEventListener('change', updateButtons);
+        compareBtn.addEventListener('click', compareCities);
+        swapBtn.addEventListener('click', swapCities);
+
+        // Transformation control event listeners
+        rotationSlider.addEventListener('input', updateRotation);
+        moveStep.addEventListener('input', updateMoveStep);
+        
+        // Movement buttons
+        document.getElementById('moveUp').addEventListener('click', () => moveOverlay(0, 1));
+        document.getElementById('moveDown').addEventListener('click', () => moveOverlay(0, -1));
+        document.getElementById('moveLeft').addEventListener('click', () => moveOverlay(-1, 0));
+        document.getElementById('moveRight').addEventListener('click', () => moveOverlay(1, 0));
+        document.getElementById('moveUpLeft').addEventListener('click', () => moveOverlay(-1, 1));
+        document.getElementById('moveUpRight').addEventListener('click', () => moveOverlay(1, 1));
+        document.getElementById('moveDownLeft').addEventListener('click', () => moveOverlay(-1, -1));
+        document.getElementById('moveDownRight').addEventListener('click', () => moveOverlay(1, -1));
+        
+        // Reset buttons
+        document.getElementById('resetRotation').addEventListener('click', resetRotation);
+        document.getElementById('resetPosition').addEventListener('click', resetPosition);
+
+        function updateButtons() {
+            const hasBase = baseCitySelect.value;
+            const hasOverlay = overlayCitySelect.value;
+            const different = hasBase !== hasOverlay;
+            
+            compareBtn.disabled = !(hasBase && hasOverlay && different);
+            swapBtn.disabled = !(hasBase && hasOverlay);
+        }
+
+        // Transformation control functions
+        function updateRotation() {
+            overlayRotation = parseInt(rotationSlider.value);
+            rotationValue.textContent = overlayRotation + '°';
+            updateOverlayDisplay();
+        }
+
+        function updateMoveStep() {
+            const step = parseFloat(moveStep.value);
+            moveStepValue.textContent = step.toFixed(2) + '°';
+        }
+
+        function moveOverlay(deltaX, deltaY) {
+            const step = parseFloat(moveStep.value);
+            overlayTranslation.lng += deltaX * step;
+            overlayTranslation.lat += deltaY * step;
+            updateOverlayDisplay();
+        }
+
+        function resetRotation() {
+            overlayRotation = 0;
+            rotationSlider.value = 0;
+            rotationValue.textContent = '0°';
+            updateOverlayDisplay();
+        }
+
+        function resetPosition() {
+            overlayTranslation = { lat: 0, lng: 0 };
+            updateOverlayDisplay();
+        }
+
+        function updateOverlayDisplay() {
+            if (!originalOverlayData || !baseBoundaryData) return;
+            
+            // Clear existing overlay
+            overlayLayer.clearLayers();
+            
+            const baseCity = CITIES[currentBase];
+            const overlayCity = CITIES[currentOverlay];
+            
+            // Transform overlay with current rotation and translation
+            const transformedOverlay = transformGeoJSON(
+                originalOverlayData, 
+                baseCity.center, 
+                1, 
+                overlayRotation, 
+                overlayTranslation
+            );
+            
+            // Add transformed overlay to map
+            const overlayGeoJsonLayer = L.geoJSON(transformedOverlay, {
+                style: {
+                    color: overlayCity.color,
+                    weight: 3,
+                    opacity: 0.9,
+                    fillColor: overlayCity.color,
+                    fillOpacity: 0.3,
+                    dashArray: '10, 5'
+                }
+            });
+            overlayLayer.addLayer(overlayGeoJsonLayer);
+        }
+
+        async function loadCityBoundary(cityKey) {
+            const city = CITIES[cityKey];
+            if (!city) {
+                throw new Error(`Unknown city: ${cityKey}`);
+            }
+            
+            try {
+                const response = await fetch(city.boundaryFile);
+                if (!response.ok) {
+                    throw new Error(`Failed to load ${city.name} boundary data`);
+                }
+                
+                const geojson = await response.json();
+                return geojson;
+            } catch (error) {
+                console.error(`Error loading boundary for ${city.name}:`, error);
+                throw error;
+            }
+        }
+
+        function calculateGeoJSONArea(geojson) {
+            // Calculate approximate area from GeoJSON coordinates
+            let totalArea = 0;
+            
+            if (geojson.type === 'FeatureCollection') {
+                geojson.features.forEach(feature => {
+                    totalArea += calculateFeatureArea(feature);
+                });
+            } else if (geojson.type === 'Feature') {
+                totalArea = calculateFeatureArea(geojson);
+            }
+            
+            return totalArea;
+        }
+
+        function calculateFeatureArea(feature) {
+            const geometry = feature.geometry;
+            let area = 0;
+            
+            if (geometry.type === 'Polygon') {
+                area = calculatePolygonArea(geometry.coordinates[0]);
+            } else if (geometry.type === 'MultiPolygon') {
+                geometry.coordinates.forEach(polygon => {
+                    area += calculatePolygonArea(polygon[0]);
+                });
+            }
+            
+            return area;
+        }
+
+        function calculatePolygonArea(coordinates) {
+            // Simple area calculation (not geodesically accurate, but good for comparison)
+            if (!coordinates || coordinates.length < 3) return 0;
+            
+            let area = 0;
+            for (let i = 0; i < coordinates.length - 1; i++) {
+                area += (coordinates[i][0] * coordinates[i + 1][1] - coordinates[i + 1][0] * coordinates[i][1]);
+            }
+            
+            return Math.abs(area) / 2;
+        }
+
+        function transformGeoJSON(geojson, newCenter, scaleFactor = 1, rotation = 0, translation = { lat: 0, lng: 0 }) {
+            // Calculate current centroid using a simpler approach
+            let totalLat = 0, totalLon = 0, pointCount = 0;
+            
+            function extractPoints(coords) {
+                if (typeof coords[0] === 'number') {
+                    totalLon += coords[0];
+                    totalLat += coords[1];
+                    pointCount++;
+                } else {
+                    coords.forEach(extractPoints);
+                }
+            }
+            
+            // Extract all points to find centroid
+            if (geojson.type === 'FeatureCollection') {
+                geojson.features.forEach(feature => {
+                    extractPoints(feature.geometry.coordinates);
+                });
+            } else if (geojson.type === 'Feature') {
+                extractPoints(geojson.geometry.coordinates);
+            }
+            
+            const currentCenter = [totalLon / pointCount, totalLat / pointCount];
+            
+            // Convert rotation to radians
+            const rotationRad = (rotation * Math.PI) / 180;
+            const cos = Math.cos(rotationRad);
+            const sin = Math.sin(rotationRad);
+            
+            // Deep clone and transform coordinates
+            const transformedGeoJSON = JSON.parse(JSON.stringify(geojson));
+            
+            function transformCoordinates(coords) {
+                if (typeof coords[0] === 'number') {
+                    // This is a coordinate pair [lon, lat]
+                    let deltaLon = (coords[0] - currentCenter[0]) * scaleFactor;
+                    let deltaLat = (coords[1] - currentCenter[1]) * scaleFactor;
+                    
+                    // Apply rotation
+                    if (rotation !== 0) {
+                        const rotatedLon = deltaLon * cos - deltaLat * sin;
+                        const rotatedLat = deltaLon * sin + deltaLat * cos;
+                        deltaLon = rotatedLon;
+                        deltaLat = rotatedLat;
+                    }
+                    
+                    // Apply translation and position at new center
+                    return [
+                        newCenter[1] + deltaLon + translation.lng, 
+                        newCenter[0] + deltaLat + translation.lat
+                    ];
+                } else {
+                    // This is an array of coordinates
+                    return coords.map(transformCoordinates);
+                }
+            }
+
+            if (transformedGeoJSON.type === 'FeatureCollection') {
+                transformedGeoJSON.features.forEach(feature => {
+                    if (feature.geometry && feature.geometry.coordinates) {
+                        feature.geometry.coordinates = transformCoordinates(feature.geometry.coordinates);
+                    }
+                });
+            } else if (transformedGeoJSON.type === 'Feature') {
+                if (transformedGeoJSON.geometry && transformedGeoJSON.geometry.coordinates) {
+                    transformedGeoJSON.geometry.coordinates = transformCoordinates(transformedGeoJSON.geometry.coordinates);
+                }
+            }
+
+            return transformedGeoJSON;
+        }
+
+        async function compareCities() {
+            const baseKey = baseCitySelect.value;
+            const overlayKey = overlayCitySelect.value;
+            
+            if (!baseKey || !overlayKey || baseKey === overlayKey) return;
+            
+            status.innerHTML = '<div class="spinner"></div>Loading high-resolution city boundaries...';
+            
+            // Clear previous layers
+            baseLayer.clearLayers();
+            overlayLayer.clearLayers();
+            results.innerHTML = '';
+            
+            const baseCity = CITIES[baseKey];
+            const overlayCity = CITIES[overlayKey];
+            
+            currentBase = baseKey;
+            currentOverlay = overlayKey;
+            
+            try {
+                // Reset transformation state
+                overlayRotation = 0;
+                overlayTranslation = { lat: 0, lng: 0 };
+                rotationSlider.value = 0;
+                rotationValue.textContent = '0°';
+                
+                // Load both city boundaries
+                status.innerHTML = '<div class="spinner"></div>Loading base city boundary...';
+                baseBoundaryData = await loadCityBoundary(baseKey);
+                
+                status.innerHTML = '<div class="spinner"></div>Loading overlay city boundary...';
+                overlayBoundaryData = await loadCityBoundary(overlayKey);
+                originalOverlayData = JSON.parse(JSON.stringify(overlayBoundaryData)); // Store original
+                
+                status.innerHTML = '<div class="spinner"></div>Creating comparison visualization...';
+                
+                // Add base city to map
+                console.log('Adding base city to map:', baseBoundaryData);
+                const baseGeoJsonLayer = L.geoJSON(baseBoundaryData, {
+                    style: {
+                        color: baseCity.color,
+                        weight: 2,
+                        opacity: 0.8,
+                        fillColor: baseCity.color,
+                        fillOpacity: 0.2
+                    }
+                });
+                baseLayer.addLayer(baseGeoJsonLayer);
+                console.log('Base city layer added successfully');
+                
+                // Calculate areas for comparison
+                const baseArea = calculateGeoJSONArea(baseBoundaryData);
+                const overlayArea = calculateGeoJSONArea(overlayBoundaryData);
+                console.log('Areas calculated:', { baseArea, overlayArea });
+                
+                // Transform overlay to base city center
+                console.log('Transforming overlay to base city center...');
+                const transformedOverlay = transformGeoJSON(
+                    overlayBoundaryData, 
+                    baseCity.center, 
+                    1, 
+                    overlayRotation, 
+                    overlayTranslation
+                );
+                console.log('Transformation complete:', transformedOverlay);
+                
+                // Add transformed overlay to map
+                const overlayGeoJsonLayer = L.geoJSON(transformedOverlay, {
+                    style: {
+                        color: overlayCity.color,
+                        weight: 3,
+                        opacity: 0.9,
+                        fillColor: overlayCity.color,
+                        fillOpacity: 0.3,
+                        dashArray: '10, 5'
+                    }
+                });
+                overlayLayer.addLayer(overlayGeoJsonLayer);
+                console.log('Overlay layer added successfully');
+                
+                // Fit map to base city
+                map.fitBounds(baseGeoJsonLayer.getBounds(), { padding: [20, 20] });
+                
+                // Add markers
+                L.marker(baseCity.center, {
+                    title: baseCity.name
+                }).addTo(baseLayer).bindPopup(`<b>${baseCity.name}</b><br>Base Location<br><em>High-resolution boundaries</em>`);
+                
+                L.marker(baseCity.center, {
+                    title: overlayCity.name
+                }).addTo(overlayLayer).bindPopup(`<b>${overlayCity.name}</b><br>Overlay Location<br><em>Actual city boundaries</em>`);
+                
+                // Calculate area ratio
+                const areaRatio = (baseArea / overlayArea);
+                
+                status.textContent = 'Comparison complete! Use controls below to transform overlay.';
+                
+                // Show transformation controls
+                transformControls.style.display = 'block';
+                
+                results.innerHTML = `
+                    <h3>High-Resolution Boundary Comparison</h3>
+                    <div class="comparison-stats">
+                        <div class="stat-card">
+                            <div class="stat-value" style="color: ${baseCity.color}">${baseCity.name}</div>
+                            <div class="stat-label">Base City (Solid)</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" style="color: ${overlayCity.color}">${overlayCity.name}</div>
+                            <div class="stat-label">Overlay City (Dashed)</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">${areaRatio.toFixed(1)}x</div>
+                            <div class="stat-label">Approximate Size Ratio</div>
+                        </div>
+                    </div>
+                    <p style="margin-top: 20px; color: #666; font-size: 14px;">
+                        <strong>Accurate Boundaries:</strong> This comparison uses high-resolution administrative boundary data. 
+                        NYC includes all 5 boroughs (Manhattan, Brooklyn, Queens, Bronx, Staten Island). 
+                        LA shows the official city limits. Data sources: NYC Open Data, LA GeoHub.
+                    </p>
+                `;
+                
+            } catch (error) {
+                console.error('Error in comparison:', error);
+                status.textContent = 'Error loading city boundaries. Please try again.';
+                results.innerHTML = `<p style="color: #d32f2f;">Failed to load boundaries: ${error.message}</p>`;
+            }
+        }
+
+        function swapCities() {
+            const baseValue = baseCitySelect.value;
+            const overlayValue = overlayCitySelect.value;
+            
+            baseCitySelect.value = overlayValue;
+            overlayCitySelect.value = baseValue;
+            
+            updateButtons();
+            
+            if (compareBtn.disabled === false) {
+                compareCities();
+            }
+        }
+
+        // Initialize
+        updateButtons();
+    </script>
+</body>
+</html>
