@@ -1,0 +1,43 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Detroit Boundary (Placeholder)",
+        "type": "us_census_placeholder",
+        "source": "Placeholder - needs US_CENSUS data",
+        "position": 52
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              [
+                -83.0958,
+                42.281400000000005
+              ],
+              [
+                -82.9958,
+                42.281400000000005
+              ],
+              [
+                -82.9958,
+                42.3814
+              ],
+              [
+                -83.0958,
+                42.3814
+              ],
+              [
+                -83.0958,
+                42.281400000000005
+              ]
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

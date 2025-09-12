@@ -1,0 +1,42 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Montreal Boundary (Placeholder)",
+        "type": "placeholder_boundary",
+        "source": "Placeholder - needs real data"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              [
+                -73.6673,
+                45.4017
+              ],
+              [
+                -73.46730000000001,
+                45.4017
+              ],
+              [
+                -73.46730000000001,
+                45.6017
+              ],
+              [
+                -73.6673,
+                45.6017
+              ],
+              [
+                -73.6673,
+                45.4017
+              ]
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

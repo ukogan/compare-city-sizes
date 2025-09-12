@@ -1,0 +1,43 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Cape Town Boundary",
+        "type": "osm_boundary",
+        "source": "OpenStreetMap",
+        "position": 78
+      },
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [
+                -8.8872978,
+                42.7825758
+              ],
+              [
+                -8.8872477,
+                42.7824918
+              ],
+              [
+                -8.8871631,
+                42.7825189
+              ],
+              [
+                -8.8872216,
+                42.7826091
+              ],
+              [
+                -8.8872978,
+                42.7825758
+              ]
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

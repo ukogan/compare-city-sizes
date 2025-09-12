@@ -1,0 +1,43 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Tucson Boundary (Placeholder)",
+        "type": "us_census_placeholder",
+        "source": "Placeholder - needs US_CENSUS data",
+        "position": 70
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              [
+                -111.0247,
+                32.1726
+              ],
+              [
+                -110.9247,
+                32.1726
+              ],
+              [
+                -110.9247,
+                32.2726
+              ],
+              [
+                -111.0247,
+                32.2726
+              ],
+              [
+                -111.0247,
+                32.1726
+              ]
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

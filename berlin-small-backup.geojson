@@ -1,0 +1,52 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Berlin Boundary",
+        "type": "openstreetmap_boundary",
+        "source": "OpenStreetMap",
+        "country": "Germany",
+        "city": "Berlin"
+      },
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [
+                -83.6161855,
+                31.0738391
+              ],
+              [
+                -83.6166198,
+                31.0614119
+              ],
+              [
+                -83.62434,
+                31.06157
+              ],
+              [
+                -83.6310718,
+                31.0616552
+              ],
+              [
+                -83.6306598,
+                31.074434
+              ],
+              [
+                -83.6221738,
+                31.0740852
+              ],
+              [
+                -83.6161855,
+                31.0738391
+              ]
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

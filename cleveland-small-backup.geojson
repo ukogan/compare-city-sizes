@@ -1,0 +1,43 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Cleveland Boundary (Placeholder)",
+        "type": "us_census_placeholder",
+        "source": "Placeholder - needs US_CENSUS data",
+        "position": 63
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              [
+                -81.7444,
+                41.4493
+              ],
+              [
+                -81.6444,
+                41.4493
+              ],
+              [
+                -81.6444,
+                41.549299999999995
+              ],
+              [
+                -81.7444,
+                41.549299999999995
+              ],
+              [
+                -81.7444,
+                41.4493
+              ]
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

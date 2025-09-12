@@ -1,0 +1,43 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Charlotte Boundary (Placeholder)",
+        "type": "us_census_placeholder",
+        "source": "Placeholder - needs US_CENSUS data",
+        "position": 72
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              [
+                -80.8931,
+                35.1771
+              ],
+              [
+                -80.79310000000001,
+                35.1771
+              ],
+              [
+                -80.79310000000001,
+                35.2771
+              ],
+              [
+                -80.8931,
+                35.2771
+              ],
+              [
+                -80.8931,
+                35.1771
+              ]
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

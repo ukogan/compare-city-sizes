@@ -1,0 +1,43 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Austin Boundary (Placeholder)",
+        "type": "us_census_placeholder",
+        "source": "Placeholder - needs US_CENSUS data",
+        "position": 46
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              [
+                -97.7931,
+                30.2172
+              ],
+              [
+                -97.6931,
+                30.2172
+              ],
+              [
+                -97.6931,
+                30.3172
+              ],
+              [
+                -97.7931,
+                30.3172
+              ],
+              [
+                -97.7931,
+                30.2172
+              ]
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

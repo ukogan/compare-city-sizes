@@ -1,0 +1,43 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Tampa Boundary (Placeholder)",
+        "type": "us_census_placeholder",
+        "source": "Placeholder - needs US_CENSUS data",
+        "position": 83
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              [
+                -82.5072,
+                27.9006
+              ],
+              [
+                -82.4072,
+                27.9006
+              ],
+              [
+                -82.4072,
+                28.000600000000002
+              ],
+              [
+                -82.5072,
+                28.000600000000002
+              ],
+              [
+                -82.5072,
+                27.9006
+              ]
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

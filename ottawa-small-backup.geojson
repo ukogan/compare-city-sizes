@@ -1,0 +1,43 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Ottawa Boundary (Placeholder)",
+        "type": "stats_canada_placeholder",
+        "source": "Placeholder - needs STATS_CANADA data",
+        "position": 45
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              [
+                -75.74719999999999,
+                45.371500000000005
+              ],
+              [
+                -75.6472,
+                45.371500000000005
+              ],
+              [
+                -75.6472,
+                45.4715
+              ],
+              [
+                -75.74719999999999,
+                45.4715
+              ],
+              [
+                -75.74719999999999,
+                45.371500000000005
+              ]
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Honolulu Boundary (Placeholder)",
+        "type": "us_census_placeholder",
+        "source": "Placeholder - needs US_CENSUS data",
+        "position": 51
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              [
+                -157.90810000000002,
+                21.2599
+              ],
+              [
+                -157.8081,
+                21.2599
+              ],
+              [
+                -157.8081,
+                21.3599
+              ],
+              [
+                -157.90810000000002,
+                21.3599
+              ],
+              [
+                -157.90810000000002,
+                21.2599
+              ]
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

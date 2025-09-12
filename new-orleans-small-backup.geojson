@@ -1,0 +1,43 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "New Orleans Boundary (Placeholder)",
+        "type": "us_census_placeholder",
+        "source": "Placeholder - needs US_CENSUS data",
+        "position": 56
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              [
+                -90.1215,
+                29.9011
+              ],
+              [
+                -90.0215,
+                29.9011
+              ],
+              [
+                -90.0215,
+                30.0011
+              ],
+              [
+                -90.1215,
+                30.0011
+              ],
+              [
+                -90.1215,
+                29.9011
+              ]
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

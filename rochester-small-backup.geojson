@@ -1,0 +1,43 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Rochester Boundary (Placeholder)",
+        "type": "us_census_placeholder",
+        "source": "Placeholder - needs US_CENSUS data",
+        "position": 88
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              [
+                -77.6588,
+                43.1066
+              ],
+              [
+                -77.5588,
+                43.1066
+              ],
+              [
+                -77.5588,
+                43.206599999999995
+              ],
+              [
+                -77.6588,
+                43.206599999999995
+              ],
+              [
+                -77.6588,
+                43.1066
+              ]
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

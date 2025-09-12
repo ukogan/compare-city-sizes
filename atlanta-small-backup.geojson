@@ -1,0 +1,42 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Atlanta Boundary (Placeholder)",
+        "type": "placeholder_boundary",
+        "source": "Placeholder - needs real data"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              [
+                -84.488,
+                33.649
+              ],
+              [
+                -84.28800000000001,
+                33.649
+              ],
+              [
+                -84.28800000000001,
+                33.849000000000004
+              ],
+              [
+                -84.488,
+                33.849000000000004
+              ],
+              [
+                -84.488,
+                33.649
+              ]
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

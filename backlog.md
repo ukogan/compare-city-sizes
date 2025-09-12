@@ -228,6 +228,59 @@ Transform the city comparison tool into a gesture-friendly, mobile-first applica
 4. **Research and curate** initial 100-city dataset
 5. **Design Claude API integration** architecture
 
+## Epic 7: Architecture Optimization & Data Reorganization 🏗️
+**Priority: HIGH (Before scaling to 500+ cities)**
+
+### Phase 7.1: File Organization & Data Structure
+- [ ] **Directory restructuring**
+  - Move 233+ boundary files from root to organized structure (`data/boundaries/continent/country/`)
+  - Consolidate 92 backup files into dedicated backup directory
+  - Separate databases into `data/databases/` folder
+  - Organize Python scripts into `scripts/core/`, `scripts/utilities/` structure
+
+- [ ] **Path management system**
+  - Create centralized path configuration module
+  - Update all scripts to use dynamic path resolution
+  - Regional organization by continent/country for scalability
+  - Consistent file naming conventions
+
+### Phase 7.2: Script Consolidation & Process Management
+- [ ] **Reduce script redundancy**
+  - Consolidate 6 different boundary downloaders into unified system
+  - Merge 5 boundary fixers into single intelligent processor
+  - Combine 4 statistics gatherers into one comprehensive manager
+  - Keep `unified_city_boundary_pipeline.py` as primary processor
+
+- [ ] **Background process coordination**
+  - Implement process manager to track running background tasks
+  - Prevent file conflicts during batch operations
+  - Safe migration strategy that respects active processes
+  - Process status monitoring and coordination tools
+
+### Phase 7.3: Performance & Scalability
+- [ ] **Data optimization**
+  - Remove unused large files (14MB `la-county-boundaries.geojson`)
+  - Implement GeoJSON compression (70-80% size reduction potential)
+  - Lazy loading for boundary data in web interface
+  - Browser-side caching for frequently accessed boundaries
+
+- [ ] **Database management**
+  - Consider SQLite for complex queries at 500+ city scale
+  - Implement versioning for database updates
+  - Atomic updates and validation scripts
+  - RESTful API layer for boundary data retrieval
+
+### Phase 7.4: Migration Strategy (4-Phase Safe Implementation)
+- [ ] **Phase 1**: Prepare infrastructure (create directories, path config) - SAFE
+- [ ] **Phase 2**: Gradual file migration (coordinate with background processes) - CAREFUL
+- [ ] **Phase 3**: Script consolidation (after file reorganization) - MAJOR
+- [ ] **Phase 4**: Performance optimization (lazy loading, compression) - ENHANCEMENT
+
+**Risk Assessment & Mitigation**:
+- **High Risk**: 10+ background processes may fail if files moved improperly → Monitor processes before migration
+- **Medium Risk**: HTML files have hardcoded relative paths → Implement path resolver first
+- **Low Risk**: Database consistency → Atomic updates, validation scripts
+
 ---
 
 *This backlog will be refined and prioritized based on user feedback and technical constraints.*

@@ -727,6 +727,65 @@
         <div class="info-panel">
             <div id="status" class="loading">Select two cities to begin comparison...</div>
             <div id="comparison-results"></div>
+            
+            <!-- Advanced Scaling Section -->
+            <div id="advanced-scaling" class="controls" style="display: none;">
+                <div class="collapsible-header" onclick="toggleScalingOptions()" style="background: #f8f9fa; padding: 15px; cursor: pointer; border-radius: 6px; display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-weight: 600; color: #495057;">⚡ Explore Density Scaling</span>
+                    <span id="scaling-toggle" style="color: #6c757d;">▼</span>
+                </div>
+                
+                <div id="scaling-options" class="scaling-content" style="display: none; padding-top: 20px;">
+                    <!-- Scaling Toggle -->
+                    <div class="control-group" style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 10px; font-weight: 600;">Density Scaling:</label>
+                        <div class="scaling-toggle" style="display: flex; gap: 15px;">
+                            <button id="scaling-off" class="toggle-pill active" onclick="toggleScaling('off')" 
+                                    style="padding: 8px 16px; border: 2px solid #dee2e6; border-radius: 20px; background: #f8f9fa; color: #495057; font-size: 14px; cursor: pointer; transition: all 0.2s;">
+                                Off
+                            </button>
+                            <button id="scaling-on" class="toggle-pill" onclick="toggleScaling('on')" 
+                                    style="padding: 8px 16px; border: 2px solid #dee2e6; border-radius: 20px; background: white; color: #495057; font-size: 14px; cursor: pointer; transition: all 0.2s;">
+                                On
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Scaling Metric Pills -->
+                    <div id="scaling-metrics-section" class="control-group" style="display: none;">
+                        <label style="display: block; margin-bottom: 10px; font-weight: 600;">Scale by:</label>
+                        <div class="scaling-pills" style="display: flex; flex-wrap: wrap; gap: 8px;">
+                            <button class="metric-pill" data-metric="population_density" onclick="selectScalingMetric('population_density')" 
+                                    style="padding: 10px 15px; border: 2px solid #dee2e6; border-radius: 20px; background: white; color: #495057; font-size: 13px; cursor: pointer; transition: all 0.2s;">
+                                Population Density
+                            </button>
+                            <button class="metric-pill" data-metric="economic_density" onclick="selectScalingMetric('economic_density')" 
+                                    style="padding: 10px 15px; border: 2px solid #dee2e6; border-radius: 20px; background: white; color: #495057; font-size: 13px; cursor: pointer; transition: all 0.2s;">
+                                Economic Density
+                            </button>
+                            <button class="metric-pill" data-metric="cultural_density" onclick="selectScalingMetric('cultural_density')" 
+                                    style="padding: 10px 15px; border: 2px solid #dee2e6; border-radius: 20px; background: white; color: #495057; font-size: 13px; cursor: pointer; transition: all 0.2s;">
+                                Cultural Density
+                            </button>
+                            <button class="metric-pill" data-metric="transit_density" onclick="selectScalingMetric('transit_density')" 
+                                    style="padding: 10px 15px; border: 2px solid #dee2e6; border-radius: 20px; background: white; color: #495057; font-size: 13px; cursor: pointer; transition: all 0.2s;">
+                                Transit Density
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="scaling-preview" style="background: #e3f2fd; padding: 15px; border-radius: 6px; margin: 15px 0; display: none;">
+                        <div style="font-style: italic; color: #1565c0;" id="scaling-explanation"></div>
+                        <div style="margin-top: 8px; font-size: 14px; color: #666;" id="scaling-details"></div>
+                    </div>
+                    
+                    <div id="scaling-actions" class="control-group" style="display: none;">
+                        <div style="text-align: center; padding: 15px; background: #f8f9fa; border-radius: 6px; color: #6c757d; font-size: 14px;">
+                            Scaling will apply automatically when you select a metric
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -759,6 +818,15 @@
         L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
             maxZoom: 19,
             attribution: '© OpenStreetMap contributors, © CARTO'
+        }).addTo(map);
+
+        // Add scale control (distance ruler) to show map scale
+        L.control.scale({
+            position: 'bottomleft',
+            maxWidth: 200,
+            metric: true,
+            imperial: true,
+            updateWhenIdle: false
         }).addTo(map);
 
         // Layer groups for cities
@@ -1468,9 +1536,6 @@
                 
                 status.textContent = 'Comparison complete! Use controls below to transform overlay.';
                 
-                // Show transformation controls
-                transformControls.style.display = 'block';
-                
                 results.innerHTML = `
                     <h3>High-Resolution Boundary Comparison</h3>
                     <div class="comparison-stats">
@@ -1493,6 +1558,9 @@
                         LA shows the official city limits. Data sources: NYC Open Data, LA GeoHub.
                     </p>
                 `;
+                
+                // Show advanced scaling section after successful comparison
+                document.getElementById('advanced-scaling').style.display = 'block';
                 
             } catch (error) {
                 console.error('Error in comparison:', error);
@@ -1850,6 +1918,614 @@
         function toggleInputHelp() {
             const helpContent = document.getElementById('helpContent');
             helpContent.classList.toggle('active');
+        }
+
+        // Advanced Scaling Functionality
+        let statisticsDatabase = null;
+        let isScalingMode = false;
+
+        async function loadStatisticsDatabase() {
+            if (!statisticsDatabase) {
+                try {
+                    const response = await fetch('./city_statistics_comprehensive.json');
+                    statisticsDatabase = await response.json();
+                    console.log('Loaded statistics for', statisticsDatabase.cities.length, 'cities');
+                } catch (error) {
+                    console.error('Failed to load statistics database:', error);
+                    return null;
+                }
+            }
+            return statisticsDatabase;
+        }
+
+        function toggleScalingOptions() {
+            const options = document.getElementById('scaling-options');
+            const toggle = document.getElementById('scaling-toggle');
+            
+            if (options.style.display === 'none') {
+                options.style.display = 'block';
+                toggle.textContent = '▲';
+                loadStatisticsDatabase(); // Load stats when section is opened
+            } else {
+                options.style.display = 'none';
+                toggle.textContent = '▼';
+            }
+        }
+
+        // Global scaling state
+        let scalingEnabled = false;
+        let selectedScalingMetric = null;
+
+        function toggleScaling(state) {
+            scalingEnabled = (state === 'on');
+            
+            // Update toggle pill styles
+            const offPill = document.getElementById('scaling-off');
+            const onPill = document.getElementById('scaling-on');
+            const metricsSection = document.getElementById('scaling-metrics-section');
+            const scalingActions = document.getElementById('scaling-actions');
+            
+            if (scalingEnabled) {
+                // Scaling ON
+                offPill.classList.remove('active');
+                offPill.style.background = 'white';
+                offPill.style.borderColor = '#dee2e6';
+                
+                onPill.classList.add('active');
+                onPill.style.background = '#28a745';
+                onPill.style.borderColor = '#28a745';
+                onPill.style.color = 'white';
+                
+                metricsSection.style.display = 'block';
+                scalingActions.style.display = 'block';
+            } else {
+                // Scaling OFF
+                onPill.classList.remove('active');
+                onPill.style.background = 'white';
+                onPill.style.borderColor = '#dee2e6';
+                onPill.style.color = '#495057';
+                
+                offPill.classList.add('active');
+                offPill.style.background = '#f8f9fa';
+                offPill.style.borderColor = '#dee2e6';
+                
+                metricsSection.style.display = 'none';
+                scalingActions.style.display = 'none';
+                
+                // Reset scaling if currently applied
+                if (isScalingMode) {
+                    resetScaling();
+                }
+                
+                // Clear selected metric and preview
+                selectedScalingMetric = null;
+                clearMetricPills();
+                document.getElementById('scaling-preview').style.display = 'none';
+            }
+        }
+
+        function selectScalingMetric(metric) {
+            selectedScalingMetric = metric;
+            
+            // Update pill styles
+            clearMetricPills();
+            const selectedPill = document.querySelector(`[data-metric="${metric}"]`);
+            selectedPill.style.background = '#007bff';
+            selectedPill.style.borderColor = '#007bff';
+            selectedPill.style.color = 'white';
+            
+            // Auto-apply scaling
+            updateScalingPreview();
+            setTimeout(() => {
+                if (document.getElementById('scaling-preview').style.display !== 'none') {
+                    applyScaling();
+                }
+            }, 100);
+        }
+
+        function clearMetricPills() {
+            const pills = document.querySelectorAll('.metric-pill');
+            pills.forEach(pill => {
+                pill.style.background = 'white';
+                pill.style.borderColor = '#dee2e6';
+                pill.style.color = '#495057';
+            });
+        }
+
+        async function updateScalingPreview() {
+            const metric = selectedScalingMetric;
+            const preview = document.getElementById('scaling-preview');
+            const explanation = document.getElementById('scaling-explanation');
+            const details = document.getElementById('scaling-details');
+
+            if (!metric || !currentBase || !currentOverlay) {
+                preview.style.display = 'none';
+                return;
+            }
+
+            const stats = await loadStatisticsDatabase();
+            if (!stats) {
+                preview.style.display = 'none';
+                return;
+            }
+
+            const baseCity = getCityData(currentBase);
+            const overlayCity = getCityData(currentOverlay);
+            
+            // Find statistics for both cities
+            const baseStats = stats.cities.find(city => 
+                city.basic_info.name.toLowerCase().includes(baseCity.name.toLowerCase().split(',')[0])
+            );
+            const overlayStats = stats.cities.find(city => 
+                city.basic_info.name.toLowerCase().includes(overlayCity.name.toLowerCase().split(',')[0])
+            );
+
+            if (!baseStats || !overlayStats) {
+                explanation.innerHTML = `Statistics not available for these cities yet.`;
+                details.innerHTML = `We're expanding our statistics database. Some cities may not have detailed metrics.`;
+                preview.style.display = 'block';
+                return;
+            }
+
+            // Calculate scaling based on metric
+            const scaling = calculateScaling(baseStats, overlayStats, metric);
+            
+            explanation.innerHTML = `To match ${baseCity.name}'s ${getMetricName(metric)}, ${overlayCity.name} would appear <strong>${scaling.factor}×</strong> ${scaling.comparison} on the map.`;
+            details.innerHTML = `${baseCity.name}: ${scaling.baseValue} • ${overlayCity.name}: ${scaling.overlayValue}`;
+            
+            preview.style.display = 'block';
+        }
+
+        function calculateScaling(baseStats, overlayStats, metric) {
+            let baseValue, overlayValue, baseArea, scaling;
+            
+            switch(metric) {
+                case 'population_density':
+                    baseValue = baseStats.demographics.population_density;
+                    overlayValue = overlayStats.demographics.population_density;
+                    // To match base city's density, overlay city area needs this scaling factor
+                    scaling = overlayValue / baseValue;
+                    return {
+                        factor: scaling.toFixed(1),
+                        comparison: scaling > 1 ? 'larger' : 'smaller',
+                        baseValue: `${baseValue.toLocaleString()} people/km²`,
+                        overlayValue: `${overlayValue.toLocaleString()} people/km²`
+                    };
+                    
+                case 'economic_density':
+                    baseArea = baseStats.geography.area_city_km2;
+                    const overlayArea = overlayStats.geography.area_city_km2;
+                    baseValue = baseStats.economic.gdp_billions_usd * 1000 / baseArea; // Million per km²
+                    overlayValue = overlayStats.economic.gdp_billions_usd * 1000 / overlayArea;
+                    scaling = overlayValue / baseValue;
+                    return {
+                        factor: scaling.toFixed(1),
+                        comparison: scaling > 1 ? 'larger' : 'smaller',
+                        baseValue: `$${baseValue.toFixed(1)}M/km²`,
+                        overlayValue: `$${overlayValue.toFixed(1)}M/km²`
+                    };
+                    
+                case 'cultural_density':
+                    baseArea = baseStats.geography.area_city_km2;
+                    const overlayArea2 = overlayStats.geography.area_city_km2;
+                    baseValue = baseStats.infrastructure.museums / baseArea;
+                    overlayValue = overlayStats.infrastructure.museums / overlayArea2;
+                    scaling = overlayValue / baseValue;
+                    return {
+                        factor: scaling.toFixed(1),
+                        comparison: scaling > 1 ? 'larger' : 'smaller',
+                        baseValue: `${baseValue.toFixed(2)} museums/km²`,
+                        overlayValue: `${overlayValue.toFixed(2)} museums/km²`
+                    };
+                    
+                case 'transit_density':
+                    baseArea = baseStats.geography.area_city_km2;
+                    const overlayArea3 = overlayStats.geography.area_city_km2;
+                    baseValue = baseStats.infrastructure.metro_stations / baseArea;
+                    overlayValue = overlayStats.infrastructure.metro_stations / overlayArea3;
+                    scaling = overlayValue / baseValue;
+                    return {
+                        factor: scaling.toFixed(1),
+                        comparison: scaling > 1 ? 'larger' : 'smaller',
+                        baseValue: `${baseValue.toFixed(2)} stations/km²`,
+                        overlayValue: `${overlayValue.toFixed(2)} stations/km²`
+                    };
+            }
+        }
+
+        function getMetricName(metric) {
+            const names = {
+                'population_density': 'population density',
+                'economic_density': 'economic density',
+                'cultural_density': 'cultural density',
+                'transit_density': 'transit density'
+            };
+            return names[metric] || metric;
+        }
+
+        async function applyScaling() {
+            const metric = selectedScalingMetric;
+            if (!metric || !currentBase || !currentOverlay) return;
+
+            const stats = await loadStatisticsDatabase();
+            if (!stats) return;
+
+            // Get statistics for both cities
+            const baseCity = getCityData(currentBase);
+            const overlayCity = getCityData(currentOverlay);
+            
+            const baseStats = stats.cities.find(city => 
+                city.basic_info.name.toLowerCase().includes(baseCity.name.toLowerCase().split(',')[0])
+            );
+            const overlayStats = stats.cities.find(city => 
+                city.basic_info.name.toLowerCase().includes(overlayCity.name.toLowerCase().split(',')[0])
+            );
+
+            if (!baseStats || !overlayStats) {
+                alert('Statistics not available for these cities yet.');
+                return;
+            }
+
+            // Calculate scaling factor
+            const scaling = calculateScaling(baseStats, overlayStats, metric);
+            const areaScalingFactor = parseFloat(scaling.factor);
+            
+            // Convert area scaling to linear scaling (square root for 2D scaling)
+            const linearScalingFactor = Math.sqrt(areaScalingFactor);
+            
+            console.log(`Area scaling: ${areaScalingFactor.toFixed(3)}x → Linear scaling: ${linearScalingFactor.toFixed(3)}x`);
+            
+            // Apply geometric scaling to overlay boundary with safety checks
+            console.log(`Applying linear scaling factor: ${linearScalingFactor} to ${overlayCity.name}`);
+            
+            // Limit extreme scaling to prevent coordinate bounds issues
+            let actualScalingFactor = linearScalingFactor;
+            if (linearScalingFactor > 10) {
+                actualScalingFactor = 10; // Cap at 10x linear scaling
+                console.warn(`Scaling factor capped at 10x to prevent rendering issues (was ${linearScalingFactor.toFixed(2)}x)`);
+            } else if (linearScalingFactor < 0.1) {
+                actualScalingFactor = 0.1; // Floor at 0.1x linear scaling  
+                console.warn(`Scaling factor floored at 0.1x to prevent rendering issues (was ${linearScalingFactor.toFixed(2)}x)`);
+            }
+            
+            const scaledBoundary = scaleGeoJSONBoundary(overlayBoundaryData, actualScalingFactor);
+            
+            // Align the scaled overlay to the base city's centroid
+            const baseCentroid = calculateGeoJSONCentroid(baseBoundaryData);
+            const scaledOverlayCentroid = calculateGeoJSONCentroid(scaledBoundary);
+            const alignedBoundary = alignGeoJSONToTarget(scaledBoundary, scaledOverlayCentroid, baseCentroid);
+            
+            console.log(`Base centroid: [${baseCentroid.lat.toFixed(4)}, ${baseCentroid.lng.toFixed(4)}]`);
+            console.log(`Scaled overlay centroid: [${scaledOverlayCentroid.lat.toFixed(4)}, ${scaledOverlayCentroid.lng.toFixed(4)}]`);
+            console.log(`Aligning overlay to base city center for proper comparison`);
+            
+            // Clear and redraw overlay with aligned scaled boundary
+            overlayLayer.clearLayers();
+            const scaledGeoJsonLayer = L.geoJSON(alignedBoundary, {
+                style: {
+                    color: overlayCity.color,
+                    weight: 3,  // Thicker line to ensure visibility
+                    opacity: 1.0,
+                    fillColor: overlayCity.color,
+                    fillOpacity: 0.4,  // More opaque
+                    dashArray: '8,8'  // Dashed to show it's scaled
+                }
+            });
+            
+            // Validate the layer was created successfully
+            console.log('Scaled GeoJSON layer created with features:', scaledGeoJsonLayer.getLayers().length);
+            overlayLayer.addLayer(scaledGeoJsonLayer);
+            console.log('Overlay layer now has features:', overlayLayer.getLayers().length);
+            
+            // Debug: Try to fit just the scaled layer to verify it exists
+            try {
+                const scaledBounds = scaledGeoJsonLayer.getBounds();
+                console.log(`Scaled layer bounds:`, scaledBounds);
+                console.log(`Scaled layer valid:`, scaledBounds.isValid());
+                
+                // Alternative: If main bounds calculation fails, at least show the scaled boundary
+                setTimeout(() => {
+                    if (overlayLayer.getLayers().length === 0) {
+                        console.error('Overlay layer is empty after scaling!');
+                    } else {
+                        console.log('Overlay layer contains scaled boundary');
+                        // Fallback: ensure visibility by fitting to scaled boundary
+                        try {
+                            map.fitBounds(scaledBounds, {padding: [50, 50]});
+                            console.log('Applied fallback map bounds to scaled boundary');
+                        } catch (fallbackError) {
+                            console.error('Fallback bounds setting failed:', fallbackError);
+                        }
+                    }
+                }, 100);
+            } catch (error) {
+                console.error('Error with scaled layer bounds:', error);
+            }
+            
+            // Debug: Log layer status before bounds calculation
+            console.log(`Base layer has ${baseLayer.getLayers().length} features`);
+            console.log(`Overlay layer has ${overlayLayer.getLayers().length} features`);
+            
+            // Calculate bounds more carefully
+            try {
+                const allLayers = L.featureGroup([baseLayer, overlayLayer]);
+                const bounds = allLayers.getBounds();
+                console.log(`Calculated bounds:`, bounds);
+                
+                // Check if bounds are reasonable (not spanning entire world)
+                const latSpan = bounds.getNorth() - bounds.getSouth();
+                const lngSpan = bounds.getEast() - bounds.getWest();
+                console.log(`Bounds span: ${latSpan.toFixed(2)}° lat, ${lngSpan.toFixed(2)}° lng`);
+                
+                if (latSpan < 180 && lngSpan < 360) {
+                    map.fitBounds(bounds, {padding: [20, 20]});
+                } else {
+                    console.warn('Bounds too large, keeping current map view');
+                }
+            } catch (error) {
+                console.error('Error calculating bounds:', error);
+            }
+            
+            // Update status and UI with appropriate warnings
+            let statusColor = '#28a745';
+            let statusIcon = '✅';
+            let warningMessage = '';
+            
+            if (actualScalingFactor !== linearScalingFactor) {
+                statusColor = '#ffc107';
+                statusIcon = '⚠️';
+                if (actualScalingFactor === 10) {
+                    warningMessage = `<div style="font-size: 11px; margin-top: 3px; color: #e67e22;">Scaling limited to 10× maximum to ensure visibility</div>`;
+                } else if (actualScalingFactor === 0.1) {
+                    warningMessage = `<div style="font-size: 11px; margin-top: 3px; color: #e67e22;">Scaling limited to 0.1× minimum to ensure visibility</div>`;
+                }
+            }
+            
+            status.innerHTML = `<div style="color: ${statusColor}; font-weight: 600;">
+                ${statusIcon} Applied ${getMetricName(metric)} scaling: ${overlayCity.name} area scaled ${areaScalingFactor.toFixed(2)}× to match density
+                <div style="font-size: 12px; margin-top: 5px; color: #666;">
+                    Linear dimensions scaled ${actualScalingFactor.toFixed(2)}× • Area scaled ${areaScalingFactor.toFixed(2)}× • Dashed boundary shows result
+                </div>
+                ${warningMessage}
+            </div>`;
+            
+            isScalingMode = true;
+            document.getElementById('reset-scaling').style.background = '#dc3545';
+            document.getElementById('apply-scaling').disabled = true;
+            document.getElementById('apply-scaling').textContent = 'Scaling Applied ✓';
+        }
+
+        function scaleGeoJSONBoundary(geojson, scalingFactor) {
+            /**
+             * Scale GeoJSON boundary by a given factor around its centroid
+             * scalingFactor < 1: makes boundary smaller
+             * scalingFactor > 1: makes boundary larger
+             */
+            const scaled = JSON.parse(JSON.stringify(geojson)); // Deep clone
+            
+            // Calculate centroid of the boundary
+            const centroid = calculateGeoJSONCentroid(geojson);
+            console.log(`Original centroid: [${centroid.lat.toFixed(4)}, ${centroid.lng.toFixed(4)}]`);
+            console.log(`Scaling factor: ${scalingFactor}`);
+            
+            // First pass: count total coordinates and potential out-of-bounds
+            let totalCoordCount = 0;
+            let wouldBeOutOfBoundsCount = 0;
+            
+            function countCoordinates(coords) {
+                if (typeof coords[0] === 'number') {
+                    totalCoordCount++;
+                    const [lng, lat] = coords;
+                    const deltaLng = (lng - centroid.lng) * scalingFactor;
+                    const deltaLat = (lat - centroid.lat) * scalingFactor;
+                    const newLng = centroid.lng + deltaLng;
+                    const newLat = centroid.lat + deltaLat;
+                    
+                    if (Math.abs(newLng) > 179.9 || Math.abs(newLat) > 89.9) {
+                        wouldBeOutOfBoundsCount++;
+                    }
+                } else {
+                    coords.forEach(countCoordinates);
+                }
+            }
+            
+            // Count coordinates in all geometries
+            if (geojson.type === 'FeatureCollection') {
+                geojson.features.forEach(feature => {
+                    if (feature.geometry && feature.geometry.coordinates) {
+                        countCoordinates(feature.geometry.coordinates);
+                    }
+                });
+            } else if (geojson.type === 'Feature') {
+                if (geojson.geometry && geojson.geometry.coordinates) {
+                    countCoordinates(geojson.geometry.coordinates);
+                }
+            } else if (geojson.coordinates) {
+                countCoordinates(geojson.coordinates);
+            }
+            
+            // Check if too many coordinates would be out of bounds
+            const outOfBoundsPercentage = (wouldBeOutOfBoundsCount / totalCoordCount) * 100;
+            console.log(`Coordinate analysis: ${wouldBeOutOfBoundsCount}/${totalCoordCount} (${outOfBoundsPercentage.toFixed(1)}%) would be out of bounds`);
+            
+            if (outOfBoundsPercentage > 25) {
+                console.error(`Scaling would put ${outOfBoundsPercentage.toFixed(1)}% of coordinates out of bounds - boundary may not render properly`);
+            }
+            
+            // Apply scaling transformation to all coordinates with bounds checking
+            let outOfBoundsCount = 0;
+            function scaleCoordinates(coords) {
+                if (typeof coords[0] === 'number') {
+                    // This is a [lng, lat] coordinate pair
+                    const [lng, lat] = coords;
+                    const deltaLng = (lng - centroid.lng) * scalingFactor;
+                    const deltaLat = (lat - centroid.lat) * scalingFactor;
+                    let newLng = centroid.lng + deltaLng;
+                    let newLat = centroid.lat + deltaLat;
+                    
+                    // Clamp coordinates to valid geographic bounds to prevent Leaflet rendering issues
+                    const originalNewLng = newLng;
+                    const originalNewLat = newLat;
+                    
+                    newLng = Math.max(-179.9, Math.min(179.9, newLng));
+                    newLat = Math.max(-89.9, Math.min(89.9, newLat));
+                    
+                    // Count out-of-bounds coordinates
+                    if (newLng !== originalNewLng || newLat !== originalNewLat) {
+                        outOfBoundsCount++;
+                        if (outOfBoundsCount <= 3) { // Only log first few to avoid spam
+                            console.warn(`Clamped coordinates: [${originalNewLng.toFixed(4)}, ${originalNewLat.toFixed(4)}] → [${newLng.toFixed(4)}, ${newLat.toFixed(4)}]`);
+                        }
+                    }
+                    
+                    return [newLng, newLat];
+                } else {
+                    // This is an array of coordinates, recurse
+                    return coords.map(scaleCoordinates);
+                }
+            }
+            
+            // Apply scaling to all geometries
+            if (scaled.type === 'FeatureCollection') {
+                scaled.features.forEach(feature => {
+                    if (feature.geometry && feature.geometry.coordinates) {
+                        feature.geometry.coordinates = scaleCoordinates(feature.geometry.coordinates);
+                    }
+                });
+            } else if (scaled.type === 'Feature') {
+                if (scaled.geometry && scaled.geometry.coordinates) {
+                    scaled.geometry.coordinates = scaleCoordinates(scaled.geometry.coordinates);
+                }
+            } else if (scaled.coordinates) {
+                scaled.coordinates = scaleCoordinates(scaled.coordinates);
+            }
+            
+            // Validate the scaled boundary before returning
+            const scaledCentroid = calculateGeoJSONCentroid(scaled);
+            console.log(`Scaled centroid: [${scaledCentroid.lat.toFixed(4)}, ${scaledCentroid.lng.toFixed(4)}]`);
+            
+            if (outOfBoundsCount > 0) {
+                console.warn(`${outOfBoundsCount} coordinates were clamped to valid geographic bounds`);
+            }
+            
+            return scaled;
+        }
+        
+        function alignGeoJSONToTarget(geojson, sourceCentroid, targetCentroid) {
+            /**
+             * Translate GeoJSON coordinates to align source centroid with target centroid
+             */
+            const aligned = JSON.parse(JSON.stringify(geojson)); // Deep clone
+            
+            // Calculate translation offsets
+            const deltaLng = targetCentroid.lng - sourceCentroid.lng;
+            const deltaLat = targetCentroid.lat - sourceCentroid.lat;
+            
+            console.log(`Translation: [${deltaLng.toFixed(4)}°, ${deltaLat.toFixed(4)}°]`);
+            
+            // Apply translation to all coordinates
+            function translateCoordinates(coords) {
+                if (typeof coords[0] === 'number') {
+                    // This is a [lng, lat] coordinate pair
+                    const [lng, lat] = coords;
+                    return [lng + deltaLng, lat + deltaLat];
+                } else {
+                    // This is an array of coordinates, recurse
+                    return coords.map(translateCoordinates);
+                }
+            }
+            
+            // Apply translation to all geometries
+            if (aligned.type === 'FeatureCollection') {
+                aligned.features.forEach(feature => {
+                    if (feature.geometry && feature.geometry.coordinates) {
+                        feature.geometry.coordinates = translateCoordinates(feature.geometry.coordinates);
+                    }
+                });
+            } else if (aligned.type === 'Feature') {
+                if (aligned.geometry && aligned.geometry.coordinates) {
+                    aligned.geometry.coordinates = translateCoordinates(aligned.geometry.coordinates);
+                }
+            } else if (aligned.coordinates) {
+                aligned.coordinates = translateCoordinates(aligned.coordinates);
+            }
+            
+            // Validate the aligned boundary
+            const alignedCentroid = calculateGeoJSONCentroid(aligned);
+            console.log(`Aligned centroid: [${alignedCentroid.lat.toFixed(4)}, ${alignedCentroid.lng.toFixed(4)}]`);
+            
+            return aligned;
+        }
+
+        function calculateGeoJSONCentroid(geojson) {
+            /**
+             * Calculate the centroid of a GeoJSON boundary
+             */
+            let totalLng = 0, totalLat = 0, pointCount = 0;
+            
+            function processCoordinates(coords) {
+                if (typeof coords[0] === 'number') {
+                    // This is a [lng, lat] coordinate pair
+                    totalLng += coords[0];
+                    totalLat += coords[1];
+                    pointCount++;
+                } else {
+                    // This is an array of coordinates, recurse
+                    coords.forEach(processCoordinates);
+                }
+            }
+            
+            // Process all geometries
+            if (geojson.type === 'FeatureCollection') {
+                geojson.features.forEach(feature => {
+                    if (feature.geometry && feature.geometry.coordinates) {
+                        processCoordinates(feature.geometry.coordinates);
+                    }
+                });
+            } else if (geojson.type === 'Feature') {
+                if (geojson.geometry && geojson.geometry.coordinates) {
+                    processCoordinates(geojson.geometry.coordinates);
+                }
+            } else if (geojson.coordinates) {
+                processCoordinates(geojson.coordinates);
+            }
+            
+            return {
+                lng: totalLng / pointCount,
+                lat: totalLat / pointCount
+            };
+        }
+
+        function resetScaling() {
+            if (isScalingMode) {
+                // Reset to original comparison
+                isScalingMode = false;
+                
+                // Restore original overlay boundary
+                const overlayCity = getCityData(currentOverlay);
+                overlayLayer.clearLayers();
+                const originalGeoJsonLayer = L.geoJSON(originalOverlayData, {
+                    style: {
+                        color: overlayCity.color,
+                        weight: 2,
+                        opacity: 0.8,
+                        fillColor: overlayCity.color,
+                        fillOpacity: 0.2,
+                        dashArray: '8,8'
+                    }
+                });
+                overlayLayer.addLayer(originalGeoJsonLayer);
+                
+                // Update status
+                status.textContent = 'Restored original boundary comparison. Use controls to transform overlay.';
+                
+                // Clear selected metric pill if scaling is being reset
+                if (!scalingEnabled) {
+                    clearMetricPills();
+                    selectedScalingMetric = null;
+                    document.getElementById('scaling-preview').style.display = 'none';
+                }
+            }
         }
 
         // Initialize

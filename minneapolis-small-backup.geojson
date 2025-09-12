@@ -1,0 +1,43 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Minneapolis Boundary (Placeholder)",
+        "type": "us_census_placeholder",
+        "source": "Placeholder - needs US_CENSUS data",
+        "position": 44
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              [
+                -93.315,
+                44.927800000000005
+              ],
+              [
+                -93.215,
+                44.927800000000005
+              ],
+              [
+                -93.215,
+                45.0278
+              ],
+              [
+                -93.315,
+                45.0278
+              ],
+              [
+                -93.315,
+                44.927800000000005
+              ]
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

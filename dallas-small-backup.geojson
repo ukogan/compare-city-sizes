@@ -1,0 +1,43 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Dallas Boundary (Placeholder)",
+        "type": "us_census_placeholder",
+        "source": "Placeholder - needs US_CENSUS data",
+        "position": 48
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              [
+                -96.847,
+                32.7267
+              ],
+              [
+                -96.747,
+                32.7267
+              ],
+              [
+                -96.747,
+                32.826699999999995
+              ],
+              [
+                -96.847,
+                32.826699999999995
+              ],
+              [
+                -96.847,
+                32.7267
+              ]
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

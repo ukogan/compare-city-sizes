@@ -1,0 +1,43 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Edmonton Boundary (Placeholder)",
+        "type": "stats_canada_placeholder",
+        "source": "Placeholder - needs STATS_CANADA data",
+        "position": 58
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              [
+                -113.5409,
+                53.494400000000006
+              ],
+              [
+                -113.4409,
+                53.494400000000006
+              ],
+              [
+                -113.4409,
+                53.5944
+              ],
+              [
+                -113.5409,
+                53.5944
+              ],
+              [
+                -113.5409,
+                53.494400000000006
+              ]
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

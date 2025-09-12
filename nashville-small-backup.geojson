@@ -1,0 +1,43 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Nashville Boundary (Placeholder)",
+        "type": "us_census_placeholder",
+        "source": "Placeholder - needs US_CENSUS data",
+        "position": 57
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              [
+                -86.8316,
+                36.112700000000004
+              ],
+              [
+                -86.7316,
+                36.112700000000004
+              ],
+              [
+                -86.7316,
+                36.2127
+              ],
+              [
+                -86.8316,
+                36.2127
+              ],
+              [
+                -86.8316,
+                36.112700000000004
+              ]
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

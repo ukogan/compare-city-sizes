@@ -1,0 +1,43 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Baltimore Boundary (Placeholder)",
+        "type": "us_census_placeholder",
+        "source": "Placeholder - needs US_CENSUS data",
+        "position": 60
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              [
+                -76.6622,
+                39.2404
+              ],
+              [
+                -76.5622,
+                39.2404
+              ],
+              [
+                -76.5622,
+                39.340399999999995
+              ],
+              [
+                -76.6622,
+                39.340399999999995
+              ],
+              [
+                -76.6622,
+                39.2404
+              ]
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

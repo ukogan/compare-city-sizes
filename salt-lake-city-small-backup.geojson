@@ -1,0 +1,43 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Salt Lake City Boundary (Placeholder)",
+        "type": "us_census_placeholder",
+        "source": "Placeholder - needs US_CENSUS data",
+        "position": 59
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              [
+                -111.941,
+                40.710800000000006
+              ],
+              [
+                -111.84100000000001,
+                40.710800000000006
+              ],
+              [
+                -111.84100000000001,
+                40.8108
+              ],
+              [
+                -111.941,
+                40.8108
+              ],
+              [
+                -111.941,
+                40.710800000000006
+              ]
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

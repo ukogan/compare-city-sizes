@@ -1,0 +1,43 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Richmond Boundary (Placeholder)",
+        "type": "us_census_placeholder",
+        "source": "Placeholder - needs US_CENSUS data",
+        "position": 85
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              [
+                -77.486,
+                37.490700000000004
+              ],
+              [
+                -77.38600000000001,
+                37.490700000000004
+              ],
+              [
+                -77.38600000000001,
+                37.5907
+              ],
+              [
+                -77.486,
+                37.5907
+              ],
+              [
+                -77.486,
+                37.490700000000004
+              ]
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

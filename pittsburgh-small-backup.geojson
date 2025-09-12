@@ -1,0 +1,43 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Pittsburgh Boundary (Placeholder)",
+        "type": "us_census_placeholder",
+        "source": "Placeholder - needs US_CENSUS data",
+        "position": 71
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              [
+                -80.0459,
+                40.390600000000006
+              ],
+              [
+                -79.94590000000001,
+                40.390600000000006
+              ],
+              [
+                -79.94590000000001,
+                40.4906
+              ],
+              [
+                -80.0459,
+                40.4906
+              ],
+              [
+                -80.0459,
+                40.390600000000006
+              ]
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

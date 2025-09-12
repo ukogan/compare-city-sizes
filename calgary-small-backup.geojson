@@ -1,0 +1,43 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Calgary Boundary (Placeholder)",
+        "type": "stats_canada_placeholder",
+        "source": "Placeholder - needs STATS_CANADA data",
+        "position": 47
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              [
+                -114.1219,
+                50.9947
+              ],
+              [
+                -114.0219,
+                50.9947
+              ],
+              [
+                -114.0219,
+                51.094699999999996
+              ],
+              [
+                -114.1219,
+                51.094699999999996
+              ],
+              [
+                -114.1219,
+                50.9947
+              ]
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

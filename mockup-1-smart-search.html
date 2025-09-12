@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mockup 1: Enhanced Map + Smart Search</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        :root {
+            --primary-blue: #007AFF;
+            --primary-hover: #0056CC;
+            --bg-gray: #f5f5f5;
+            --text-dark: #333;
+            --border-light: #ddd;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
+            --shadow-md: 0 2px 8px rgba(0,0,0,0.15);
+            --radius: 8px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg-gray);
+            padding: 20px;
+            color: var(--text-dark);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 1.8em;
+            color: var(--text-dark);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 0.95em;
+        }
+
+        /* Enhanced Search Bar */
+        .search-section {
+            background: white;
+            padding: 25px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 20px;
+        }
+
+        .search-container {
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto 20px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 14px 45px 14px 20px;
+            font-size: 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 50px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            pointer-events: none;
+        }
+
+        /* Autocomplete Dropdown */
+        .autocomplete-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            margin-top: 8px;
+            max-height: 320px;
+            overflow-y: auto;
+            box-shadow: var(--shadow-md);
+            display: none;
+            z-index: 1000;
+        }
+
+        .autocomplete-dropdown.active {
+            display: block;
+        }
+
+        .autocomplete-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .autocomplete-item:last-child {
+            border-bottom: none;
+        }
+
+        .autocomplete-item:hover {
+            background: #f8f9fa;
+        }
+
+        .autocomplete-item.selected {
+            background: #e3f2fd;
+        }
+
+        .city-info {
+            flex: 1;
+        }
+
+        .city-name {
+            font-weight: 600;
+            font-size: 0.95em;
+            color: var(--text-dark);
+        }
+
+        .city-details {
+            font-size: 0.85em;
+            color: #666;
+            margin-top: 2px;
+        }
+
+        .city-pop {
+            font-size: 0.85em;
+            color: #999;
+            white-space: nowrap;
+        }
+
+        /* Quick Access Sections */
+        .quick-access {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .quick-section {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .quick-title {
+            font-size: 0.85em;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .quick-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .quick-pill {
+            padding: 6px 12px;
+            background: #f0f4f8;
+            border: 1px solid #d1d9e0;
+            border-radius: 16px;
+            font-size: 0.85em;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .quick-pill:hover {
+            background: var(--primary-blue);
+            border-color: var(--primary-blue);
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .quick-pill.recent {
+            background: #fff3e0;
+            border-color: #ffb74d;
+        }
+
+        .quick-pill.recent:hover {
+            background: #ff9800;
+            border-color: #ff9800;
+        }
+
+        /* Map Section */
+        .map-section {
+            background: white;
+            padding: 20px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .map-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .continent-nav {
+            display: flex;
+            gap: 8px;
+        }
+
+        .continent-pill {
+            padding: 8px 16px;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 500;
+            color: #495057;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .continent-pill:hover {
+            background: #e3f2fd;
+            border-color: #90caf9;
+            color: #1976d2;
+        }
+
+        .continent-pill.active {
+            background: var(--primary-blue);
+            border-color: var(--primary-blue);
+            color: white;
+        }
+
+        .filter-status {
+            font-size: 0.85em;
+            color: #666;
+        }
+
+        .filter-count {
+            font-weight: 600;
+            color: var(--primary-blue);
+        }
+
+        #map {
+            height: 500px;
+            border-radius: var(--radius);
+            position: relative;
+        }
+
+        /* Selection Status */
+        .selection-status {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: var(--radius);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .selected-cities {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .selected-city-pill {
+            padding: 8px 16px;
+            background: white;
+            border: 2px solid var(--primary-blue);
+            border-radius: 20px;
+            font-size: 0.9em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .city-label {
+            font-size: 0.75em;
+            text-transform: uppercase;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .swap-icon {
+            width: 30px;
+            height: 30px;
+            background: var(--primary-blue);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .swap-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .compare-btn {
+            padding: 10px 24px;
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .compare-btn:hover {
+            background: var(--primary-hover);
+        }
+
+        .compare-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid var(--primary-blue);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .info-box h3 {
+            color: var(--primary-blue);
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        .info-box p {
+            color: #555;
+            line-height: 1.6;
+            font-size: 0.95em;
+        }
+
+        /* Improvements Highlight */
+        .improvements {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .improvement-card {
+            background: white;
+            padding: 15px;
+            border-radius: var(--radius);
+            border: 1px solid #e0e0e0;
+        }
+
+        .improvement-card h4 {
+            color: var(--primary-blue);
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+
+        .improvement-card p {
+            font-size: 0.85em;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        @media (max-width: 768px) {
+            .quick-access {
+                flex-direction: column;
+            }
+            
+            .continent-nav {
+                flex-wrap: wrap;
+            }
+            
+            .selected-cities {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>City Comparison Tool - Smart Search Enhancement</h1>
+        <p class="subtitle">Mockup 1: Incremental improvement with intelligent search capabilities</p>
+
+        <div class="info-box">
+            <h3>🎯 Key Improvements in This Mockup</h3>
+            <p>This design enhances the existing map interface with a prominent search feature, making it easy to find specific cities among 238 options. Type-ahead suggestions, recent selections, and popular city pills provide multiple pathways to quick selection.</p>
+        </div>
+
+        <!-- Enhanced Search Section -->
+        <div class="search-section">
+            <div class="search-container">
+                <input 
+                    type="text" 
+                    class="search-input" 
+                    placeholder="Search for a city... (try typing 'New' or 'London')"
+                    id="citySearch"
+                >
+                <span class="search-icon">🔍</span>
+                
+                <div class="autocomplete-dropdown" id="autocompleteDropdown">
+                    <!-- Dynamically populated -->
+                </div>
+            </div>
+
+            <div class="quick-access">
+                <div class="quick-section">
+                    <div class="quick-title">Recent Selections</div>
+                    <div class="quick-pills">
+                        <div class="quick-pill recent">New York</div>
+                        <div class="quick-pill recent">Tokyo</div>
+                        <div class="quick-pill recent">London</div>
+                    </div>
+                </div>
+
+                <div class="quick-section">
+                    <div class="quick-title">Popular Comparisons</div>
+                    <div class="quick-pills">
+                        <div class="quick-pill">Paris</div>
+                        <div class="quick-pill">Los Angeles</div>
+                        <div class="quick-pill">Singapore</div>
+                        <div class="quick-pill">Dubai</div>
+                        <div class="quick-pill">São Paulo</div>
+                    </div>
+                </div>
+
+                <div class="quick-section">
+                    <div class="quick-title">Megacities (10M+)</div>
+                    <div class="quick-pills">
+                        <div class="quick-pill">Shanghai</div>
+                        <div class="quick-pill">Mumbai</div>
+                        <div class="quick-pill">Beijing</div>
+                        <div class="quick-pill">Cairo</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Map Section -->
+        <div class="map-section">
+            <div class="map-header">
+                <div class="continent-nav">
+                    <div class="continent-pill active">All Continents</div>
+                    <div class="continent-pill">North America</div>
+                    <div class="continent-pill">Europe</div>
+                    <div class="continent-pill">Asia</div>
+                    <div class="continent-pill">South America</div>
+                    <div class="continent-pill">Africa</div>
+                    <div class="continent-pill">Oceania</div>
+                </div>
+                <div class="filter-status">
+                    Showing <span class="filter-count">238</span> cities
+                </div>
+            </div>
+            
+            <div id="map"></div>
+            
+            <div class="selection-status">
+                <div class="selected-cities">
+                    <div>
+                        <div class="city-label">Base City</div>
+                        <div class="selected-city-pill">
+                            <span>Select a city...</span>
+                        </div>
+                    </div>
+                    
+                    <div class="swap-icon" title="Swap cities">⇄</div>
+                    
+                    <div>
+                        <div class="city-label">Compare With</div>
+                        <div class="selected-city-pill">
+                            <span>Select a city...</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="compare-btn" disabled>Start Comparison</button>
+            </div>
+        </div>
+
+        <div class="improvements">
+            <div class="improvement-card">
+                <h4>✨ Smart Search</h4>
+                <p>Type-ahead search with instant filtering shows matching cities as you type, supporting partial matches and common variations.</p>
+            </div>
+            <div class="improvement-card">
+                <h4>🕐 Recent Selections</h4>
+                <p>Quick access to your recently selected cities makes repeat comparisons fast and convenient.</p>
+            </div>
+            <div class="improvement-card">
+                <h4>🌟 Popular Cities</h4>
+                <p>Pre-categorized city groups (Megacities, Capitals, Tech Hubs) provide quick access to commonly compared cities.</p>
+            </div>
+            <div class="improvement-card">
+                <h4>🗺️ Enhanced Map</h4>
+                <p>Search results highlight on the map in real-time, making it easy to see geographic context while searching.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Sample city data (subset of 238 cities)
+        const cities = [
+            { name: 'New York', country: 'United States', continent: 'North America', population: '8.3M', lat: 40.7128, lng: -74.0060 },
+            { name: 'Los Angeles', country: 'United States', continent: 'North America', population: '4.0M', lat: 34.0522, lng: -118.2437 },
+            { name: 'Chicago', country: 'United States', continent: 'North America', population: '2.7M', lat: 41.8781, lng: -87.6298 },
+            { name: 'Houston', country: 'United States', continent: 'North America', population: '2.3M', lat: 29.7604, lng: -95.3698 },
+            { name: 'London', country: 'United Kingdom', continent: 'Europe', population: '9.0M', lat: 51.5074, lng: -0.1278 },
+            { name: 'Paris', country: 'France', continent: 'Europe', population: '2.2M', lat: 48.8566, lng: 2.3522 },
+            { name: 'Berlin', country: 'Germany', continent: 'Europe', population: '3.6M', lat: 52.5200, lng: 13.4050 },
+            { name: 'Madrid', country: 'Spain', continent: 'Europe', population: '3.3M', lat: 40.4168, lng: -3.7038 },
+            { name: 'Tokyo', country: 'Japan', continent: 'Asia', population: '37.4M', lat: 35.6762, lng: 139.6503 },
+            { name: 'Shanghai', country: 'China', continent: 'Asia', population: '24.3M', lat: 31.2304, lng: 121.4737 },
+            { name: 'Beijing', country: 'China', continent: 'Asia', population: '21.5M', lat: 39.9042, lng: 116.4074 },
+            { name: 'Mumbai', country: 'India', continent: 'Asia', population: '20.4M', lat: 19.0760, lng: 72.8777 },
+            { name: 'Delhi', country: 'India', continent: 'Asia', population: '31.2M', lat: 28.6139, lng: 77.2090 },
+            { name: 'Singapore', country: 'Singapore', continent: 'Asia', population: '5.7M', lat: 1.3521, lng: 103.8198 },
+            { name: 'São Paulo', country: 'Brazil', continent: 'South America', population: '12.3M', lat: -23.5505, lng: -46.6333 },
+            { name: 'Rio de Janeiro', country: 'Brazil', continent: 'South America', population: '6.7M', lat: -22.9068, lng: -43.1729 },
+            { name: 'Buenos Aires', country: 'Argentina', continent: 'South America', population: '3.0M', lat: -34.6037, lng: -58.3816 },
+            { name: 'Cairo', country: 'Egypt', continent: 'Africa', population: '20.5M', lat: 30.0444, lng: 31.2357 },
+            { name: 'Lagos', country: 'Nigeria', continent: 'Africa', population: '14.9M', lat: 6.5244, lng: 3.3792 },
+            { name: 'Johannesburg', country: 'South Africa', continent: 'Africa', population: '4.4M', lat: -26.2041, lng: 28.0473 },
+            { name: 'Sydney', country: 'Australia', continent: 'Oceania', population: '5.3M', lat: -33.8688, lng: 151.2093 },
+            { name: 'Melbourne', country: 'Australia', continent: 'Oceania', population: '5.0M', lat: -37.8136, lng: 144.9631 },
+            { name: 'Dubai', country: 'United Arab Emirates', continent: 'Asia', population: '3.3M', lat: 25.2048, lng: 55.2708 },
+            { name: 'Toronto', country: 'Canada', continent: 'North America', population: '2.9M', lat: 43.6532, lng: -79.3832 },
+            { name: 'Mexico City', country: 'Mexico', continent: 'North America', population: '21.6M', lat: 19.4326, lng: -99.1332 },
+            { name: 'Bangkok', country: 'Thailand', continent: 'Asia', population: '10.5M', lat: 13.7563, lng: 100.5018 },
+            { name: 'Seoul', country: 'South Korea', continent: 'Asia', population: '9.7M', lat: 37.5665, lng: 126.9780 },
+            { name: 'Istanbul', country: 'Turkey', continent: 'Europe', population: '15.5M', lat: 41.0082, lng: 28.9784 },
+            { name: 'Moscow', country: 'Russia', continent: 'Europe', population: '12.5M', lat: 55.7558, lng: 37.6173 },
+            { name: 'New Delhi', country: 'India', continent: 'Asia', population: '31.2M', lat: 28.6139, lng: 77.2090 }
+        ];
+
+        // Initialize map
+        const map = L.map('map').setView([30, 0], 2);
+        
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            attribution: '© OpenStreetMap contributors © CARTO',
+            maxZoom: 19
+        }).addTo(map);
+
+        // Add city markers
+        const markers = [];
+        cities.forEach(city => {
+            const marker = L.circleMarker([city.lat, city.lng], {
+                radius: 6,
+                fillColor: '#007AFF',
+                color: '#fff',
+                weight: 2,
+                opacity: 1,
+                fillOpacity: 0.7
+            }).addTo(map);
+            
+            marker.bindPopup(`<strong>${city.name}</strong><br>${city.country}<br>Pop: ${city.population}`);
+            marker.cityData = city;
+            markers.push(marker);
+        });
+
+        // Search functionality
+        const searchInput = document.getElementById('citySearch');
+        const dropdown = document.getElementById('autocompleteDropdown');
+        let selectedCities = { base: null, overlay: null };
+
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            
+            if (query.length < 2) {
+                dropdown.classList.remove('active');
+                return;
+            }
+
+            const matches = cities.filter(city => 
+                city.name.toLowerCase().includes(query) ||
+                city.country.toLowerCase().includes(query)
+            );
+
+            if (matches.length > 0) {
+                dropdown.innerHTML = matches.slice(0, 8).map(city => `
+                    <div class="autocomplete-item" data-city="${city.name}">
+                        <div class="city-info">
+                            <div class="city-name">${highlightMatch(city.name, query)}</div>
+                            <div class="city-details">${city.country} • ${city.continent}</div>
+                        </div>
+                        <div class="city-pop">${city.population}</div>
+                    </div>
+                `).join('');
+                
+                dropdown.classList.add('active');
+                
+                // Highlight matching cities on map
+                markers.forEach(marker => {
+                    const isMatch = matches.some(m => m.name === marker.cityData.name);
+                    marker.setStyle({
+                        fillColor: isMatch ? '#ff9800' : '#007AFF',
+                        radius: isMatch ? 8 : 6
+                    });
+                });
+            } else {
+                dropdown.classList.remove('active');
+            }
+        });
+
+        function highlightMatch(text, query) {
+            const regex = new RegExp(`(${query})`, 'gi');
+            return text.replace(regex, '<strong>$1</strong>');
+        }
+
+        // Handle dropdown selection
+        dropdown.addEventListener('click', (e) => {
+            const item = e.target.closest('.autocomplete-item');
+            if (item) {
+                const cityName = item.dataset.city;
+                const city = cities.find(c => c.name === cityName);
+                selectCity(city);
+                searchInput.value = '';
+                dropdown.classList.remove('active');
+            }
+        });
+
+        // Handle quick pill selections
+        document.querySelectorAll('.quick-pill').forEach(pill => {
+            pill.addEventListener('click', () => {
+                const cityName = pill.textContent;
+                const city = cities.find(c => c.name === cityName);
+                if (city) {
+                    selectCity(city);
+                    pill.style.animation = 'pulse 0.3s';
+                }
+            });
+        });
+
+        // Handle continent filtering
+        document.querySelectorAll('.continent-pill').forEach(pill => {
+            pill.addEventListener('click', () => {
+                document.querySelectorAll('.continent-pill').forEach(p => p.classList.remove('active'));
+                pill.classList.add('active');
+                
+                const continent = pill.textContent;
+                let visibleCount = 0;
+                
+                markers.forEach(marker => {
+                    if (continent === 'All Continents' || marker.cityData.continent === continent) {
+                        marker.setOpacity(1);
+                        visibleCount++;
+                    } else {
+                        marker.setOpacity(0.2);
+                    }
+                });
+                
+                document.querySelector('.filter-count').textContent = visibleCount;
+            });
+        });
+
+        function selectCity(city) {
+            if (!selectedCities.base) {
+                selectedCities.base = city;
+                updateSelectionDisplay();
+            } else if (!selectedCities.overlay) {
+                selectedCities.overlay = city;
+                updateSelectionDisplay();
+            } else {
+                // Replace overlay
+                selectedCities.overlay = city;
+                updateSelectionDisplay();
+            }
+            
+            // Zoom to city
+            map.setView([city.lat, city.lng], 10);
+        }
+
+        function updateSelectionDisplay() {
+            const basePill = document.querySelectorAll('.selected-city-pill')[0];
+            const overlayPill = document.querySelectorAll('.selected-city-pill')[1];
+            const compareBtn = document.querySelector('.compare-btn');
+            
+            basePill.innerHTML = selectedCities.base 
+                ? `<span>${selectedCities.base.name}</span> <span style="color: #999; font-size: 0.85em;">${selectedCities.base.country}</span>`
+                : '<span>Select a city...</span>';
+                
+            overlayPill.innerHTML = selectedCities.overlay
+                ? `<span>${selectedCities.overlay.name}</span> <span style="color: #999; font-size: 0.85em;">${selectedCities.overlay.country}</span>`
+                : '<span>Select a city...</span>';
+                
+            compareBtn.disabled = !selectedCities.base || !selectedCities.overlay;
+        }
+
+        // Swap functionality
+        document.querySelector('.swap-icon').addEventListener('click', () => {
+            if (selectedCities.base && selectedCities.overlay) {
+                [selectedCities.base, selectedCities.overlay] = [selectedCities.overlay, selectedCities.base];
+                updateSelectionDisplay();
+            }
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.search-container')) {
+                dropdown.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
