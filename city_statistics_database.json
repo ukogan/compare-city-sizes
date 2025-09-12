@@ -1,0 +1,230 @@
+{
+  "metadata": {
+    "created": "2025-09-11",
+    "version": "1.0",
+    "description": "Comprehensive city statistics database for comparison and area scaling",
+    "sources": "Multiple: UN, World Bank, city governments, statistical offices"
+  },
+  "statistics_schema": {
+    "basic_info": {
+      "name": "City name",
+      "country": "Country name", 
+      "coordinates": "[latitude, longitude]",
+      "founded": "Year city was founded",
+      "timezone": "Primary timezone"
+    },
+    "demographics": {
+      "population_city": "City proper population",
+      "population_metro": "Metropolitan area population", 
+      "population_density": "People per km² (city proper)",
+      "population_growth_rate": "Annual growth rate %"
+    },
+    "geography": {
+      "area_city_km2": "City proper area in km²",
+      "area_metro_km2": "Metropolitan area in km²", 
+      "elevation_m": "Average elevation in meters",
+      "coastline_km": "Coastline length (if coastal city)",
+      "green_space_percent": "Percentage of city that is parks/green space",
+      "water_area_percent": "Percentage of city area that is water"
+    },
+    "economic": {
+      "gdp_billions_usd": "City GDP in billions USD",
+      "gdp_per_capita_usd": "GDP per capita in USD",
+      "cost_of_living_index": "Cost of living index (NYC = 100)",
+      "unemployment_rate": "Unemployment rate %"
+    },
+    "infrastructure": {
+      "airports": "Number of airports serving the city",
+      "metro_stations": "Number of metro/subway stations",
+      "metro_lines": "Number of metro/subway lines", 
+      "universities": "Number of universities",
+      "hospitals": "Number of major hospitals",
+      "museums": "Number of major museums"
+    },
+    "climate": {
+      "avg_temp_celsius": "Average annual temperature °C",
+      "annual_rainfall_mm": "Annual rainfall in mm",
+      "sunny_days_per_year": "Number of sunny days per year"
+    },
+    "urban_features": {
+      "skyscrapers_150m_plus": "Buildings over 150m tall",
+      "bridges": "Major bridges in/around city",
+      "parks_count": "Number of major parks", 
+      "restaurants_per_1000": "Restaurants per 1000 residents",
+      "avg_commute_minutes": "Average commute time in minutes"
+    },
+    "tourism_culture": {
+      "annual_tourists_millions": "Annual tourist arrivals in millions",
+      "unesco_sites": "Number of UNESCO World Heritage sites",
+      "languages_spoken": "Primary languages spoken",
+      "cultural_significance_score": "Score from our cultural framework (0-25)"
+    }
+  },
+  "cities": [
+    {
+      "basic_info": {
+        "name": "New York City",
+        "country": "United States",
+        "coordinates": [40.7128, -74.0060],
+        "founded": 1624,
+        "timezone": "EST/EDT"
+      },
+      "demographics": {
+        "population_city": 8336817,
+        "population_metro": 20140470,
+        "population_density": 11232,
+        "population_growth_rate": -0.3
+      },
+      "geography": {
+        "area_city_km2": 783,
+        "area_metro_km2": 17405,
+        "elevation_m": 10,
+        "coastline_km": 837,
+        "green_space_percent": 14,
+        "water_area_percent": 36
+      },
+      "economic": {
+        "gdp_billions_usd": 1870,
+        "gdp_per_capita_usd": 92710,
+        "cost_of_living_index": 100,
+        "unemployment_rate": 4.3
+      },
+      "infrastructure": {
+        "airports": 3,
+        "metro_stations": 472,
+        "metro_lines": 26,
+        "universities": 110,
+        "hospitals": 70,
+        "museums": 83
+      },
+      "climate": {
+        "avg_temp_celsius": 12.9,
+        "annual_rainfall_mm": 1268,
+        "sunny_days_per_year": 224
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 298,
+        "bridges": 76,
+        "parks_count": 1700,
+        "restaurants_per_1000": 23,
+        "avg_commute_minutes": 41
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 66.6,
+        "unesco_sites": 1,
+        "languages_spoken": ["English", "Spanish", "Chinese", "Russian"],
+        "cultural_significance_score": 25
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Tokyo",
+        "country": "Japan", 
+        "coordinates": [35.6762, 139.6503],
+        "founded": 1457,
+        "timezone": "JST"
+      },
+      "demographics": {
+        "population_city": 13500000,
+        "population_metro": 36200000,
+        "population_density": 6225,
+        "population_growth_rate": -0.6
+      },
+      "geography": {
+        "area_city_km2": 2194,
+        "area_metro_km2": 13572,
+        "elevation_m": 40,
+        "coastline_km": 248,
+        "green_space_percent": 7.5,
+        "water_area_percent": 8
+      },
+      "economic": {
+        "gdp_billions_usd": 2000,
+        "gdp_per_capita_usd": 75000,
+        "cost_of_living_index": 83,
+        "unemployment_rate": 2.0
+      },
+      "infrastructure": {
+        "airports": 2,
+        "metro_stations": 285,
+        "metro_lines": 13,
+        "universities": 150,
+        "hospitals": 650,
+        "museums": 400
+      },
+      "climate": {
+        "avg_temp_celsius": 15.4,
+        "annual_rainfall_mm": 1528,
+        "sunny_days_per_year": 176
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 61,
+        "bridges": 12,
+        "parks_count": 200,
+        "restaurants_per_1000": 74,
+        "avg_commute_minutes": 58
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 15.2,
+        "unesco_sites": 0,
+        "languages_spoken": ["Japanese", "English"],
+        "cultural_significance_score": 20
+      }
+    },
+    {
+      "basic_info": {
+        "name": "London",
+        "country": "United Kingdom",
+        "coordinates": [51.5074, -0.1278],
+        "founded": 43,
+        "timezone": "GMT/BST"
+      },
+      "demographics": {
+        "population_city": 9648110,
+        "population_metro": 15800000,
+        "population_density": 5666,
+        "population_growth_rate": 0.7
+      },
+      "geography": {
+        "area_city_km2": 1572,
+        "area_metro_km2": 8382,
+        "elevation_m": 35,
+        "coastline_km": 0,
+        "green_space_percent": 33,
+        "water_area_percent": 9.5
+      },
+      "economic": {
+        "gdp_billions_usd": 653,
+        "gdp_per_capita_usd": 67700,
+        "cost_of_living_index": 77,
+        "unemployment_rate": 3.8
+      },
+      "infrastructure": {
+        "airports": 5,
+        "metro_stations": 270,
+        "metro_lines": 11,
+        "universities": 40,
+        "hospitals": 35,
+        "museums": 240
+      },
+      "climate": {
+        "avg_temp_celsius": 11.0,
+        "annual_rainfall_mm": 601,
+        "sunny_days_per_year": 158
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 33,
+        "bridges": 33,
+        "parks_count": 3000,
+        "restaurants_per_1000": 18,
+        "avg_commute_minutes": 44
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 30.7,
+        "unesco_sites": 4,
+        "languages_spoken": ["English", "Polish", "Punjabi", "Urdu"],
+        "cultural_significance_score": 24
+      }
+    }
+  ]
+}

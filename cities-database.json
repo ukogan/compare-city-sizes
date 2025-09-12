@@ -129,8 +129,8 @@
         2.3522
       ],
       "population": 2161000,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "paris-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "paris.geojson"
     },
     {
       "id": "singapore",
@@ -141,8 +141,8 @@
         103.8198
       ],
       "population": 5896686,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "singapore-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "singapore.geojson"
     },
     {
       "id": "rome",
@@ -153,8 +153,8 @@
         12.4964
       ],
       "population": 2873000,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "rome-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "rome.geojson"
     },
     {
       "id": "madrid",
@@ -165,8 +165,8 @@
         -3.7038
       ],
       "population": 3223000,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "madrid-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "madrid.geojson"
     },
     {
       "id": "barcelona",
@@ -177,8 +177,8 @@
         2.1734
       ],
       "population": 1620000,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "barcelona-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "barcelona.geojson"
     },
     {
       "id": "berlin",
@@ -189,8 +189,8 @@
         13.405
       ],
       "population": 3669000,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "berlin-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "berlin.geojson"
     },
     {
       "id": "sydney",
@@ -201,8 +201,8 @@
         151.2093
       ],
       "population": 5312000,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "sydney-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "sydney.geojson"
     },
     {
       "id": "amsterdam",
@@ -213,8 +213,8 @@
         4.9041
       ],
       "population": 872757,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "amsterdam-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "amsterdam.geojson"
     },
     {
       "id": "san-francisco",
@@ -237,8 +237,8 @@
         55.2708
       ],
       "population": 3331420,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "dubai-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "dubai.geojson"
     },
     {
       "id": "toronto",
@@ -345,8 +345,8 @@
         18.0686
       ],
       "population": 975551,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "stockholm-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "stockholm.geojson"
     },
     {
       "id": "melbourne",
@@ -357,8 +357,8 @@
         144.9631
       ],
       "population": 5159211,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "melbourne-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "melbourne.geojson"
     },
     {
       "id": "oslo",
@@ -369,8 +369,8 @@
         10.7522
       ],
       "population": 709037,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "oslo-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "oslo.geojson"
     },
     {
       "id": "munich",
@@ -381,8 +381,8 @@
         11.582
       ],
       "population": 1488202,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "munich-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "munich.geojson"
     },
     {
       "id": "istanbul",
@@ -393,8 +393,8 @@
         28.9784
       ],
       "population": 15519267,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "istanbul-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "istanbul.geojson"
     },
     {
       "id": "las-vegas",
@@ -417,8 +417,8 @@
         24.9384
       ],
       "population": 658457,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "helsinki-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "helsinki.geojson"
     },
     {
       "id": "atlanta",
@@ -429,8 +429,8 @@
         -84.388
       ],
       "population": 498715,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "atlanta-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "atlanta.geojson"
     },
     {
       "id": "bangkok",
@@ -441,8 +441,8 @@
         100.5018
       ],
       "population": 10539000,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "bangkok-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "bangkok.geojson"
     },
     {
       "id": "prague",
@@ -453,8 +453,8 @@
         14.4378
       ],
       "population": 1318000,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "prague-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "prague.geojson"
     },
     {
       "id": "washington",
@@ -465,8 +465,8 @@
         -77.0369
       ],
       "population": 689545,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "washington-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "washington.geojson"
     },
     {
       "id": "montreal",
@@ -477,8 +477,8 @@
         -73.5673
       ],
       "population": 1762949,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "montreal-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "montreal.geojson"
     },
     {
       "id": "beijing",
@@ -489,8 +489,8 @@
         116.4074
       ],
       "population": 21542000,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "beijing-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "beijing.geojson"
     },
     {
       "id": "orlando",
@@ -501,8 +501,8 @@
         -81.3792
       ],
       "population": 307573,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "orlando-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "orlando.geojson"
     },
     {
       "id": "st-louis",
@@ -513,8 +513,8 @@
         -90.1994
       ],
       "population": 301578,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "st-louis-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "st.-louis.geojson"
     },
     {
       "id": "portland",
@@ -525,8 +525,8 @@
         -122.6784
       ],
       "population": 652503,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "portland-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "portland.geojson"
     },
     {
       "id": "dublin",
@@ -537,8 +537,8 @@
         -6.2603
       ],
       "population": 592713,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "dublin-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "dublin.geojson"
     },
     {
       "id": "osaka",
@@ -549,8 +549,8 @@
         135.5023
       ],
       "population": 2691000,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "osaka-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "osaka.geojson"
     },
     {
       "id": "denver",
@@ -561,8 +561,8 @@
         -104.9903
       ],
       "population": 715522,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "denver-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "denver.geojson"
     },
     {
       "id": "copenhagen",
@@ -573,8 +573,8 @@
         12.5683
       ],
       "population": 660000,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "copenhagen-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "copenhagen.geojson"
     },
     {
       "id": "auckland",
@@ -585,8 +585,8 @@
         174.7633
       ],
       "population": 1695200,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "auckland-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "auckland.geojson"
     },
     {
       "id": "frankfurt",
@@ -597,8 +597,8 @@
         8.6821
       ],
       "population": 753056,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "frankfurt-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "frankfurt.geojson"
     },
     {
       "id": "zurich",
@@ -609,8 +609,8 @@
         8.5417
       ],
       "population": 421878,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "zurich-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "zurich.geojson"
     },
     {
       "id": "kuala-lumpur",
@@ -621,8 +621,8 @@
         101.6869
       ],
       "population": 1588750,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "kuala-lumpur-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "kuala-lumpur.geojson"
     },
     {
       "id": "minneapolis",
@@ -633,8 +633,8 @@
         -93.265
       ],
       "population": 429954,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "minneapolis-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "minneapolis.geojson"
     },
     {
       "id": "ottawa",
@@ -645,8 +645,8 @@
         -75.6972
       ],
       "population": 1017449,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "ottawa-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "ottawa.geojson"
     },
     {
       "id": "austin",
@@ -657,8 +657,8 @@
         -97.7431
       ],
       "population": 978908,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "austin-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "austin.geojson"
     },
     {
       "id": "calgary",
@@ -669,8 +669,8 @@
         -114.0719
       ],
       "population": 1306784,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "calgary-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "calgary.geojson"
     },
     {
       "id": "dallas",
@@ -681,8 +681,8 @@
         -96.797
       ],
       "population": 1343573,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "dallas-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "dallas.geojson"
     },
     {
       "id": "brussels",
@@ -693,8 +693,8 @@
         4.3517
       ],
       "population": 1218255,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "brussels-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "brussels.geojson"
     },
     {
       "id": "lisbon",
@@ -705,8 +705,8 @@
         -9.1393
       ],
       "population": 547733,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "lisbon-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "lisbon.geojson"
     },
     {
       "id": "honolulu",
@@ -717,8 +717,8 @@
         -157.8581
       ],
       "population": 347397,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "honolulu-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "honolulu.geojson"
     },
     {
       "id": "detroit",
@@ -729,8 +729,8 @@
         -83.0458
       ],
       "population": 639111,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "detroit-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "detroit.geojson"
     },
     {
       "id": "krakow",
@@ -741,8 +741,8 @@
         19.945
       ],
       "population": 779115,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "krakow-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "krakow.geojson"
     },
     {
       "id": "shanghai",
@@ -753,8 +753,8 @@
         121.4737
       ],
       "population": 24183300,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "shanghai-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "shanghai.geojson"
     },
     {
       "id": "san-jose",
@@ -765,8 +765,8 @@
         -121.8863
       ],
       "population": 1035317,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "san-jose-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "san-jose.geojson"
     },
     {
       "id": "new-orleans",
@@ -777,8 +777,8 @@
         -90.0715
       ],
       "population": 383997,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "new-orleans-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "new-orleans.geojson"
     },
     {
       "id": "nashville",
@@ -789,8 +789,8 @@
         -86.7816
       ],
       "population": 689447,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "nashville-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "nashville.geojson"
     },
     {
       "id": "edmonton",
@@ -801,8 +801,8 @@
         -113.4909
       ],
       "population": 1010899,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "edmonton-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "edmonton.geojson"
     },
     {
       "id": "salt-lake-city",
@@ -813,8 +813,8 @@
         -111.891
       ],
       "population": 200567,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "salt-lake-city-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "salt-lake-city.geojson"
     },
     {
       "id": "baltimore",
@@ -825,8 +825,8 @@
         -76.6122
       ],
       "population": 585708,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "baltimore-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "baltimore.geojson"
     },
     {
       "id": "bordeaux",
@@ -837,8 +837,8 @@
         -0.5792
       ],
       "population": 254436,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "bordeaux-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "bordeaux.geojson"
     },
     {
       "id": "gothenburg",
@@ -849,8 +849,8 @@
         11.9746
       ],
       "population": 579281,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "gothenburg-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "gothenburg.geojson"
     },
     {
       "id": "cleveland",
@@ -861,8 +861,8 @@
         -81.6944
       ],
       "population": 383793,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "cleveland-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "cleveland.geojson"
     },
     {
       "id": "valencia",
@@ -873,8 +873,8 @@
         -0.3763
       ],
       "population": 794288,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "valencia-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "valencia.geojson"
     },
     {
       "id": "glasgow",
@@ -885,8 +885,8 @@
         -4.2518
       ],
       "population": 635640,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "glasgow-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "glasgow.geojson"
     },
     {
       "id": "doha",
@@ -897,8 +897,8 @@
         51.531
       ],
       "population": 956460,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "doha-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "doha.geojson"
     },
     {
       "id": "warsaw",
@@ -909,8 +909,8 @@
         21.0122
       ],
       "population": 1790658,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "warsaw-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "warsaw.geojson"
     },
     {
       "id": "sao-paulo",
@@ -921,8 +921,8 @@
         -46.6396
       ],
       "population": 12396372,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "sao-paulo-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "sao-paulo.geojson"
     },
     {
       "id": "taipei",
@@ -933,8 +933,8 @@
         121.5654
       ],
       "population": 2646204,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "taipei-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "taipei.geojson"
     },
     {
       "id": "tucson",
@@ -945,8 +945,8 @@
         -110.9747
       ],
       "population": 548073,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "tucson-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "tucson.geojson"
     },
     {
       "id": "pittsburgh",
@@ -957,8 +957,8 @@
         -79.9959
       ],
       "population": 302971,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "pittsburgh-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "pittsburgh.geojson"
     },
     {
       "id": "charlotte",
@@ -969,8 +969,8 @@
         -80.8431
       ],
       "population": 885708,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "charlotte-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "charlotte.geojson"
     },
     {
       "id": "lyon",
@@ -981,8 +981,8 @@
         4.8357
       ],
       "population": 518635,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "lyon-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "lyon.geojson"
     },
     {
       "id": "nagoya",
@@ -993,8 +993,8 @@
         136.9066
       ],
       "population": 2327557,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "nagoya-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "nagoya.geojson"
     },
     {
       "id": "porto",
@@ -1005,8 +1005,8 @@
         -8.6291
       ],
       "population": 231962,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "porto-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "porto.geojson"
     },
     {
       "id": "perth",
@@ -1017,8 +1017,8 @@
         115.8605
       ],
       "population": 2192229,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "perth-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "perth.geojson"
     },
     {
       "id": "bilbao",
@@ -1029,8 +1029,8 @@
         -2.9253
       ],
       "population": 346843,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "bilbao-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "bilbao.geojson"
     },
     {
       "id": "cape-town",
@@ -1041,8 +1041,8 @@
         18.4241
       ],
       "population": 4618000,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "cape-town-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "cape-town.geojson"
     },
     {
       "id": "sapporo",
@@ -1053,8 +1053,8 @@
         141.3469
       ],
       "population": 1973395,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "sapporo-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "sapporo.geojson"
     },
     {
       "id": "athens",
@@ -1065,8 +1065,8 @@
         23.7348
       ],
       "population": 664046,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "athens-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "athens.geojson"
     },
     {
       "id": "hamburg",
@@ -1077,8 +1077,8 @@
         9.9937
       ],
       "population": 1945532,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "hamburg-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "hamburg.geojson"
     },
     {
       "id": "brisbane",
@@ -1089,8 +1089,8 @@
         153.0251
       ],
       "population": 2560720,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "brisbane-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "brisbane.geojson"
     },
     {
       "id": "tampa",
@@ -1101,8 +1101,8 @@
         -82.4572
       ],
       "population": 384959,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "tampa-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "tampa.geojson"
     },
     {
       "id": "naples",
@@ -1113,8 +1113,8 @@
         14.2681
       ],
       "population": 967069,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "naples-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "naples.geojson"
     },
     {
       "id": "richmond",
@@ -1125,8 +1125,8 @@
         -77.436
       ],
       "population": 230436,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "richmond-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "richmond.geojson"
     },
     {
       "id": "birmingham",
@@ -1137,8 +1137,8 @@
         -1.8904
       ],
       "population": 1144919,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "birmingham-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "birmingham.geojson"
     },
     {
       "id": "raleigh",
@@ -1149,8 +1149,8 @@
         -78.6382
       ],
       "population": 474069,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "raleigh-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "raleigh.geojson"
     },
     {
       "id": "rochester",
@@ -1161,8 +1161,8 @@
         -77.6088
       ],
       "population": 211328,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "rochester-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "rochester.geojson"
     },
     {
       "id": "hong-kong",
@@ -1173,8 +1173,8 @@
         114.1694
       ],
       "population": 7496981,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "hong-kong-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "hong-kong.geojson"
     },
     {
       "id": "nantes",
@@ -1185,8 +1185,8 @@
         -1.5536
       ],
       "population": 320732,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "nantes-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "nantes.geojson"
     },
     {
       "id": "toulouse",
@@ -1197,8 +1197,8 @@
         1.4442
       ],
       "population": 498003,
-      "hasDetailedBoundary": false,
-      "boundaryFile": "toulouse-basic.geojson"
+      "hasDetailedBoundary": true,
+      "boundaryFile": "toulouse.geojson"
     },
     {
       "id": "rio-de-janeiro",
@@ -1209,8 +1209,1072 @@
         -43.1729
       ],
       "population": 6748000,
+      "hasDetailedBoundary": true,
+      "boundaryFile": "rio-de-janeiro.geojson"
+    },
+    {
+      "id": "cairo",
+      "name": "Cairo",
+      "country": "Egypt",
+      "coordinates": [
+        30.033,
+        31.233
+      ],
+      "population": null,
       "hasDetailedBoundary": false,
-      "boundaryFile": "rio-de-janeiro-basic.geojson"
+      "boundaryFile": "cairo.geojson",
+      "category": "Africa",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "kinshasa",
+      "name": "Kinshasa",
+      "country": "DR Congo",
+      "coordinates": [
+        -4.325,
+        15.307
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "kinshasa.geojson",
+      "category": "Africa",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "lagos",
+      "name": "Lagos",
+      "country": "Nigeria",
+      "coordinates": [
+        6.465,
+        3.406
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "lagos.geojson",
+      "category": "Africa",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "luanda",
+      "name": "Luanda",
+      "country": "Angola",
+      "coordinates": [
+        -8.838,
+        13.234
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "luanda.geojson",
+      "category": "Africa",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "dar-es-salaam",
+      "name": "Dar es Salaam",
+      "country": "Tanzania",
+      "coordinates": [
+        -6.792,
+        39.273
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "dar-es-salaam.geojson",
+      "category": "Africa",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "khartoum",
+      "name": "Khartoum",
+      "country": "Sudan",
+      "coordinates": [
+        15.5,
+        32.553
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "khartoum.geojson",
+      "category": "Africa",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "abidjan",
+      "name": "Abidjan",
+      "country": "Ivory Coast",
+      "coordinates": [
+        5.345,
+        -4.016
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "abidjan.geojson",
+      "category": "Africa",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "addis-ababa",
+      "name": "Addis Ababa",
+      "country": "Ethiopia",
+      "coordinates": [
+        9.025,
+        38.75
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "addis-ababa.geojson",
+      "category": "Africa",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "alexandria",
+      "name": "Alexandria",
+      "country": "Egypt",
+      "coordinates": [
+        31.2,
+        29.955
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "alexandria.geojson",
+      "category": "Africa",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "nairobi",
+      "name": "Nairobi",
+      "country": "Kenya",
+      "coordinates": [
+        -1.286,
+        36.817
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "nairobi.geojson",
+      "category": "Africa",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "yaounde",
+      "name": "Yaounde",
+      "country": "Cameroon",
+      "coordinates": [
+        3.848,
+        11.502
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "yaounde.geojson",
+      "category": "Africa",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "kano",
+      "name": "Kano",
+      "country": "Nigeria",
+      "coordinates": [
+        12.0,
+        8.517
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "kano.geojson",
+      "category": "Africa",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "douala",
+      "name": "Douala",
+      "country": "Cameroon",
+      "coordinates": [
+        4.061,
+        9.768
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "douala.geojson",
+      "category": "Africa",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "kampala",
+      "name": "Kampala",
+      "country": "Uganda",
+      "coordinates": [
+        0.347,
+        32.582
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "kampala.geojson",
+      "category": "Africa",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "antananarivo",
+      "name": "Antananarivo",
+      "country": "Madagascar",
+      "coordinates": [
+        -18.882,
+        47.507
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "antananarivo.geojson",
+      "category": "Africa",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "abuja",
+      "name": "Abuja",
+      "country": "Nigeria",
+      "coordinates": [
+        9.072,
+        7.398
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "abuja.geojson",
+      "category": "Africa",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "ibadan",
+      "name": "Ibadan",
+      "country": "Nigeria",
+      "coordinates": [
+        7.378,
+        3.906
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "ibadan.geojson",
+      "category": "Africa",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "kumasi",
+      "name": "Kumasi",
+      "country": "Ghana",
+      "coordinates": [
+        6.687,
+        -1.609
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "kumasi.geojson",
+      "category": "Africa",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "accra",
+      "name": "Accra",
+      "country": "Ghana",
+      "coordinates": [
+        5.603,
+        -0.187
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "accra.geojson",
+      "category": "Africa",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "casablanca",
+      "name": "Casablanca",
+      "country": "Morocco",
+      "coordinates": [
+        33.573,
+        -7.589
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "casablanca.geojson",
+      "category": "Africa",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "tianjin",
+      "name": "Tianjin",
+      "country": "China",
+      "coordinates": [
+        39.142,
+        117.343
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "tianjin.geojson",
+      "category": "China",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "guangzhou",
+      "name": "Guangzhou",
+      "country": "China",
+      "coordinates": [
+        23.129,
+        113.264
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "guangzhou.geojson",
+      "category": "China",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "shenzhen",
+      "name": "Shenzhen",
+      "country": "China",
+      "coordinates": [
+        22.544,
+        114.109
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "shenzhen.geojson",
+      "category": "China",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "wuhan",
+      "name": "Wuhan",
+      "country": "China",
+      "coordinates": [
+        30.594,
+        114.341
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "wuhan.geojson",
+      "category": "China",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "dongguan",
+      "name": "Dongguan",
+      "country": "China",
+      "coordinates": [
+        23.043,
+        113.726
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "dongguan.geojson",
+      "category": "China",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "chongqing",
+      "name": "Chongqing",
+      "country": "China",
+      "coordinates": [
+        29.533,
+        106.504
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "chongqing.geojson",
+      "category": "China",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "chengdu",
+      "name": "Chengdu",
+      "country": "China",
+      "coordinates": [
+        30.693,
+        104.195
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "chengdu.geojson",
+      "category": "China",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "nanjing",
+      "name": "Nanjing",
+      "country": "China",
+      "coordinates": [
+        32.061,
+        118.778
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "nanjing.geojson",
+      "category": "China",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "xian",
+      "name": "Xi'an",
+      "country": "China",
+      "coordinates": [
+        34.263,
+        108.948
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "xian.geojson",
+      "category": "China",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "mumbai",
+      "name": "Mumbai",
+      "country": "India",
+      "coordinates": [
+        19.076,
+        72.877
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "mumbai.geojson",
+      "category": "India",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "delhi",
+      "name": "Delhi",
+      "country": "India",
+      "coordinates": [
+        28.614,
+        77.209
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "delhi.geojson",
+      "category": "India",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "bengaluru",
+      "name": "Bengaluru",
+      "country": "India",
+      "coordinates": [
+        12.972,
+        77.594
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "bengaluru.geojson",
+      "category": "India",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "kolkata",
+      "name": "Kolkata",
+      "country": "India",
+      "coordinates": [
+        22.573,
+        88.363
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "kolkata.geojson",
+      "category": "India",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "chennai",
+      "name": "Chennai",
+      "country": "India",
+      "coordinates": [
+        13.082,
+        80.271
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "chennai.geojson",
+      "category": "India",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "ahmedabad",
+      "name": "Ahmedabad",
+      "country": "India",
+      "coordinates": [
+        23.023,
+        72.572
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "ahmedabad.geojson",
+      "category": "India",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "hyderabad",
+      "name": "Hyderabad",
+      "country": "India",
+      "coordinates": [
+        17.385,
+        78.486
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "hyderabad.geojson",
+      "category": "India",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "pune",
+      "name": "Pune",
+      "country": "India",
+      "coordinates": [
+        18.52,
+        73.856
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "pune.geojson",
+      "category": "India",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "surat",
+      "name": "Surat",
+      "country": "India",
+      "coordinates": [
+        21.195,
+        72.831
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "surat.geojson",
+      "category": "India",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "kanpur",
+      "name": "Kanpur",
+      "country": "India",
+      "coordinates": [
+        26.449,
+        80.349
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "kanpur.geojson",
+      "category": "India",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "tehran",
+      "name": "Tehran",
+      "country": "Iran",
+      "coordinates": [
+        35.689,
+        51.389
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "tehran.geojson",
+      "category": "Middle East",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "baghdad",
+      "name": "Baghdad",
+      "country": "Iraq",
+      "coordinates": [
+        33.313,
+        44.366
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "baghdad.geojson",
+      "category": "Middle East",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "riyadh",
+      "name": "Riyadh",
+      "country": "Saudi Arabia",
+      "coordinates": [
+        24.713,
+        46.738
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "riyadh.geojson",
+      "category": "Middle East",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "ankara",
+      "name": "Ankara",
+      "country": "Turkey",
+      "coordinates": [
+        39.933,
+        32.854
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "ankara.geojson",
+      "category": "Middle East",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "tel-aviv",
+      "name": "Tel Aviv",
+      "country": "Israel",
+      "coordinates": [
+        32.085,
+        34.781
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "tel-aviv.geojson",
+      "category": "Middle East",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "sanaa",
+      "name": "Sanaa",
+      "country": "Yemen",
+      "coordinates": [
+        15.369,
+        44.207
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "sanaa.geojson",
+      "category": "Middle East",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "mashhad",
+      "name": "Mashhad",
+      "country": "Iran",
+      "coordinates": [
+        36.297,
+        59.568
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "mashhad.geojson",
+      "category": "Middle East",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "damascus",
+      "name": "Damascus",
+      "country": "Syria",
+      "coordinates": [
+        33.513,
+        36.292
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "damascus.geojson",
+      "category": "Middle East",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "amman",
+      "name": "Amman",
+      "country": "Jordan",
+      "coordinates": [
+        31.953,
+        35.91
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "amman.geojson",
+      "category": "Middle East",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "buenos-aires",
+      "name": "Buenos Aires",
+      "country": "Argentina",
+      "coordinates": [
+        -34.603,
+        -58.383
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "buenos-aires.geojson",
+      "category": "South America",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "bogota",
+      "name": "Bogot\u00e1",
+      "country": "Colombia",
+      "coordinates": [
+        4.711,
+        -74.072
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "bogota.geojson",
+      "category": "South America",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "lima",
+      "name": "Lima",
+      "country": "Peru",
+      "coordinates": [
+        -12.046,
+        -77.043
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "lima.geojson",
+      "category": "South America",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "santiago",
+      "name": "Santiago",
+      "country": "Chile",
+      "coordinates": [
+        -33.449,
+        -70.669
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "santiago.geojson",
+      "category": "South America",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "belo-horizonte",
+      "name": "Belo Horizonte",
+      "country": "Brazil",
+      "coordinates": [
+        -19.921,
+        -43.938
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "belo-horizonte.geojson",
+      "category": "South America",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "brasilia",
+      "name": "Bras\u00edlia",
+      "country": "Brazil",
+      "coordinates": [
+        -15.794,
+        -47.883
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "brasilia.geojson",
+      "category": "South America",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "recife",
+      "name": "Recife",
+      "country": "Brazil",
+      "coordinates": [
+        -8.047,
+        -34.881
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "recife.geojson",
+      "category": "South America",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "fortaleza",
+      "name": "Fortaleza",
+      "country": "Brazil",
+      "coordinates": [
+        -3.717,
+        -38.543
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "fortaleza.geojson",
+      "category": "South America",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "porto-alegre",
+      "name": "Porto Alegre",
+      "country": "Brazil",
+      "coordinates": [
+        -30.034,
+        -51.23
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "porto-alegre.geojson",
+      "category": "South America",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "medellin",
+      "name": "Medell\u00edn",
+      "country": "Colombia",
+      "coordinates": [
+        6.244,
+        -75.564
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "medellin.geojson",
+      "category": "South America",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "salvador",
+      "name": "Salvador",
+      "country": "Brazil",
+      "coordinates": [
+        -12.971,
+        -38.511
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "salvador.geojson",
+      "category": "South America",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "curitiba",
+      "name": "Curitiba",
+      "country": "Brazil",
+      "coordinates": [
+        -25.429,
+        -49.273
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "curitiba.geojson",
+      "category": "South America",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "asuncion",
+      "name": "Asunci\u00f3n",
+      "country": "Paraguay",
+      "coordinates": [
+        -25.264,
+        -57.636
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "asuncion.geojson",
+      "category": "South America",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "campinas",
+      "name": "Campinas",
+      "country": "Brazil",
+      "coordinates": [
+        -22.907,
+        -47.063
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "campinas.geojson",
+      "category": "South America",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "guayaquil",
+      "name": "Guayaquil",
+      "country": "Ecuador",
+      "coordinates": [
+        -2.171,
+        -79.897
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "guayaquil.geojson",
+      "category": "South America",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "caracas",
+      "name": "Caracas",
+      "country": "Venezuela",
+      "coordinates": [
+        10.48,
+        -66.903
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "caracas.geojson",
+      "category": "South America",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "goiania",
+      "name": "Goi\u00e2nia",
+      "country": "Brazil",
+      "coordinates": [
+        -16.686,
+        -49.255
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "goiania.geojson",
+      "category": "South America",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "cali",
+      "name": "Cali",
+      "country": "Colombia",
+      "coordinates": [
+        3.452,
+        -76.532
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "cali.geojson",
+      "category": "South America",
+      "cultural_significance_score": 15
+    },
+    {
+      "id": "jerusalem",
+      "name": "Jerusalem",
+      "country": "Israel/Palestine",
+      "coordinates": [
+        31.771,
+        35.217
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "jerusalem.geojson",
+      "category": "Cultural",
+      "cultural_significance_score": 25
+    },
+    {
+      "id": "mecca",
+      "name": "Mecca",
+      "country": "Saudi Arabia",
+      "coordinates": [
+        21.389,
+        39.826
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "mecca.geojson",
+      "category": "Cultural",
+      "cultural_significance_score": 25
+    },
+    {
+      "id": "vatican-city",
+      "name": "Vatican City",
+      "country": "Vatican",
+      "coordinates": [
+        41.903,
+        12.453
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "vatican-city.geojson",
+      "category": "Cultural",
+      "cultural_significance_score": 25
+    },
+    {
+      "id": "varanasi",
+      "name": "Varanasi",
+      "country": "India",
+      "coordinates": [
+        25.317,
+        83.006
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "varanasi.geojson",
+      "category": "Cultural",
+      "cultural_significance_score": 25
+    },
+    {
+      "id": "lhasa",
+      "name": "Lhasa",
+      "country": "Tibet/China",
+      "coordinates": [
+        29.66,
+        91.14
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "lhasa.geojson",
+      "category": "Cultural",
+      "cultural_significance_score": 25
+    },
+    {
+      "id": "bethlehem",
+      "name": "Bethlehem",
+      "country": "Palestine",
+      "coordinates": [
+        31.705,
+        35.2
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "bethlehem.geojson",
+      "category": "Cultural",
+      "cultural_significance_score": 25
+    },
+    {
+      "id": "medina",
+      "name": "Medina",
+      "country": "Saudi Arabia",
+      "coordinates": [
+        24.524,
+        39.614
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "medina.geojson",
+      "category": "Cultural",
+      "cultural_significance_score": 25
+    },
+    {
+      "id": "bodh-gaya",
+      "name": "Bodh Gaya",
+      "country": "India",
+      "coordinates": [
+        24.728,
+        84.991
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "bodh-gaya.geojson",
+      "category": "Cultural",
+      "cultural_significance_score": 25
+    },
+    {
+      "id": "amritsar",
+      "name": "Amritsar",
+      "country": "India",
+      "coordinates": [
+        31.634,
+        74.873
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "amritsar.geojson",
+      "category": "Cultural",
+      "cultural_significance_score": 25
+    },
+    {
+      "id": "najaf",
+      "name": "Najaf",
+      "country": "Iraq",
+      "coordinates": [
+        32.0,
+        44.349
+      ],
+      "population": null,
+      "hasDetailedBoundary": false,
+      "boundaryFile": "najaf.geojson",
+      "category": "Cultural",
+      "cultural_significance_score": 25
     }
   ]
 }

@@ -285,6 +285,18 @@
             transform: scale(1.2);
         }
 
+        /* Cities without detailed boundaries - hollow blue outline */
+        .city-pin.no-detailed-boundary {
+            background: white;
+            border: 2px solid #1976d2;
+        }
+
+        .city-pin.no-detailed-boundary:hover {
+            background: #e3f2fd;
+            border-color: #1565c0;
+            transform: scale(1.2);
+        }
+
         .city-pin.base-selected {
             background: #4caf50;
             border-color: #2e7d32;
@@ -298,6 +310,22 @@
         .city-pin.both-selected {
             background: linear-gradient(45deg, #4caf50 50%, #ff9800 50%);
             border-color: #333;
+        }
+
+        /* Selection states for cities without detailed boundaries */
+        .city-pin.no-detailed-boundary.base-selected {
+            background: #e8f5e8;
+            border: 2px solid #4caf50;
+        }
+
+        .city-pin.no-detailed-boundary.overlay-selected {
+            background: #fff3e0;
+            border: 2px solid #ff9800;
+        }
+
+        .city-pin.no-detailed-boundary.both-selected {
+            background: linear-gradient(45deg, #e8f5e8 50%, #fff3e0 50%);
+            border: 2px solid #333;
         }
         
         .info-panel {
@@ -810,8 +838,12 @@
             citiesDatabase.cities.forEach(city => {
                 const [lat, lng] = city.coordinates;
                 
+                // Determine pin class based on whether city has detailed boundary
+                const hasDetailedBoundary = city.hasDetailedBoundary;
+                const pinClass = hasDetailedBoundary ? 'city-pin' : 'city-pin no-detailed-boundary';
+                
                 const pinIcon = L.divIcon({
-                    className: 'city-pin',
+                    className: pinClass,
                     html: '',
                     iconSize: [12, 12],
                     iconAnchor: [6, 6]
@@ -819,7 +851,7 @@
 
                 const marker = L.marker([lat, lng], { 
                     icon: pinIcon,
-                    title: `${city.name}, ${city.country}`
+                    title: `${city.name}, ${city.country}${hasDetailedBoundary ? '' : ' (basic boundary)'}`
                 }).addTo(worldMap);
 
                 marker.on('click', () => selectCity(city));

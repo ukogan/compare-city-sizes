@@ -199,6 +199,28 @@ Transform the city comparison tool into a gesture-friendly, mobile-first applica
 - **API Limits**: Claude API rate limits and cost management
 - **Caching Strategy**: Client-side storage, CDN deployment
 
+## Epic 6: Population-Based Scaling 📊
+**Priority: FUTURE**
+
+### Phase 6.1: Population Density Visualization
+- [ ] **Dynamic population density scaling**
+  - Scale overlay city boundaries by population density ratio
+  - Auto-calculate scaling factor based on base vs overlay population density
+  - Example: LA overlay on NYC base would shrink to ~0.45x size due to lower density
+  - Example: NYC overlay on LA base would expand to ~2.2x size due to higher density
+
+- [ ] **Visual scaling feedback**
+  - Show scaling ratio in UI (e.g., "LA scaled to 0.45x for NYC density")
+  - Display population density comparison statistics
+  - Toggle between area comparison and density comparison modes
+  - Clear visual indication when density scaling is active
+
+- [ ] **Enhanced comparison metrics**
+  - Show people per square mile for both cities
+  - Calculate and display effective area at same density
+  - Population-to-area ratio visualizations
+  - Density-based color coding or visual indicators
+
 ## Next Steps
 1. **Create UX mockups** with gesture interaction flows
 2. **Set up development environment** with modern tooling

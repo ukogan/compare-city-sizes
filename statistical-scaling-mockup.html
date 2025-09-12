@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City Statistical Scaling Comparison</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .app-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        /* Main Layout Grid */
+        .main-content {
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            height: 800px;
+        }
+
+        /* Left Panel - Controls */
+        .control-panel {
+            background: #f8f9fa;
+            border-right: 1px solid #e9ecef;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title .icon {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+        }
+
+        /* City Selection */
+        .city-selector {
+            margin-bottom: 15px;
+        }
+
+        .city-selector label {
+            display: block;
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .city-selector select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1em;
+            background: white;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+
+        .city-selector select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        /* Scaling Metric Selection */
+        .metric-cards {
+            display: grid;
+            gap: 10px;
+        }
+
+        .metric-card {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .metric-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .metric-card.active {
+            border-color: #667eea;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        }
+
+        .metric-card.active::after {
+            content: '✓';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 20px;
+            height: 20px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .metric-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .metric-description {
+            font-size: 0.85em;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        /* Statistics Display */
+        .stats-comparison {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .stat-row:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .stat-values {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .city-stat {
+            text-align: center;
+        }
+
+        .city-stat .value {
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+
+        .city-stat .city-name {
+            font-size: 0.75em;
+            color: #999;
+            margin-top: 2px;
+        }
+
+        .city-stat.base {
+            color: #FF6B6B;
+        }
+
+        .city-stat.comparison {
+            color: #4ECDC4;
+        }
+
+        /* Scaling Result */
+        .scaling-result {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 15px;
+        }
+
+        .scaling-factor {
+            font-size: 2em;
+            font-weight: 700;
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .scaling-explanation {
+            text-align: center;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        /* Right Panel - Map */
+        .map-panel {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Map Controls Bar */
+        .map-controls {
+            background: white;
+            padding: 15px 20px;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .view-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .view-btn {
+            padding: 8px 16px;
+            border: 1px solid #e9ecef;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s;
+        }
+
+        .view-btn:hover {
+            background: #f8f9fa;
+        }
+
+        .view-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .toggle-switch {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toggle-switch label {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #667eea;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+
+        /* Map Container */
+        #map {
+            flex: 1;
+            position: relative;
+        }
+
+        /* Map Legend */
+        .map-legend {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .legend-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .legend-color {
+            width: 30px;
+            height: 20px;
+            border-radius: 4px;
+            border: 2px solid;
+        }
+
+        .legend-label {
+            font-size: 0.85em;
+            color: #666;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+
+            .control-panel {
+                border-right: none;
+                border-bottom: 1px solid #e9ecef;
+            }
+
+            #map {
+                height: 500px;
+            }
+        }
+
+        /* Loading State */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #666;
+        }
+
+        .loading::after {
+            content: '';
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <div class="header">
+            <h1>City Statistical Scaling Comparison</h1>
+            <p>Compare cities by scaling them to match each other's density metrics</p>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Left Control Panel -->
+            <div class="control-panel">
+                <!-- City Selection -->
+                <div class="section">
+                    <div class="section-title">
+                        <span class="icon">🏙️</span>
+                        Select Cities
+                    </div>
+                    
+                    <div class="city-selector">
+                        <label>Base City</label>
+                        <select id="baseCity">
+                            <option value="new-york">New York City</option>
+                            <option value="tokyo">Tokyo</option>
+                            <option value="london">London</option>
+                            <option value="paris">Paris</option>
+                            <option value="singapore">Singapore</option>
+                            <option value="sydney">Sydney</option>
+                            <option value="toronto">Toronto</option>
+                            <option value="berlin">Berlin</option>
+                        </select>
+                    </div>
+
+                    <div class="city-selector">
+                        <label>Comparison City</label>
+                        <select id="comparisonCity">
+                            <option value="tokyo">Tokyo</option>
+                            <option value="new-york">New York City</option>
+                            <option value="london">London</option>
+                            <option value="paris">Paris</option>
+                            <option value="singapore">Singapore</option>
+                            <option value="sydney">Sydney</option>
+                            <option value="toronto">Toronto</option>
+                            <option value="berlin">Berlin</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Scaling Metric Selection -->
+                <div class="section">
+                    <div class="section-title">
+                        <span class="icon">📊</span>
+                        Scaling Metric
+                    </div>
+                    
+                    <div class="metric-cards">
+                        <div class="metric-card active" data-metric="population_density">
+                            <div class="metric-name">Population Density</div>
+                            <div class="metric-description">Scale to match people per km²</div>
+                        </div>
+                        
+                        <div class="metric-card" data-metric="gdp_density">
+                            <div class="metric-name">Economic Density</div>
+                            <div class="metric-description">Scale to match GDP per km²</div>
+                        </div>
+                        
+                        <div class="metric-card" data-metric="cultural_density">
+                            <div class="metric-name">Cultural Density</div>
+                            <div class="metric-description">Scale to match museums per km²</div>
+                        </div>
+                        
+                        <div class="metric-card" data-metric="transit_density">
+                            <div class="metric-name">Transit Density</div>
+                            <div class="metric-description">Scale to match metro stations per km²</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Statistics Comparison -->
+                <div class="section">
+                    <div class="section-title">
+                        <span class="icon">📈</span>
+                        Statistics
+                    </div>
+                    
+                    <div class="stats-comparison">
+                        <div class="stat-row">
+                            <span class="stat-label">Area (km²)</span>
+                            <div class="stat-values">
+                                <div class="city-stat base">
+                                    <div class="value">783</div>
+                                    <div class="city-name">NYC</div>
+                                </div>
+                                <div class="city-stat comparison">
+                                    <div class="value">2,194</div>
+                                    <div class="city-name">Tokyo</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-row">
+                            <span class="stat-label">Population</span>
+                            <div class="stat-values">
+                                <div class="city-stat base">
+                                    <div class="value">8.3M</div>
+                                    <div class="city-name">NYC</div>
+                                </div>
+                                <div class="city-stat comparison">
+                                    <div class="value">14.0M</div>
+                                    <div class="city-name">Tokyo</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-row">
+                            <span class="stat-label">Density (per km²)</span>
+                            <div class="stat-values">
+                                <div class="city-stat base">
+                                    <div class="value">11,232</div>
+                                    <div class="city-name">NYC</div>
+                                </div>
+                                <div class="city-stat comparison">
+                                    <div class="value">6,363</div>
+                                    <div class="city-name">Tokyo</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Scaling Result -->
+                    <div class="scaling-result">
+                        <div class="scaling-factor">0.57×</div>
+                        <div class="scaling-explanation">
+                            If NYC had Tokyo's population density, it would be 57% of its current size (446 km²)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Map Panel -->
+            <div class="map-panel">
+                <!-- Map Controls Bar -->
+                <div class="map-controls">
+                    <div class="view-controls">
+                        <button class="view-btn active" onclick="setMapView('split')">Split View</button>
+                        <button class="view-btn" onclick="setMapView('overlay')">Overlay</button>
+                        <button class="view-btn" onclick="setMapView('animation')">Animate</button>
+                    </div>
+                    
+                    <div class="toggle-switch">
+                        <label>Show scaled version</label>
+                        <label class="switch">
+                            <input type="checkbox" id="showScaled" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Map Container -->
+                <div id="map"></div>
+
+                <!-- Map Legend -->
+                <div class="map-legend">
+                    <div class="legend-title">City Boundaries</div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: rgba(255, 107, 107, 0.3); border-color: #FF6B6B;"></div>
+                        <span class="legend-label">New York (Original)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: rgba(255, 107, 107, 0.5); border-color: #FF6B6B; border-style: dashed;"></div>
+                        <span class="legend-label">New York (Scaled)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: rgba(78, 205, 196, 0.3); border-color: #4ECDC4;"></div>
+                        <span class="legend-label">Tokyo</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Mock city data with statistics
+        const cityData = {
+            'new-york': {
+                name: 'New York City',
+                center: [40.7128, -74.0060],
+                area: 783,
+                population: 8336817,
+                populationDensity: 11232,
+                gdpBillions: 1870,
+                museums: 83,
+                metroStations: 472,
+                color: '#FF6B6B',
+                // Simplified boundary for demo
+                boundary: {
+                    "type": "Polygon",
+                    "coordinates": [[
+                        [-74.25, 40.50],
+                        [-73.70, 40.50],
+                        [-73.70, 40.92],
+                        [-74.25, 40.92],
+                        [-74.25, 40.50]
+                    ]]
+                }
+            },
+            'tokyo': {
+                name: 'Tokyo',
+                center: [35.6762, 139.6503],
+                area: 2194,
+                population: 14000000,
+                populationDensity: 6363,
+                gdpBillions: 1520,
+                museums: 97,
+                metroStations: 285,
+                color: '#4ECDC4',
+                boundary: {
+                    "type": "Polygon",
+                    "coordinates": [[
+                        [139.50, 35.50],
+                        [139.90, 35.50],
+                        [139.90, 35.85],
+                        [139.50, 35.85],
+                        [139.50, 35.50]
+                    ]]
+                }
+            },
+            'london': {
+                name: 'London',
+                center: [51.5074, -0.1278],
+                area: 1572,
+                population: 9000000,
+                populationDensity: 5727,
+                gdpBillions: 978,
+                museums: 173,
+                metroStations: 270,
+                color: '#95E77E',
+                boundary: {
+                    "type": "Polygon",
+                    "coordinates": [[
+                        [-0.51, 51.28],
+                        [0.33, 51.28],
+                        [0.33, 51.68],
+                        [-0.51, 51.68],
+                        [-0.51, 51.28]
+                    ]]
+                }
+            },
+            'paris': {
+                name: 'Paris',
+                center: [48.8566, 2.3522],
+                area: 105,
+                population: 2200000,
+                populationDensity: 20955,
+                gdpBillions: 782,
+                museums: 150,
+                metroStations: 302,
+                color: '#FFE66D',
+                boundary: {
+                    "type": "Polygon",
+                    "coordinates": [[
+                        [2.22, 48.82],
+                        [2.47, 48.82],
+                        [2.47, 48.90],
+                        [2.22, 48.90],
+                        [2.22, 48.82]
+                    ]]
+                }
+            },
+            'singapore': {
+                name: 'Singapore',
+                center: [1.3521, 103.8198],
+                area: 728,
+                population: 5686000,
+                populationDensity: 7810,
+                gdpBillions: 397,
+                museums: 42,
+                metroStations: 106,
+                color: '#A8DADC',
+                boundary: {
+                    "type": "Polygon",
+                    "coordinates": [[
+                        [103.60, 1.20],
+                        [104.00, 1.20],
+                        [104.00, 1.47],
+                        [103.60, 1.47],
+                        [103.60, 1.20]
+                    ]]
+                }
+            },
+            'sydney': {
+                name: 'Sydney',
+                center: [-33.8688, 151.2093],
+                area: 12368,
+                population: 5300000,
+                populationDensity: 428,
+                gdpBillions: 461,
+                museums: 35,
+                metroStations: 13,
+                color: '#F1C40F',
+                boundary: {
+                    "type": "Polygon",
+                    "coordinates": [[
+                        [150.60, -34.17],
+                        [151.34, -34.17],
+                        [151.34, -33.58],
+                        [150.60, -33.58],
+                        [150.60, -34.17]
+                    ]]
+                }
+            },
+            'toronto': {
+                name: 'Toronto',
+                center: [43.6532, -79.3832],
+                area: 630,
+                population: 2930000,
+                populationDensity: 4650,
+                gdpBillions: 385,
+                museums: 29,
+                metroStations: 75,
+                color: '#E74C3C',
+                boundary: {
+                    "type": "Polygon",
+                    "coordinates": [[
+                        [-79.64, 43.58],
+                        [-79.12, 43.58],
+                        [-79.12, 43.86],
+                        [-79.64, 43.86],
+                        [-79.64, 43.58]
+                    ]]
+                }
+            },
+            'berlin': {
+                name: 'Berlin',
+                center: [52.5200, 13.4050],
+                area: 892,
+                population: 3769000,
+                populationDensity: 4227,
+                gdpBillions: 226,
+                museums: 180,
+                metroStations: 173,
+                color: '#9B59B6',
+                boundary: {
+                    "type": "Polygon",
+                    "coordinates": [[
+                        [13.09, 52.34],
+                        [13.76, 52.34],
+                        [13.76, 52.68],
+                        [13.09, 52.68],
+                        [13.09, 52.34]
+                    ]]
+                }
+            }
+        };
+
+        // Initialize map
+        let map;
+        let baseCityLayer, comparisonCityLayer, scaledCityLayer;
+        let currentMetric = 'population_density';
+        let currentView = 'split';
+
+        function initializeMap() {
+            // Create map centered on Atlantic for split view
+            map = L.map('map', {
+                center: [30, -30],
+                zoom: 2,
+                minZoom: 2,
+                maxZoom: 10
+            });
+
+            // Add base map layer
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+                attribution: '© OpenStreetMap contributors © CARTO'
+            }).addTo(map);
+
+            // Initialize with default cities
+            updateComparison();
+        }
+
+        function calculateScalingFactor(baseCity, comparisonCity, metric) {
+            const base = cityData[baseCity];
+            const comp = cityData[comparisonCity];
+            
+            let baseDensity, compDensity;
+            
+            switch(metric) {
+                case 'population_density':
+                    baseDensity = base.populationDensity;
+                    compDensity = comp.populationDensity;
+                    break;
+                case 'gdp_density':
+                    baseDensity = (base.gdpBillions * 1000) / base.area;
+                    compDensity = (comp.gdpBillions * 1000) / comp.area;
+                    break;
+                case 'cultural_density':
+                    baseDensity = base.museums / base.area;
+                    compDensity = comp.museums / comp.area;
+                    break;
+                case 'transit_density':
+                    baseDensity = base.metroStations / base.area;
+                    compDensity = comp.metroStations / comp.area;
+                    break;
+            }
+            
+            return compDensity / baseDensity;
+        }
+
+        function scaleGeoJSON(geoJSON, scaleFactor, center) {
+            // Deep clone the GeoJSON
+            const scaled = JSON.parse(JSON.stringify(geoJSON));
+            
+            // Scale coordinates around center
+            scaled.coordinates[0] = scaled.coordinates[0].map(coord => {
+                const dx = coord[0] - center[1];
+                const dy = coord[1] - center[0];
+                return [
+                    center[1] + dx * Math.sqrt(scaleFactor),
+                    center[0] + dy * Math.sqrt(scaleFactor)
+                ];
+            });
+            
+            return scaled;
+        }
+
+        function updateComparison() {
+            const baseCity = document.getElementById('baseCity').value;
+            const comparisonCity = document.getElementById('comparisonCity').value;
+            
+            const base = cityData[baseCity];
+            const comp = cityData[comparisonCity];
+            
+            // Clear existing layers
+            if (baseCityLayer) map.removeLayer(baseCityLayer);
+            if (comparisonCityLayer) map.removeLayer(comparisonCityLayer);
+            if (scaledCityLayer) map.removeLayer(scaledCityLayer);
+            
+            // Calculate scaling factor
+            const scalingFactor = calculateScalingFactor(baseCity, comparisonCity, currentMetric);
+            
+            // Update statistics display
+            updateStatistics(base, comp, scalingFactor);
+            
+            // Create map layers based on view mode
+            if (currentView === 'split') {
+                // Show cities side by side
+                const offsetBase = {...base.boundary};
+                offsetBase.coordinates[0] = offsetBase.coordinates[0].map(coord => 
+                    [coord[0] - 20, coord[1]]
+                );
+                
+                const offsetComp = {...comp.boundary};
+                offsetComp.coordinates[0] = offsetComp.coordinates[0].map(coord => 
+                    [coord[0] + 20, coord[1]]
+                );
+                
+                baseCityLayer = L.geoJSON(offsetBase, {
+                    style: {
+                        color: base.color,
+                        weight: 2,
+                        opacity: 0.8,
+                        fillOpacity: 0.3
+                    }
+                }).addTo(map);
+                
+                // Show scaled version of base city
+                const scaledBase = scaleGeoJSON(offsetBase, scalingFactor, [
+                    offsetBase.coordinates[0][0][1],
+                    offsetBase.coordinates[0][0][0]
+                ]);
+                
+                scaledCityLayer = L.geoJSON(scaledBase, {
+                    style: {
+                        color: base.color,
+                        weight: 2,
+                        opacity: 0.8,
+                        fillOpacity: 0.5,
+                        dashArray: '5, 5'
+                    }
+                }).addTo(map);
+                
+                comparisonCityLayer = L.geoJSON(offsetComp, {
+                    style: {
+                        color: comp.color,
+                        weight: 2,
+                        opacity: 0.8,
+                        fillOpacity: 0.3
+                    }
+                }).addTo(map);
+                
+                // Fit map to show both cities
+                const allBounds = L.latLngBounds([
+                    ...offsetBase.coordinates[0].map(c => [c[1], c[0]]),
+                    ...offsetComp.coordinates[0].map(c => [c[1], c[0]])
+                ]);
+                map.fitBounds(allBounds, { padding: [50, 50] });
+                
+            } else if (currentView === 'overlay') {
+                // Show cities overlaid at same location
+                const center = [0, 0];
+                
+                // Center both cities at origin
+                const centeredBase = {...base.boundary};
+                centeredBase.coordinates[0] = centeredBase.coordinates[0].map(coord => [
+                    coord[0] - base.center[1] + center[1],
+                    coord[1] - base.center[0] + center[0]
+                ]);
+                
+                const centeredComp = {...comp.boundary};
+                centeredComp.coordinates[0] = centeredComp.coordinates[0].map(coord => [
+                    coord[0] - comp.center[1] + center[1],
+                    coord[1] - comp.center[0] + center[0]
+                ]);
+                
+                baseCityLayer = L.geoJSON(centeredBase, {
+                    style: {
+                        color: base.color,
+                        weight: 2,
+                        opacity: 0.8,
+                        fillOpacity: 0.2
+                    }
+                }).addTo(map);
+                
+                // Show scaled version if enabled
+                if (document.getElementById('showScaled').checked) {
+                    const scaledBase = scaleGeoJSON(centeredBase, scalingFactor, center);
+                    scaledCityLayer = L.geoJSON(scaledBase, {
+                        style: {
+                            color: base.color,
+                            weight: 2,
+                            opacity: 0.8,
+                            fillOpacity: 0.4,
+                            dashArray: '5, 5'
+                        }
+                    }).addTo(map);
+                }
+                
+                comparisonCityLayer = L.geoJSON(centeredComp, {
+                    style: {
+                        color: comp.color,
+                        weight: 2,
+                        opacity: 0.8,
+                        fillOpacity: 0.2
+                    }
+                }).addTo(map);
+                
+                // Fit map to show overlaid cities
+                const overlayBounds = L.latLngBounds([
+                    ...centeredBase.coordinates[0].map(c => [c[1], c[0]]),
+                    ...centeredComp.coordinates[0].map(c => [c[1], c[0]])
+                ]);
+                map.fitBounds(overlayBounds, { padding: [100, 100] });
+            }
+            
+            // Update legend
+            updateLegend(base, comp, scalingFactor);
+        }
+
+        function updateStatistics(base, comp, scalingFactor) {
+            // Update stat rows
+            const statValues = document.querySelectorAll('.stat-values');
+            
+            // Area
+            statValues[0].innerHTML = `
+                <div class="city-stat base">
+                    <div class="value">${base.area.toLocaleString()}</div>
+                    <div class="city-name">${base.name}</div>
+                </div>
+                <div class="city-stat comparison">
+                    <div class="value">${comp.area.toLocaleString()}</div>
+                    <div class="city-name">${comp.name}</div>
+                </div>
+            `;
+            
+            // Population
+            statValues[1].innerHTML = `
+                <div class="city-stat base">
+                    <div class="value">${(base.population / 1000000).toFixed(1)}M</div>
+                    <div class="city-name">${base.name}</div>
+                </div>
+                <div class="city-stat comparison">
+                    <div class="value">${(comp.population / 1000000).toFixed(1)}M</div>
+                    <div class="city-name">${comp.name}</div>
+                </div>
+            `;
+            
+            // Density (varies by metric)
+            let baseDensity, compDensity, densityLabel;
+            switch(currentMetric) {
+                case 'population_density':
+                    baseDensity = base.populationDensity;
+                    compDensity = comp.populationDensity;
+                    densityLabel = 'Pop. Density (per km²)';
+                    break;
+                case 'gdp_density':
+                    baseDensity = (base.gdpBillions * 1000) / base.area;
+                    compDensity = (comp.gdpBillions * 1000) / comp.area;
+                    densityLabel = 'GDP Density ($M/km²)';
+                    break;
+                case 'cultural_density':
+                    baseDensity = base.museums / base.area;
+                    compDensity = comp.museums / comp.area;
+                    densityLabel = 'Museums (per km²)';
+                    break;
+                case 'transit_density':
+                    baseDensity = base.metroStations / base.area;
+                    compDensity = comp.metroStations / comp.area;
+                    densityLabel = 'Metro Stations (per km²)';
+                    break;
+            }
+            
+            document.querySelectorAll('.stat-label')[2].textContent = densityLabel;
+            statValues[2].innerHTML = `
+                <div class="city-stat base">
+                    <div class="value">${baseDensity < 1 ? baseDensity.toFixed(3) : baseDensity.toLocaleString()}</div>
+                    <div class="city-name">${base.name}</div>
+                </div>
+                <div class="city-stat comparison">
+                    <div class="value">${compDensity < 1 ? compDensity.toFixed(3) : compDensity.toLocaleString()}</div>
+                    <div class="city-name">${comp.name}</div>
+                </div>
+            `;
+            
+            // Update scaling result
+            const scaledArea = base.area * scalingFactor;
+            const percentSize = (scalingFactor * 100).toFixed(0);
+            const sizeChange = scalingFactor > 1 ? 'larger' : 'smaller';
+            
+            document.querySelector('.scaling-factor').textContent = `${scalingFactor.toFixed(2)}×`;
+            document.querySelector('.scaling-explanation').innerHTML = 
+                `If ${base.name} had ${comp.name}'s ${currentMetric.replace('_', ' ')}, 
+                it would be ${percentSize}% of its current size (${scaledArea.toFixed(0)} km²)`;
+        }
+
+        function updateLegend(base, comp, scalingFactor) {
+            const legend = document.querySelector('.map-legend');
+            legend.innerHTML = `
+                <div class="legend-title">City Boundaries</div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: ${base.color}33; border-color: ${base.color};"></div>
+                    <span class="legend-label">${base.name} (Original)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: ${base.color}66; border-color: ${base.color}; border-style: dashed;"></div>
+                    <span class="legend-label">${base.name} (Scaled ${scalingFactor.toFixed(2)}×)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: ${comp.color}33; border-color: ${comp.color};"></div>
+                    <span class="legend-label">${comp.name}</span>
+                </div>
+            `;
+        }
+
+        function setMapView(view) {
+            currentView = view;
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            updateComparison();
+        }
+
+        // Event listeners
+        document.getElementById('baseCity').addEventListener('change', updateComparison);
+        document.getElementById('comparisonCity').addEventListener('change', updateComparison);
+        document.getElementById('showScaled').addEventListener('change', updateComparison);
+
+        // Metric card selection
+        document.querySelectorAll('.metric-card').forEach(card => {
+            card.addEventListener('click', function() {
+                document.querySelectorAll('.metric-card').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                currentMetric = this.dataset.metric;
+                updateComparison();
+            });
+        });
+
+        // Initialize map on page load
+        window.addEventListener('DOMContentLoaded', initializeMap);
+    </script>
+</body>
+</html>
