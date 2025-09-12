@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City Statistics Comparison Tool - Interactive Mockup</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #7c3aed;
+            --success-color: #16a34a;
+            --warning-color: #ea580c;
+            --danger-color: #dc2626;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+            --shadow-xl: 0 20px 25px rgba(0,0,0,0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--gray-800);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 1.25rem;
+            opacity: 0.95;
+        }
+
+        /* Main Content Grid */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        /* City Cards Section */
+        .city-selection {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--gray-900);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .city-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .city-card {
+            background: var(--gray-50);
+            border: 2px solid transparent;
+            border-radius: 12px;
+            padding: 1.25rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .city-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--primary-color);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .city-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-color);
+        }
+
+        .city-card.selected {
+            background: white;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .city-card.selected::before {
+            transform: scaleX(1);
+        }
+
+        .city-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .city-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        .city-type {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .type-megacity {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .type-major {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .type-developing {
+            background: var(--warning-color);
+            color: white;
+        }
+
+        .type-micro {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        .city-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+
+        /* Comparison Tools */
+        .comparison-tools {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .tool-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--gray-200);
+            padding-bottom: 0;
+        }
+
+        .tool-tab {
+            padding: 0.75rem 1.5rem;
+            background: none;
+            border: none;
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--gray-600);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .tool-tab::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--primary-color);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .tool-tab:hover {
+            color: var(--gray-800);
+        }
+
+        .tool-tab.active {
+            color: var(--primary-color);
+        }
+
+        .tool-tab.active::after {
+            transform: scaleX(1);
+        }
+
+        .tool-content {
+            display: none;
+        }
+
+        .tool-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Area Scaling Tool */
+        .scaling-tool {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .city-selector {
+            background: var(--gray-50);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .selector-label {
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--gray-700);
+        }
+
+        .city-dropdown {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--gray-300);
+            border-radius: 6px;
+            font-size: 1rem;
+            background: white;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+        }
+
+        .city-dropdown:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .scaling-result {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .result-value {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-description {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        /* Density Comparison */
+        .density-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .density-card {
+            background: var(--gray-50);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .density-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 1rem;
+            background: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .density-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--gray-800);
+        }
+
+        .density-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .density-bar-item {
+            text-align: left;
+        }
+
+        .density-bar-label {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            margin-bottom: 0.25rem;
+        }
+
+        .density-bar-container {
+            background: var(--gray-200);
+            border-radius: 4px;
+            height: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .density-bar-fill {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: 4px;
+            transition: width 0.6s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 0.5rem;
+        }
+
+        .density-bar-value {
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* Sample Comparisons */
+        .comparisons-display {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .comparison-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .comparison-card {
+            background: linear-gradient(135deg, var(--gray-50), white);
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .comparison-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--primary-color);
+        }
+
+        .comparison-title {
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .comparison-detail {
+            color: var(--gray-600);
+            line-height: 1.6;
+        }
+
+        .comparison-highlight {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        /* Area Visualization */
+        .area-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            padding: 2rem;
+            background: var(--gray-50);
+            border-radius: 12px;
+        }
+
+        .area-square {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.5s ease;
+        }
+
+        .area-original {
+            width: 100px;
+            height: 100px;
+            background: var(--primary-color);
+        }
+
+        .area-scaled {
+            background: var(--secondary-color);
+        }
+
+        /* Interactive Elements */
+        .toggle-switch {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .toggle-slider {
+            width: 48px;
+            height: 24px;
+            background: var(--gray-300);
+            border-radius: 12px;
+            position: relative;
+            transition: background-color 0.3s ease;
+        }
+
+        .toggle-slider::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .toggle-switch.active .toggle-slider {
+            background: var(--primary-color);
+        }
+
+        .toggle-switch.active .toggle-slider::after {
+            transform: translateX(24px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .scaling-tool {
+                grid-template-columns: 1fr;
+            }
+
+            .city-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .comparison-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid var(--gray-300);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Metric Pills */
+        .metric-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .metric-pill {
+            padding: 0.5rem 1rem;
+            background: white;
+            border: 2px solid var(--gray-300);
+            border-radius: 20px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .metric-pill:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .metric-pill.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>City Statistics Comparison Tool</h1>
+            <p>Compare cities by area, population density, economic output, and cultural metrics</p>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-grid">
+            <!-- City Selection -->
+            <section class="city-selection">
+                <h2 class="section-title">
+                    <span>🏙️</span>
+                    Select Cities to Compare
+                </h2>
+                
+                <div class="city-grid">
+                    <!-- New York City -->
+                    <div class="city-card selected" data-city="nyc">
+                        <div class="city-header">
+                            <div class="city-name">New York City</div>
+                            <span class="city-type type-megacity">Megacity</span>
+                        </div>
+                        <div class="city-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Population</span>
+                                <span class="stat-value">8.3M</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Area</span>
+                                <span class="stat-value">783 km²</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">GDP/Capita</span>
+                                <span class="stat-value">$92K</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Skyscrapers</span>
+                                <span class="stat-value">298</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tokyo -->
+                    <div class="city-card selected" data-city="tokyo">
+                        <div class="city-header">
+                            <div class="city-name">Tokyo</div>
+                            <span class="city-type type-megacity">Megacity</span>
+                        </div>
+                        <div class="city-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Population</span>
+                                <span class="stat-value">13.5M</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Area</span>
+                                <span class="stat-value">2,194 km²</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">GDP/Capita</span>
+                                <span class="stat-value">$75K</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Metro Stations</span>
+                                <span class="stat-value">285</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- London -->
+                    <div class="city-card" data-city="london">
+                        <div class="city-header">
+                            <div class="city-name">London</div>
+                            <span class="city-type type-major">Major</span>
+                        </div>
+                        <div class="city-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Population</span>
+                                <span class="stat-value">9.6M</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Area</span>
+                                <span class="stat-value">1,572 km²</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">GDP/Capita</span>
+                                <span class="stat-value">$67K</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Green Space</span>
+                                <span class="stat-value">33%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Salvador -->
+                    <div class="city-card" data-city="salvador">
+                        <div class="city-header">
+                            <div class="city-name">Salvador, Brazil</div>
+                            <span class="city-type type-developing">Developing</span>
+                        </div>
+                        <div class="city-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Population</span>
+                                <span class="stat-value">2.6M</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Area</span>
+                                <span class="stat-value">693 km²</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">GDP/Capita</span>
+                                <span class="stat-value">$21K</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Growth Rate</span>
+                                <span class="stat-value">1.8%/yr</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Vatican City -->
+                    <div class="city-card" data-city="vatican">
+                        <div class="city-header">
+                            <div class="city-name">Vatican City</div>
+                            <span class="city-type type-micro">Micro</span>
+                        </div>
+                        <div class="city-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Population</span>
+                                <span class="stat-value">800</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Area</span>
+                                <span class="stat-value">0.44 km²</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Museums/km²</span>
+                                <span class="stat-value">25</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Cultural Score</span>
+                                <span class="stat-value">25/25</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Singapore -->
+                    <div class="city-card" data-city="singapore">
+                        <div class="city-header">
+                            <div class="city-name">Singapore</div>
+                            <span class="city-type type-major">Major</span>
+                        </div>
+                        <div class="city-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Population</span>
+                                <span class="stat-value">5.7M</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Area</span>
+                                <span class="stat-value">728 km²</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">GDP/Capita</span>
+                                <span class="stat-value">$85K</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Port Traffic</span>
+                                <span class="stat-value">#2 Global</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="toggle-switch active" id="multiSelectToggle">
+                    <span>Multi-select mode</span>
+                    <div class="toggle-slider"></div>
+                </div>
+            </section>
+
+            <!-- Comparison Tools -->
+            <section class="comparison-tools">
+                <h2 class="section-title">
+                    <span>⚖️</span>
+                    Comparison Tools
+                </h2>
+
+                <div class="tool-tabs">
+                    <button class="tool-tab active" data-tab="scaling">Area Scaling</button>
+                    <button class="tool-tab" data-tab="density">Density Comparison</button>
+                    <button class="tool-tab" data-tab="normalized">Normalized View</button>
+                </div>
+
+                <!-- Area Scaling Tool -->
+                <div class="tool-content active" id="scaling">
+                    <div class="scaling-tool">
+                        <div class="city-selector">
+                            <div class="selector-label">If this city...</div>
+                            <select class="city-dropdown" id="cityA">
+                                <option value="nyc">New York City (8.3M pop)</option>
+                                <option value="tokyo" selected>Tokyo (13.5M pop)</option>
+                                <option value="london">London (9.6M pop)</option>
+                                <option value="salvador">Salvador (2.6M pop)</option>
+                                <option value="vatican">Vatican City (800 pop)</option>
+                                <option value="singapore">Singapore (5.7M pop)</option>
+                            </select>
+                        </div>
+                        <div class="city-selector">
+                            <div class="selector-label">Had the density of...</div>
+                            <select class="city-dropdown" id="cityB">
+                                <option value="nyc" selected>New York City (10,600/km²)</option>
+                                <option value="tokyo">Tokyo (6,150/km²)</option>
+                                <option value="london">London (6,100/km²)</option>
+                                <option value="salvador">Salvador (3,750/km²)</option>
+                                <option value="vatican">Vatican City (1,818/km²)</option>
+                                <option value="singapore">Singapore (7,830/km²)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="scaling-result">
+                        <div class="result-value">2,195 km²</div>
+                        <div class="result-description">
+                            Tokyo would need to be 2,195 km² to accommodate its 13.5M people at NYC's density (same as current size)
+                        </div>
+                    </div>
+
+                    <div class="area-visual">
+                        <div class="area-square area-original">
+                            <span>Original<br>2,194 km²</span>
+                        </div>
+                        <div style="font-size: 2rem;">→</div>
+                        <div class="area-square area-scaled" style="width: 100px; height: 100px;">
+                            <span>Scaled<br>2,195 km²</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Density Comparison -->
+                <div class="tool-content" id="density">
+                    <div class="density-grid">
+                        <div class="density-card">
+                            <div class="density-icon">👥</div>
+                            <div class="density-title">Population Density</div>
+                            <div class="density-bars">
+                                <div class="density-bar-item">
+                                    <div class="density-bar-label">NYC</div>
+                                    <div class="density-bar-container">
+                                        <div class="density-bar-fill" style="width: 100%;">
+                                            <span class="density-bar-value">10,600/km²</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="density-bar-item">
+                                    <div class="density-bar-label">Tokyo</div>
+                                    <div class="density-bar-container">
+                                        <div class="density-bar-fill" style="width: 58%;">
+                                            <span class="density-bar-value">6,150/km²</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="density-card">
+                            <div class="density-icon">💰</div>
+                            <div class="density-title">Economic Density</div>
+                            <div class="density-bars">
+                                <div class="density-bar-item">
+                                    <div class="density-bar-label">NYC</div>
+                                    <div class="density-bar-container">
+                                        <div class="density-bar-fill" style="width: 100%;">
+                                            <span class="density-bar-value">$2,389M/km²</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="density-bar-item">
+                                    <div class="density-bar-label">Tokyo</div>
+                                    <div class="density-bar-container">
+                                        <div class="density-bar-fill" style="width: 38%;">
+                                            <span class="density-bar-value">$912M/km²</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="density-card">
+                            <div class="density-icon">🏛️</div>
+                            <div class="density-title">Cultural Density</div>
+                            <div class="density-bars">
+                                <div class="density-bar-item">
+                                    <div class="density-bar-label">Vatican</div>
+                                    <div class="density-bar-container">
+                                        <div class="density-bar-fill" style="width: 100%;">
+                                            <span class="density-bar-value">25 museums/km²</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="density-bar-item">
+                                    <div class="density-bar-label">London</div>
+                                    <div class="density-bar-container">
+                                        <div class="density-bar-fill" style="width: 6%;">
+                                            <span class="density-bar-value">0.15/km²</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="density-card">
+                            <div class="density-icon">🚇</div>
+                            <div class="density-title">Transit Density</div>
+                            <div class="density-bars">
+                                <div class="density-bar-item">
+                                    <div class="density-bar-label">NYC</div>
+                                    <div class="density-bar-container">
+                                        <div class="density-bar-fill" style="width: 95%;">
+                                            <span class="density-bar-value">0.61 stations/km²</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="density-bar-item">
+                                    <div class="density-bar-label">Tokyo</div>
+                                    <div class="density-bar-container">
+                                        <div class="density-bar-fill" style="width: 21%;">
+                                            <span class="density-bar-value">0.13/km²</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Normalized View -->
+                <div class="tool-content" id="normalized">
+                    <p style="margin-bottom: 1.5rem; color: var(--gray-600);">
+                        All cities scaled to 1,000 km² for direct comparison
+                    </p>
+                    
+                    <div class="metric-pills">
+                        <div class="metric-pill active">Population</div>
+                        <div class="metric-pill">GDP Total</div>
+                        <div class="metric-pill">Green Space</div>
+                        <div class="metric-pill">Infrastructure</div>
+                        <div class="metric-pill">Transit Coverage</div>
+                    </div>
+
+                    <div class="density-bars" style="margin-top: 2rem;">
+                        <div class="density-bar-item">
+                            <div class="density-bar-label">NYC (scaled from 783 km²)</div>
+                            <div class="density-bar-container">
+                                <div class="density-bar-fill" style="width: 100%;">
+                                    <span class="density-bar-value">10.6M people</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="density-bar-item">
+                            <div class="density-bar-label">Tokyo (scaled from 2,194 km²)</div>
+                            <div class="density-bar-container">
+                                <div class="density-bar-fill" style="width: 58%;">
+                                    <span class="density-bar-value">6.2M people</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="density-bar-item">
+                            <div class="density-bar-label">Singapore (scaled from 728 km²)</div>
+                            <div class="density-bar-container">
+                                <div class="density-bar-fill" style="width: 74%;">
+                                    <span class="density-bar-value">7.8M people</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="density-bar-item">
+                            <div class="density-bar-label">Salvador (scaled from 693 km²)</div>
+                            <div class="density-bar-container">
+                                <div class="density-bar-fill" style="width: 35%;">
+                                    <span class="density-bar-value">3.8M people</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sample Comparisons -->
+            <section class="comparisons-display">
+                <h2 class="section-title">
+                    <span>📊</span>
+                    Insights & Comparisons
+                </h2>
+
+                <div class="comparison-cards">
+                    <div class="comparison-card">
+                        <div class="comparison-title">Area Efficiency Champion</div>
+                        <div class="comparison-detail">
+                            If New York had Tokyo's population density, it would need 
+                            <span class="comparison-highlight">1,340 km²</span> 
+                            (1.7x larger). NYC packs <span class="comparison-highlight">72% more people</span> 
+                            per square kilometer than Tokyo.
+                        </div>
+                    </div>
+
+                    <div class="comparison-card">
+                        <div class="comparison-title">Economic Powerhouse</div>
+                        <div class="comparison-detail">
+                            NYC generates <span class="comparison-highlight">$2,389M per km²</span>, 
+                            making it 2.6x more economically dense than Tokyo's $912M per km². 
+                            Every block in Manhattan produces as much GDP as entire neighborhoods elsewhere.
+                        </div>
+                    </div>
+
+                    <div class="comparison-card">
+                        <div class="comparison-title">Cultural Intensity</div>
+                        <div class="comparison-detail">
+                            Vatican City has <span class="comparison-highlight">25 museums per km²</span> - 
+                            that's 166x more cultural density than London (0.15/km²). 
+                            It would take an area the size of Connecticut to match Vatican's museum density.
+                        </div>
+                    </div>
+
+                    <div class="comparison-card">
+                        <div class="comparison-title">Green Space Paradise</div>
+                        <div class="comparison-detail">
+                            London dedicates <span class="comparison-highlight">33% of its area</span> 
+                            to green space - that's 519 km² of parks and gardens. 
+                            If NYC had the same ratio, Central Park would need to triple in size.
+                        </div>
+                    </div>
+
+                    <div class="comparison-card">
+                        <div class="comparison-title">Transit Coverage</div>
+                        <div class="comparison-detail">
+                            Tokyo has <span class="comparison-highlight">285 metro stations</span> 
+                            across 2,194 km², but NYC's 472 stations in just 783 km² means 
+                            <span class="comparison-highlight">4.7x better coverage</span> per square kilometer.
+                        </div>
+                    </div>
+
+                    <div class="comparison-card">
+                        <div class="comparison-title">Growth Potential</div>
+                        <div class="comparison-detail">
+                            Salvador is growing at <span class="comparison-highlight">1.8% annually</span> 
+                            while maintaining lower density than established megacities. 
+                            At current rates, it will reach NYC's density in approximately 45 years.
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        // City data
+        const cityData = {
+            nyc: {
+                name: 'New York City',
+                population: 8300000,
+                area: 783,
+                gdpPerCapita: 92000,
+                density: 10600
+            },
+            tokyo: {
+                name: 'Tokyo',
+                population: 13500000,
+                area: 2194,
+                gdpPerCapita: 75000,
+                density: 6150
+            },
+            london: {
+                name: 'London',
+                population: 9600000,
+                area: 1572,
+                gdpPerCapita: 67000,
+                density: 6100
+            },
+            salvador: {
+                name: 'Salvador',
+                population: 2600000,
+                area: 693,
+                gdpPerCapita: 21000,
+                density: 3750
+            },
+            vatican: {
+                name: 'Vatican City',
+                population: 800,
+                area: 0.44,
+                gdpPerCapita: 0,
+                density: 1818
+            },
+            singapore: {
+                name: 'Singapore',
+                population: 5700000,
+                area: 728,
+                gdpPerCapita: 85000,
+                density: 7830
+            }
+        };
+
+        // City card selection
+        const cityCards = document.querySelectorAll('.city-card');
+        const multiSelectToggle = document.getElementById('multiSelectToggle');
+        let multiSelectMode = true;
+
+        cityCards.forEach(card => {
+            card.addEventListener('click', () => {
+                if (multiSelectMode) {
+                    card.classList.toggle('selected');
+                } else {
+                    cityCards.forEach(c => c.classList.remove('selected'));
+                    card.classList.add('selected');
+                }
+                updateComparisons();
+            });
+        });
+
+        multiSelectToggle.addEventListener('click', () => {
+            multiSelectToggle.classList.toggle('active');
+            multiSelectMode = multiSelectToggle.classList.contains('active');
+            
+            if (!multiSelectMode) {
+                // Keep only first selected
+                const selected = document.querySelector('.city-card.selected');
+                cityCards.forEach(c => c.classList.remove('selected'));
+                if (selected) selected.classList.add('selected');
+            }
+        });
+
+        // Tool tabs
+        const toolTabs = document.querySelectorAll('.tool-tab');
+        const toolContents = document.querySelectorAll('.tool-content');
+
+        toolTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const targetTab = tab.dataset.tab;
+                
+                toolTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                toolContents.forEach(content => {
+                    content.classList.remove('active');
+                    if (content.id === targetTab) {
+                        content.classList.add('active');
+                    }
+                });
+            });
+        });
+
+        // Area scaling calculator
+        const cityASelect = document.getElementById('cityA');
+        const cityBSelect = document.getElementById('cityB');
+
+        function calculateScaling() {
+            const cityA = cityData[cityASelect.value];
+            const cityB = cityData[cityBSelect.value];
+            
+            const scaledArea = cityA.population / cityB.density;
+            const scalingFactor = scaledArea / cityA.area;
+            
+            const resultValue = document.querySelector('.result-value');
+            const resultDescription = document.querySelector('.result-description');
+            
+            resultValue.textContent = `${scaledArea.toFixed(0).toLocaleString()} km²`;
+            
+            if (scalingFactor > 1) {
+                resultDescription.textContent = `${cityA.name} would need to be ${scaledArea.toFixed(0).toLocaleString()} km² to accommodate its ${(cityA.population/1000000).toFixed(1)}M people at ${cityB.name}'s density (${scalingFactor.toFixed(1)}x larger)`;
+            } else if (scalingFactor < 1) {
+                resultDescription.textContent = `${cityA.name} would only need ${scaledArea.toFixed(0).toLocaleString()} km² at ${cityB.name}'s density (${(1/scalingFactor).toFixed(1)}x smaller)`;
+            } else {
+                resultDescription.textContent = `${cityA.name} would need approximately the same area at ${cityB.name}'s density`;
+            }
+            
+            // Update visual
+            const originalSquare = document.querySelector('.area-original span');
+            const scaledSquare = document.querySelector('.area-scaled');
+            const scaledSpan = scaledSquare.querySelector('span');
+            
+            originalSquare.innerHTML = `Original<br>${cityA.area.toLocaleString()} km²`;
+            scaledSpan.innerHTML = `Scaled<br>${scaledArea.toFixed(0).toLocaleString()} km²`;
+            
+            // Adjust scaled square size
+            const baseSize = 100;
+            const scaledSize = Math.min(200, Math.max(50, baseSize * Math.sqrt(scalingFactor)));
+            scaledSquare.style.width = `${scaledSize}px`;
+            scaledSquare.style.height = `${scaledSize}px`;
+        }
+
+        cityASelect.addEventListener('change', calculateScaling);
+        cityBSelect.addEventListener('change', calculateScaling);
+
+        // Metric pills
+        const metricPills = document.querySelectorAll('.metric-pill');
+        metricPills.forEach(pill => {
+            pill.addEventListener('click', () => {
+                metricPills.forEach(p => p.classList.remove('active'));
+                pill.classList.add('active');
+                // In real implementation, this would update the normalized view data
+                updateNormalizedView(pill.textContent);
+            });
+        });
+
+        function updateNormalizedView(metric) {
+            // Placeholder for updating normalized view based on selected metric
+            console.log(`Updating normalized view for: ${metric}`);
+        }
+
+        function updateComparisons() {
+            const selected = document.querySelectorAll('.city-card.selected');
+            console.log(`Comparing ${selected.length} cities`);
+            // In real implementation, this would update comparison displays
+        }
+
+        // Animate density bars on load
+        setTimeout(() => {
+            const densityBars = document.querySelectorAll('.density-bar-fill');
+            densityBars.forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0';
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 100);
+            });
+        }, 500);
+
+        // Initialize
+        calculateScaling();
+    </script>
+</body>
+</html>

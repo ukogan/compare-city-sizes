@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City Statistics Progress</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+        
+        .header {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-box {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #007AFF;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #f0f0f0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #007AFF 0%, #00C896 100%);
+            transition: width 0.3s ease;
+        }
+        
+        table {
+            width: 100%;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-collapse: collapse;
+            overflow: hidden;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .has-stats {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .no-stats {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .status {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+        
+        .refresh-btn {
+            background: #007AFF;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        .refresh-btn:hover {
+            background: #0056b3;
+        }
+        
+        .filter {
+            margin-bottom: 20px;
+        }
+        
+        .filter select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📊 City Statistics Progress</h1>
+        <button class="refresh-btn" onclick="loadData()">🔄 Refresh Data</button>
+        
+        <div class="stats" id="overallStats">
+            <div class="stat-box">
+                <div class="stat-number" id="totalCities">-</div>
+                <div class="stat-label">Total Cities</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number" id="withStats">-</div>
+                <div class="stat-label">With Statistics</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number" id="coverage">-%</div>
+                <div class="stat-label">Coverage</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number" id="remaining">-</div>
+                <div class="stat-label">Remaining</div>
+            </div>
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+        </div>
+    </div>
+
+    <div class="filter">
+        <label>Filter: </label>
+        <select id="statusFilter" onchange="filterTable()">
+            <option value="all">All Cities</option>
+            <option value="with-stats">With Statistics</option>
+            <option value="no-stats">Missing Statistics</option>
+        </select>
+        
+        <input type="text" id="searchInput" placeholder="Search cities..." 
+               onkeyup="filterTable()" style="margin-left: 15px; padding: 8px; border: 1px solid #ddd; border-radius: 6px;">
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>City</th>
+                <th>Country</th>
+                <th>Statistics Status</th>
+                <th>Population</th>
+                <th>Demographics</th>
+                <th>Economics</th>
+                <th>Infrastructure</th>
+            </tr>
+        </thead>
+        <tbody id="cityTableBody">
+            <tr>
+                <td colspan="7" style="text-align: center; padding: 40px;">Loading data...</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        let allCities = [];
+        
+        async function loadData() {
+            try {
+                const cacheBuster = Date.now();
+                const response = await fetch(`cities-database.json?v=${cacheBuster}`);
+                const data = await response.json();
+                allCities = data.cities;
+                
+                updateOverallStats();
+                renderTable();
+                
+            } catch (error) {
+                console.error('Failed to load city data:', error);
+                document.getElementById('cityTableBody').innerHTML = 
+                    '<tr><td colspan="7" style="text-align: center; color: red;">Failed to load data</td></tr>';
+            }
+        }
+        
+        function updateOverallStats() {
+            const total = allCities.length;
+            const withStats = allCities.filter(city => city.statistics).length;
+            const coverage = total > 0 ? Math.round(withStats / total * 100) : 0;
+            const remaining = total - withStats;
+            
+            document.getElementById('totalCities').textContent = total;
+            document.getElementById('withStats').textContent = withStats;
+            document.getElementById('coverage').textContent = coverage + '%';
+            document.getElementById('remaining').textContent = remaining;
+            document.getElementById('progressFill').style.width = coverage + '%';
+        }
+        
+        function renderTable() {
+            const tbody = document.getElementById('cityTableBody');
+            const statusFilter = document.getElementById('statusFilter').value;
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            let filteredCities = allCities;
+            
+            // Apply status filter
+            if (statusFilter === 'with-stats') {
+                filteredCities = filteredCities.filter(city => city.statistics);
+            } else if (statusFilter === 'no-stats') {
+                filteredCities = filteredCities.filter(city => !city.statistics);
+            }
+            
+            // Apply search filter
+            if (searchTerm) {
+                filteredCities = filteredCities.filter(city => 
+                    city.name.toLowerCase().includes(searchTerm) ||
+                    city.country.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            tbody.innerHTML = '';
+            
+            if (filteredCities.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align: center;">No cities match your filters</td></tr>';
+                return;
+            }
+            
+            filteredCities.forEach(city => {
+                const row = document.createElement('tr');
+                const hasStats = city.statistics;
+                
+                row.className = hasStats ? 'has-stats' : 'no-stats';
+                
+                row.innerHTML = `
+                    <td><strong>${city.name}</strong></td>
+                    <td>${city.country}</td>
+                    <td>
+                        <span class="status ${hasStats ? 'has-stats' : 'no-stats'}">
+                            ${hasStats ? '✅ Complete' : '❌ Missing'}
+                        </span>
+                    </td>
+                    <td>${hasStats ? (city.statistics.population ? city.statistics.population.total?.toLocaleString() || 'N/A' : 'N/A') : 'N/A'}</td>
+                    <td>${hasStats ? (city.statistics.demographics ? '✅' : '❌') : '❌'}</td>
+                    <td>${hasStats ? (city.statistics.economics ? '✅' : '❌') : '❌'}</td>
+                    <td>${hasStats ? (city.statistics.infrastructure ? '✅' : '❌') : '❌'}</td>
+                `;
+                
+                tbody.appendChild(row);
+            });
+        }
+        
+        function filterTable() {
+            renderTable();
+        }
+        
+        // Auto-refresh every 30 seconds
+        setInterval(loadData, 30000);
+        
+        // Initial load
+        loadData();
+    </script>
+</body>
+</html>

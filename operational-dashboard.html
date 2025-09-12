@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>City Comparison - Operations Dashboard</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: #f5f7fa;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .dashboard {
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: white;
+            border-right: 1px solid #e1e5e9;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .header {
+            background: white;
+            padding: 20px 30px;
+            border-bottom: 1px solid #e1e5e9;
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1a202c;
+        }
+
+        .refresh-controls {
+            display: flex;
+            gap: 10px;
+            margin-left: auto;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: #007AFF;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0056b3;
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #495057;
+            border: 1px solid #dee2e6;
+        }
+
+        .btn-secondary:hover {
+            background: #e9ecef;
+        }
+
+        .nav-menu {
+            padding: 20px 0;
+        }
+
+        .nav-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            border-left: 3px solid transparent;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-item:hover {
+            background: #f8f9fa;
+        }
+
+        .nav-item.active {
+            background: #e3f2fd;
+            border-left-color: #007AFF;
+            color: #007AFF;
+            font-weight: 500;
+        }
+
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            opacity: 0.7;
+        }
+
+        .nav-item.active .nav-icon {
+            opacity: 1;
+        }
+
+        .content-area {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+            border: 1px solid #e1e5e9;
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #1a202c;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            color: #6b7280;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #f1f3f4;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 12px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #007AFF 0%, #00C896 100%);
+            transition: width 0.3s ease;
+        }
+
+        .data-table {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+            border: 1px solid #e1e5e9;
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: 20px;
+            border-bottom: 1px solid #e1e5e9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a202c;
+        }
+
+        .search-filter {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .search-input {
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            width: 250px;
+        }
+
+        .filter-select {
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            background: white;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px 20px;
+            text-align: left;
+            border-bottom: 1px solid #f1f3f4;
+        }
+
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #374151;
+            font-size: 14px;
+            cursor: pointer;
+            user-select: none;
+            position: relative;
+            padding-right: 30px;
+        }
+
+        th:hover {
+            background: #e9ecef;
+        }
+
+        th.sortable::after {
+            content: '↕️';
+            position: absolute;
+            right: 8px;
+            opacity: 0.5;
+            font-size: 12px;
+        }
+
+        th.sort-asc::after {
+            content: '↑';
+            opacity: 1;
+            color: #007AFF;
+        }
+
+        th.sort-desc::after {
+            content: '↓';
+            opacity: 1;
+            color: #007AFF;
+        }
+
+        td {
+            color: #6b7280;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-complete {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-partial {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-missing {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .status-processing {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .city-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .city-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+            border: 1px solid #e1e5e9;
+            overflow: hidden;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .city-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .city-map {
+            height: 200px;
+            position: relative;
+        }
+
+        .city-info {
+            padding: 20px;
+        }
+
+        .city-name {
+            font-weight: 600;
+            color: #1a202c;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .city-meta {
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .city-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            font-size: 12px;
+        }
+
+        .city-stat {
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .city-stat-value {
+            font-weight: 600;
+            color: #1a202c;
+        }
+
+        .city-stat-label {
+            color: #6b7280;
+            margin-top: 2px;
+        }
+
+        .pagination {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+            padding: 20px;
+        }
+
+        .pagination button {
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .pagination button:hover {
+            background: #f9fafb;
+        }
+
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .pagination .current {
+            background: #007AFF;
+            color: white;
+            border-color: #007AFF;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6b7280;
+        }
+
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #fecaca;
+        }
+
+        /* Leaflet map styling */
+        .leaflet-container {
+            background: #f8f9fa;
+        }
+        
+        .leaflet-control-container {
+            display: none;
+        }
+
+        .auto-refresh {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #6b7280;
+            font-size: 14px;
+            margin-top: auto;
+            padding: 20px;
+        }
+
+        .auto-refresh-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #10b981;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar Navigation -->
+        <div class="sidebar">
+            <div class="nav-menu">
+                <div class="nav-item active" data-section="statistics">
+                    <span class="nav-icon">📊</span>
+                    Statistics Overview
+                </div>
+                <div class="nav-item" data-section="maps">
+                    <span class="nav-icon">🗺️</span>
+                    Boundary Maps
+                </div>
+                <div class="nav-item" data-section="pipeline">
+                    <span class="nav-icon">⚙️</span>
+                    Pipeline Status
+                </div>
+            </div>
+            
+            <div class="auto-refresh">
+                <div class="auto-refresh-indicator"></div>
+                Auto-refresh: 30s
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <div class="logo">🏙️ City Comparison Dashboard</div>
+                <div class="refresh-controls">
+                    <button class="btn btn-secondary" onclick="toggleAutoRefresh()">
+                        <span id="autoRefreshText">⏸️ Pause</span>
+                    </button>
+                    <button class="btn btn-primary" onclick="refreshAllData()">
+                        🔄 Refresh Now
+                    </button>
+                </div>
+            </div>
+
+            <div class="content-area">
+                <!-- Statistics Section -->
+                <div class="section active" id="statistics-section">
+                    <div class="stats-grid" id="overallStats">
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalCities">-</div>
+                            <div class="stat-label">Total Cities</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="withStats">-</div>
+                            <div class="stat-label">With Statistics</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="statsProgress" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="withBoundaries">-</div>
+                            <div class="stat-label">With Boundaries</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="boundariesProgress" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="completionRate">-%</div>
+                            <div class="stat-label">Overall Progress</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="overallProgress" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="data-table">
+                        <div class="table-header">
+                            <div class="table-title">City Statistics Details</div>
+                            <div class="search-filter">
+                                <select class="filter-select" id="statsFilter" onchange="filterStatsTable()">
+                                    <option value="all">All Cities</option>
+                                    <option value="complete">Complete Statistics</option>
+                                    <option value="partial">Partial Statistics</option>
+                                    <option value="missing">Missing Statistics</option>
+                                </select>
+                                <input type="text" class="search-input" id="statsSearch" placeholder="Search cities..." onkeyup="filterStatsTable()">
+                            </div>
+                        </div>
+                        
+                        <div style="overflow-x: auto; max-height: 600px;">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th class="sortable" data-column="name" onclick="sortStatsTable('name')">City</th>
+                                        <th class="sortable" data-column="country" onclick="sortStatsTable('country')">Country</th>
+                                        <th class="sortable" data-column="status" onclick="sortStatsTable('status')">Status</th>
+                                        <th class="sortable" data-column="population" onclick="sortStatsTable('population')">Population</th>
+                                        <th class="sortable" data-column="density" onclick="sortStatsTable('density')">Density</th>
+                                        <th class="sortable" data-column="gdp" onclick="sortStatsTable('gdp')">GDP per Capita</th>
+                                        <th class="sortable" data-column="transit" onclick="sortStatsTable('transit')">Transit Score</th>
+                                        <th class="sortable" data-column="climate" onclick="sortStatsTable('climate')">Climate</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="statsTableBody">
+                                    <tr>
+                                        <td colspan="8" class="loading">Loading statistics data...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Maps Section -->
+                <div class="section" id="maps-section">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number" id="mapsTotal">-</div>
+                            <div class="stat-label">Cities with Maps</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="currentMapPage">1</div>
+                            <div class="stat-label">Current Page</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="perPage">12</div>
+                            <div class="stat-label">Per Page</div>
+                        </div>
+                    </div>
+
+                    <div class="data-table">
+                        <div class="table-header">
+                            <div class="table-title">Boundary Maps Contact Sheet</div>
+                            <div class="search-filter">
+                                <select class="filter-select" id="mapSort" onchange="sortMaps()">
+                                    <option value="size">Sort by Size</option>
+                                    <option value="name">Sort by Name</option>
+                                    <option value="country">Sort by Country</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="city-grid" id="cityGrid">
+                            <div class="loading">Loading boundary maps...</div>
+                        </div>
+
+                        <div class="pagination">
+                            <button id="firstBtn" onclick="goToMapPage(1)">First</button>
+                            <button id="prevBtn" onclick="goToMapPage(currentMapPage - 1)">Previous</button>
+                            <span id="pageInfo">Page 1 of 1</span>
+                            <button id="nextBtn" onclick="goToMapPage(currentMapPage + 1)">Next</button>
+                            <button id="lastBtn" onclick="goToMapPage(totalMapPages)">Last</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pipeline Status Section -->
+                <div class="section" id="pipeline-section">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number" id="pipelineNotStarted">-</div>
+                            <div class="stat-label">Not Downloaded</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="pipelineProcessing">-</div>
+                            <div class="stat-label">Processing</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="pipelineComplete">-</div>
+                            <div class="stat-label">Complete</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="pipelineFailed">-</div>
+                            <div class="stat-label">Failed</div>
+                        </div>
+                    </div>
+
+                    <div class="data-table">
+                        <div class="table-header">
+                            <div class="table-title">Pipeline Processing Status</div>
+                            <div class="search-filter">
+                                <select class="filter-select" id="pipelineFilter" onchange="filterPipelineTable()">
+                                    <option value="all">All Cities</option>
+                                    <option value="not-started">Not Downloaded</option>
+                                    <option value="processing">Processing</option>
+                                    <option value="complete">Complete</option>
+                                    <option value="failed">Failed</option>
+                                </select>
+                                <input type="text" class="search-input" id="pipelineSearch" placeholder="Search cities..." onkeyup="filterPipelineTable()">
+                            </div>
+                        </div>
+                        
+                        <div style="overflow-x: auto; max-height: 600px;">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th class="sortable" data-column="name" onclick="sortPipelineTable('name')">City</th>
+                                        <th class="sortable" data-column="country" onclick="sortPipelineTable('country')">Country</th>
+                                        <th class="sortable" data-column="pipeline" onclick="sortPipelineTable('pipeline')">Pipeline Status</th>
+                                        <th class="sortable" data-column="boundary" onclick="sortPipelineTable('boundary')">Boundary Status</th>
+                                        <th class="sortable" data-column="stats" onclick="sortPipelineTable('stats')">Statistics Status</th>
+                                        <th class="sortable" data-column="filesize" onclick="sortPipelineTable('filesize')">File Size</th>
+                                        <th class="sortable" data-column="updated" onclick="sortPipelineTable('updated')">Last Updated</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="pipelineTableBody">
+                                    <tr>
+                                        <td colspan="7" class="loading">Loading pipeline status...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Global variables
+        let allCities = [];
+        let citiesWithBoundaries = [];
+        let autoRefreshEnabled = true;
+        let refreshInterval;
+        
+        // Map pagination
+        let currentMapPage = 1;
+        let totalMapPages = 1;
+        const CITIES_PER_PAGE = 12;
+        let isLoadingMaps = false;
+
+        // Sorting state
+        let currentStatsSort = { column: null, direction: 'asc' };
+        let currentPipelineSort = { column: null, direction: 'asc' };
+        let filteredStatsCities = [];
+        let filteredPipelineCities = [];
+
+        // Initialize dashboard
+        async function init() {
+            setupNavigation();
+            await refreshAllData();
+            
+            if (autoRefreshEnabled) {
+                refreshInterval = setInterval(refreshAllData, 30000);
+            }
+        }
+
+        // Navigation setup
+        function setupNavigation() {
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const section = item.dataset.section;
+                    switchSection(section);
+                });
+            });
+        }
+
+        function switchSection(sectionName) {
+            // Update nav items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelector(`[data-section="${sectionName}"]`).classList.add('active');
+            
+            // Update sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(`${sectionName}-section`).classList.add('active');
+            
+            // Load section-specific data if needed
+            if (sectionName === 'maps' && citiesWithBoundaries.length > 0) {
+                renderMapPage();
+            }
+        }
+
+        // Data loading
+        async function refreshAllData() {
+            try {
+                await loadCityData();
+                await loadBoundaryData();
+                updateAllStats();
+                renderStatsTable();
+                renderPipelineTable();
+                
+                if (document.getElementById('maps-section').classList.contains('active')) {
+                    renderMapPage();
+                }
+                
+                console.log('Dashboard data refreshed successfully');
+            } catch (error) {
+                console.error('Failed to refresh dashboard data:', error);
+            }
+        }
+
+        async function loadCityData() {
+            const cacheBuster = Date.now();
+            const response = await fetch(`cities-database.json?v=${cacheBuster}`);
+            const data = await response.json();
+            allCities = data.cities;
+        }
+
+        async function loadBoundaryData() {
+            const cacheBuster = Date.now();
+            const loadPromises = allCities.map(async (city) => {
+                try {
+                    const response = await fetch(`${city.id}.geojson?v=${cacheBuster}`);
+                    if (response.ok) {
+                        const geojson = await response.json();
+                        const area = calculateGeoJSONArea(geojson);
+                        return {
+                            ...city,
+                            geojson: geojson,
+                            area: area,
+                            hasBoundary: true,
+                            fileSize: response.headers.get('content-length') || 'Unknown'
+                        };
+                    }
+                } catch (error) {
+                    // City doesn't have boundary file
+                }
+                return null;
+            });
+
+            const results = await Promise.all(loadPromises);
+            citiesWithBoundaries = results.filter(city => city !== null);
+            citiesWithBoundaries.sort((a, b) => b.area - a.area);
+            totalMapPages = Math.ceil(citiesWithBoundaries.length / CITIES_PER_PAGE);
+        }
+
+        function calculateGeoJSONArea(geojson) {
+            let totalArea = 0;
+            
+            function processCoordinates(coords) {
+                if (!coords || coords.length < 3) return 0;
+                
+                let minLat = Infinity, maxLat = -Infinity;
+                let minLng = Infinity, maxLng = -Infinity;
+                
+                coords.forEach(coord => {
+                    const [lng, lat] = coord;
+                    minLat = Math.min(minLat, lat);
+                    maxLat = Math.max(maxLat, lat);
+                    minLng = Math.min(minLng, lng);
+                    maxLng = Math.max(maxLng, lng);
+                });
+                
+                return (maxLat - minLat) * (maxLng - minLng);
+            }
+
+            if (geojson.type === 'FeatureCollection') {
+                geojson.features.forEach(feature => {
+                    if (feature.geometry) {
+                        if (feature.geometry.type === 'Polygon') {
+                            totalArea += processCoordinates(feature.geometry.coordinates[0]);
+                        } else if (feature.geometry.type === 'MultiPolygon') {
+                            feature.geometry.coordinates.forEach(polygon => {
+                                totalArea += processCoordinates(polygon[0]);
+                            });
+                        }
+                    }
+                });
+            } else if (geojson.type === 'Feature') {
+                if (geojson.geometry.type === 'Polygon') {
+                    totalArea = processCoordinates(geojson.geometry.coordinates[0]);
+                } else if (geojson.geometry.type === 'MultiPolygon') {
+                    geojson.geometry.coordinates.forEach(polygon => {
+                        totalArea += processCoordinates(polygon[0]);
+                    });
+                }
+            }
+            
+            return totalArea;
+        }
+
+        // Stats updates
+        function updateAllStats() {
+            const total = allCities.length;
+            const withStats = allCities.filter(city => city.statistics).length;
+            const withBoundaries = citiesWithBoundaries.length;
+            const statsProgress = total > 0 ? Math.round(withStats / total * 100) : 0;
+            const boundariesProgress = total > 0 ? Math.round(withBoundaries / total * 100) : 0;
+            const overallProgress = Math.round((statsProgress + boundariesProgress) / 2);
+
+            // Overall stats
+            document.getElementById('totalCities').textContent = total;
+            document.getElementById('withStats').textContent = withStats;
+            document.getElementById('withBoundaries').textContent = withBoundaries;
+            document.getElementById('completionRate').textContent = overallProgress + '%';
+            
+            // Progress bars
+            document.getElementById('statsProgress').style.width = statsProgress + '%';
+            document.getElementById('boundariesProgress').style.width = boundariesProgress + '%';
+            document.getElementById('overallProgress').style.width = overallProgress + '%';
+            
+            // Maps stats
+            document.getElementById('mapsTotal').textContent = withBoundaries;
+            
+            // Pipeline stats
+            const notStarted = total - withBoundaries;
+            const complete = withBoundaries;
+            document.getElementById('pipelineNotStarted').textContent = notStarted;
+            document.getElementById('pipelineProcessing').textContent = 0; // TODO: Track processing
+            document.getElementById('pipelineComplete').textContent = complete;
+            document.getElementById('pipelineFailed').textContent = 0; // TODO: Track failures
+        }
+
+        // Stats table rendering
+        function renderStatsTable() {
+            const tbody = document.getElementById('statsTableBody');
+            const filter = document.getElementById('statsFilter')?.value || 'all';
+            const search = document.getElementById('statsSearch')?.value.toLowerCase() || '';
+            
+            filteredStatsCities = allCities;
+            
+            // Apply filters
+            if (filter === 'complete') {
+                filteredStatsCities = filteredStatsCities.filter(city => 
+                    city.statistics && 
+                    city.statistics.demographics && 
+                    city.statistics.economic && 
+                    city.statistics.geography &&
+                    city.statistics.infrastructure &&
+                    city.statistics.climate
+                );
+            } else if (filter === 'partial') {
+                filteredStatsCities = filteredStatsCities.filter(city => 
+                    city.statistics && !(
+                        city.statistics.demographics && 
+                        city.statistics.economic && 
+                        city.statistics.geography &&
+                        city.statistics.infrastructure &&
+                        city.statistics.climate
+                    )
+                );
+            } else if (filter === 'missing') {
+                filteredStatsCities = filteredStatsCities.filter(city => !city.statistics);
+            }
+            
+            if (search) {
+                filteredStatsCities = filteredStatsCities.filter(city => 
+                    city.name.toLowerCase().includes(search) ||
+                    city.country.toLowerCase().includes(search)
+                );
+            }
+
+            // Apply current sorting
+            if (currentStatsSort.column) {
+                applySorting(filteredStatsCities, currentStatsSort.column, currentStatsSort.direction, 'stats');
+            }
+            
+            tbody.innerHTML = '';
+            
+            if (filteredStatsCities.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center;">No cities match your filters</td></tr>';
+                return;
+            }
+            
+            filteredStatsCities.forEach(city => {
+                const stats = city.statistics;
+                const hasComplete = stats && stats.demographics && stats.economic && stats.geography;
+                const hasPartial = stats && !hasComplete;
+                const hasMissing = !stats;
+                
+                const statusClass = hasComplete ? 'status-complete' : hasPartial ? 'status-partial' : 'status-missing';
+                const statusText = hasComplete ? 'Complete' : hasPartial ? 'Partial' : 'Missing';
+                
+                // Extract actual values from the statistics structure
+                const population = stats && stats.demographics ? 
+                    (stats.demographics.population_metro ?? stats.demographics.population_city ?? 'N/A') : 'N/A';
+                const density = stats && stats.demographics ? 
+                    (stats.demographics.population_density ?? 'N/A') : 'N/A';
+                const gdpPerCapita = stats && stats.economic ? 
+                    (stats.economic.gdp_per_capita_usd ?? 'N/A') : 'N/A';
+                const transitScore = stats && stats.infrastructure ? 
+                    (stats.infrastructure.metro_stations ?? stats.infrastructure.metro_lines ?? 'N/A') : 'N/A';
+                const avgTemp = stats && stats.climate ? 
+                    (stats.climate.avg_temp_celsius ?? 'N/A') : 'N/A';
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><strong>${city.name}</strong></td>
+                    <td>${city.country}</td>
+                    <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                    <td>${typeof population === 'number' ? population.toLocaleString() : population}</td>
+                    <td>${typeof density === 'number' ? density.toLocaleString() + '/km²' : density}</td>
+                    <td>${typeof gdpPerCapita === 'number' ? '$' + gdpPerCapita.toLocaleString() : gdpPerCapita}</td>
+                    <td>${transitScore}</td>
+                    <td>${typeof avgTemp === 'number' ? avgTemp + '°C' : avgTemp}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Pipeline table rendering
+        function renderPipelineTable() {
+            const tbody = document.getElementById('pipelineTableBody');
+            const filter = document.getElementById('pipelineFilter')?.value || 'all';
+            const search = document.getElementById('pipelineSearch')?.value.toLowerCase() || '';
+            
+            filteredPipelineCities = allCities.map(city => {
+                const hasBoundary = citiesWithBoundaries.some(c => c.id === city.id);
+                const hasStats = city.statistics;
+                
+                return {
+                    ...city,
+                    hasBoundary,
+                    hasStats,
+                    pipelineStatus: hasBoundary ? 'complete' : 'not-started'
+                };
+            });
+            
+            // Apply filters
+            if (filter !== 'all') {
+                filteredPipelineCities = filteredPipelineCities.filter(city => city.pipelineStatus === filter);
+            }
+            
+            if (search) {
+                filteredPipelineCities = filteredPipelineCities.filter(city => 
+                    city.name.toLowerCase().includes(search) ||
+                    city.country.toLowerCase().includes(search)
+                );
+            }
+
+            // Apply current sorting
+            if (currentPipelineSort.column) {
+                applySorting(filteredPipelineCities, currentPipelineSort.column, currentPipelineSort.direction, 'pipeline');
+            }
+            
+            tbody.innerHTML = '';
+            
+            if (filteredPipelineCities.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align: center;">No cities match your filters</td></tr>';
+                return;
+            }
+            
+            filteredPipelineCities.forEach(city => {
+                const pipelineStatusClass = city.pipelineStatus === 'complete' ? 'status-complete' : 'status-missing';
+                const pipelineStatusText = city.pipelineStatus === 'complete' ? 'Complete' : 'Not Started';
+                
+                const boundaryStatusClass = city.hasBoundary ? 'status-complete' : 'status-missing';
+                const boundaryStatusText = city.hasBoundary ? 'Available' : 'Missing';
+                
+                const statsStatusClass = city.hasStats ? 'status-complete' : 'status-missing';
+                const statsStatusText = city.hasStats ? 'Available' : 'Missing';
+                
+                const boundaryCity = citiesWithBoundaries.find(c => c.id === city.id);
+                const fileSize = boundaryCity ? (boundaryCity.fileSize !== 'Unknown' ? (parseInt(boundaryCity.fileSize) / 1024).toFixed(1) + ' KB' : 'Unknown') : '-';
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><strong>${city.name}</strong></td>
+                    <td>${city.country}</td>
+                    <td><span class="status-badge ${pipelineStatusClass}">${pipelineStatusText}</span></td>
+                    <td><span class="status-badge ${boundaryStatusClass}">${boundaryStatusText}</span></td>
+                    <td><span class="status-badge ${statsStatusClass}">${statsStatusText}</span></td>
+                    <td>${fileSize}</td>
+                    <td>-</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Map rendering
+        function renderMapPage() {
+            if (isLoadingMaps) return;
+            isLoadingMaps = true;
+
+            const startIndex = (currentMapPage - 1) * CITIES_PER_PAGE;
+            const endIndex = Math.min(startIndex + CITIES_PER_PAGE, citiesWithBoundaries.length);
+            const pageData = citiesWithBoundaries.slice(startIndex, endIndex);
+
+            // Update page info
+            document.getElementById('currentMapPage').textContent = currentMapPage;
+            document.getElementById('pageInfo').textContent = `Page ${currentMapPage} of ${totalMapPages}`;
+
+            // Update pagination buttons
+            updateMapPaginationButtons();
+
+            // Clear grid and render cards
+            const grid = document.getElementById('cityGrid');
+            grid.innerHTML = '';
+
+            pageData.forEach((city, index) => {
+                const card = createCityCard(city, startIndex + index + 1);
+                grid.appendChild(card);
+            });
+
+            // Initialize maps after DOM update
+            setTimeout(() => {
+                pageData.forEach((city, index) => {
+                    initializeCityMap(city, startIndex + index + 1);
+                });
+                isLoadingMaps = false;
+            }, 100);
+        }
+
+        function createCityCard(city, rank) {
+            const card = document.createElement('div');
+            card.className = 'city-card';
+            
+            const stats = city.statistics;
+            const population = stats && stats.demographics ? 
+                (stats.demographics.population_metro ?? stats.demographics.population_city ?? 'N/A') : 'N/A';
+            const area = city.area ? (city.area * 111 * 111).toFixed(1) + ' km²' : 'N/A';
+            
+            card.innerHTML = `
+                <div class="city-map" id="map-${city.id}"></div>
+                <div class="city-info">
+                    <div class="city-name">${city.name}</div>
+                    <div class="city-meta">#${rank} • ${city.country}</div>
+                    <div class="city-stats">
+                        <div class="city-stat">
+                            <div class="city-stat-value">${typeof population === 'number' ? population.toLocaleString() : population}</div>
+                            <div class="city-stat-label">Population</div>
+                        </div>
+                        <div class="city-stat">
+                            <div class="city-stat-value">${area}</div>
+                            <div class="city-stat-label">Area</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            return card;
+        }
+
+        function initializeCityMap(city, rank) {
+            const mapId = `map-${city.id}`;
+            const mapElement = document.getElementById(mapId);
+            
+            if (!mapElement || !city.geojson) return;
+
+            try {
+                const bounds = L.geoJSON(city.geojson).getBounds();
+                
+                const map = L.map(mapId, {
+                    zoomControl: false,
+                    scrollWheelZoom: false,
+                    doubleClickZoom: false,
+                    boxZoom: false,
+                    keyboard: false,
+                    dragging: false,
+                    touchZoom: false
+                });
+
+                L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
+                    maxZoom: 19,
+                    attribution: ''
+                }).addTo(map);
+
+                L.geoJSON(city.geojson, {
+                    style: {
+                        color: '#007AFF',
+                        weight: 2,
+                        opacity: 0.8,
+                        fillColor: '#007AFF',
+                        fillOpacity: 0.2
+                    }
+                }).addTo(map);
+
+                map.fitBounds(bounds, { padding: [10, 10] });
+
+            } catch (error) {
+                console.error(`Failed to render map for ${city.name}:`, error);
+                mapElement.innerHTML = '<div style="display: flex; align-items: center; justify-content: center; height: 100%; color: #999;">Map Error</div>';
+            }
+        }
+
+        function updateMapPaginationButtons() {
+            document.getElementById('firstBtn').disabled = currentMapPage === 1;
+            document.getElementById('prevBtn').disabled = currentMapPage === 1;
+            document.getElementById('nextBtn').disabled = currentMapPage === totalMapPages;
+            document.getElementById('lastBtn').disabled = currentMapPage === totalMapPages;
+        }
+
+        function goToMapPage(page) {
+            if (page < 1 || page > totalMapPages || page === currentMapPage || isLoadingMaps) return;
+            currentMapPage = page;
+            renderMapPage();
+        }
+
+        // Filter functions
+        function filterStatsTable() {
+            renderStatsTable();
+        }
+
+        function filterPipelineTable() {
+            renderPipelineTable();
+        }
+
+        function sortMaps() {
+            const sortBy = document.getElementById('mapSort').value;
+            
+            if (sortBy === 'name') {
+                citiesWithBoundaries.sort((a, b) => a.name.localeCompare(b.name));
+            } else if (sortBy === 'country') {
+                citiesWithBoundaries.sort((a, b) => a.country.localeCompare(b.country));
+            } else {
+                citiesWithBoundaries.sort((a, b) => b.area - a.area);
+            }
+            
+            currentMapPage = 1;
+            renderMapPage();
+        }
+
+        // Auto-refresh controls
+        function toggleAutoRefresh() {
+            autoRefreshEnabled = !autoRefreshEnabled;
+            const button = document.getElementById('autoRefreshText');
+            
+            if (autoRefreshEnabled) {
+                refreshInterval = setInterval(refreshAllData, 30000);
+                button.textContent = '⏸️ Pause';
+            } else {
+                clearInterval(refreshInterval);
+                button.textContent = '▶️ Resume';
+            }
+        }
+
+        // Sorting functions
+        function sortStatsTable(column) {
+            // Toggle direction if same column, otherwise default to asc
+            if (currentStatsSort.column === column) {
+                currentStatsSort.direction = currentStatsSort.direction === 'asc' ? 'desc' : 'asc';
+            } else {
+                currentStatsSort.column = column;
+                currentStatsSort.direction = 'asc';
+            }
+
+            // Update header indicators
+            updateSortIndicators('stats', column, currentStatsSort.direction);
+
+            // Re-render table with new sorting
+            renderStatsTable();
+        }
+
+        function sortPipelineTable(column) {
+            // Toggle direction if same column, otherwise default to asc
+            if (currentPipelineSort.column === column) {
+                currentPipelineSort.direction = currentPipelineSort.direction === 'asc' ? 'desc' : 'asc';
+            } else {
+                currentPipelineSort.column = column;
+                currentPipelineSort.direction = 'asc';
+            }
+
+            // Update header indicators
+            updateSortIndicators('pipeline', column, currentPipelineSort.direction);
+
+            // Re-render table with new sorting
+            renderPipelineTable();
+        }
+
+        function updateSortIndicators(tableType, column, direction) {
+            // Remove all existing sort indicators
+            const prefix = tableType === 'stats' ? 'statistics-section' : 'pipeline-section';
+            const table = document.querySelector(`#${prefix} table`);
+            const headers = table.querySelectorAll('th.sortable');
+            
+            headers.forEach(th => {
+                th.classList.remove('sort-asc', 'sort-desc');
+            });
+
+            // Add indicator to current column
+            const currentHeader = table.querySelector(`th[data-column="${column}"]`);
+            if (currentHeader) {
+                currentHeader.classList.add(direction === 'asc' ? 'sort-asc' : 'sort-desc');
+            }
+        }
+
+        function applySorting(cities, column, direction, tableType) {
+            cities.sort((a, b) => {
+                let aVal, bVal;
+
+                switch (column) {
+                    case 'name':
+                        aVal = a.name;
+                        bVal = b.name;
+                        break;
+                    case 'country':
+                        aVal = a.country;
+                        bVal = b.country;
+                        break;
+                    case 'status':
+                        if (tableType === 'stats') {
+                            const aComplete = a.statistics && a.statistics.demographics && a.statistics.economic;
+                            const bComplete = b.statistics && b.statistics.demographics && b.statistics.economic;
+                            aVal = !a.statistics ? 0 : (aComplete ? 2 : 1);
+                            bVal = !b.statistics ? 0 : (bComplete ? 2 : 1);
+                        } else {
+                            aVal = a.pipelineStatus === 'complete' ? 1 : 0;
+                            bVal = b.pipelineStatus === 'complete' ? 1 : 0;
+                        }
+                        break;
+                    case 'population':
+                        aVal = a.statistics?.demographics?.population_metro || a.statistics?.demographics?.population_city || 0;
+                        bVal = b.statistics?.demographics?.population_metro || b.statistics?.demographics?.population_city || 0;
+                        break;
+                    case 'density':
+                        aVal = a.statistics?.demographics?.population_density || 0;
+                        bVal = b.statistics?.demographics?.population_density || 0;
+                        break;
+                    case 'gdp':
+                        aVal = a.statistics?.economic?.gdp_per_capita_usd || 0;
+                        bVal = b.statistics?.economic?.gdp_per_capita_usd || 0;
+                        break;
+                    case 'transit':
+                        aVal = a.statistics?.infrastructure?.metro_stations || 0;
+                        bVal = b.statistics?.infrastructure?.metro_stations || 0;
+                        break;
+                    case 'climate':
+                        aVal = a.statistics?.climate?.avg_temp_celsius || 0;
+                        bVal = b.statistics?.climate?.avg_temp_celsius || 0;
+                        break;
+                    case 'pipeline':
+                        aVal = a.pipelineStatus === 'complete' ? 1 : 0;
+                        bVal = b.pipelineStatus === 'complete' ? 1 : 0;
+                        break;
+                    case 'boundary':
+                        aVal = a.hasBoundary ? 1 : 0;
+                        bVal = b.hasBoundary ? 1 : 0;
+                        break;
+                    case 'stats':
+                        aVal = a.hasStats ? 1 : 0;
+                        bVal = b.hasStats ? 1 : 0;
+                        break;
+                    case 'filesize':
+                        const aCity = citiesWithBoundaries.find(c => c.id === a.id);
+                        const bCity = citiesWithBoundaries.find(c => c.id === b.id);
+                        aVal = aCity?.fileSize && aCity.fileSize !== 'Unknown' ? parseInt(aCity.fileSize) : 0;
+                        bVal = bCity?.fileSize && bCity.fileSize !== 'Unknown' ? parseInt(bCity.fileSize) : 0;
+                        break;
+                    default:
+                        aVal = 0;
+                        bVal = 0;
+                }
+
+                // Handle string vs number comparison
+                if (typeof aVal === 'string' && typeof bVal === 'string') {
+                    aVal = aVal.toLowerCase();
+                    bVal = bVal.toLowerCase();
+                }
+
+                // Sort logic
+                if (direction === 'asc') {
+                    return aVal < bVal ? -1 : aVal > bVal ? 1 : 0;
+                } else {
+                    return aVal > bVal ? -1 : aVal < bVal ? 1 : 0;
+                }
+            });
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
