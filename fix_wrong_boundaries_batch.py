@@ -6,6 +6,7 @@ Reprocess cities with obviously wrong boundaries using unified pipeline
 import subprocess
 import time
 import sys
+import json
 
 def fix_wrong_boundaries():
     """Reprocess cities with incorrect boundaries."""
@@ -17,15 +18,14 @@ def fix_wrong_boundaries():
     # Create lookup by city ID
     city_lookup = {city['id']: city for city in db['cities']}
     
-    # Cities with obviously wrong boundaries (from user feedback)
+    # Cities with obviously wrong boundaries (from user feedback)  
+    # Remaining cities after first batches (shanghai + 10) were fixed
     wrong_boundary_city_ids = [
-        'shanghai', 'cape-town', 'tokyo', 'tampa', 'ottawa', 'lisbon', 
-        'hong-kong', 'new-orleans', 'kuala-lumpur', 'nashville', 'tucson', 
-        'san-jose', 'sapporo', 'singapore', 'glasgow', 'madrid', 'raleigh', 
-        'montreal', 'rochester', 'salt-lake-city', 'valencia', 'new-york', 
-        'stockholm', 'portland', 'orlando', 'richmond', 'munich', 'birmingham', 
-        'melbourne', 'pittsburgh', 'warsaw', 'st-louis', 'toulouse', 'bordeaux', 
-        'lyon', 'minneapolis', 'porto', 'perth', 'brisbane', 'kinshasa'
+        'sapporo', 'singapore', 'glasgow', 'madrid', 'raleigh', 'montreal', 
+        'rochester', 'salt-lake-city', 'valencia', 'new-york', 'stockholm', 
+        'portland', 'orlando', 'richmond', 'munich', 'birmingham', 'melbourne', 
+        'pittsburgh', 'warsaw', 'st-louis', 'toulouse', 'bordeaux', 'lyon', 
+        'minneapolis', 'porto', 'perth', 'brisbane', 'kinshasa'
     ]
     
     # Filter to only cities that exist in database
@@ -53,7 +53,7 @@ def fix_wrong_boundaries():
                 '--city-id', city['id'],
                 '--city-name', city['name'],
                 '--country', city['country'],
-                '--coordinates', str(city['longitude']), str(city['latitude'])
+                '--coordinates', str(city['coordinates'][1]), str(city['coordinates'][0])  # lon, lat
             ]
             
             result = subprocess.run(

@@ -4983,7 +4983,7 @@
         "source": "OpenStreetMap",
         "osm_relation_id": 3227127,
         "note": "Downloaded via unified pipeline with way-stitching",
-        "processing_date": "2025-09-11",
+        "processing_date": "2025-09-12",
         "polygon_count": 1,
         "total_points": 1242
       }

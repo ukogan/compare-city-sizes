@@ -8641,7 +8641,7 @@
         "source": "OpenStreetMap",
         "osm_relation_id": 119557,
         "note": "Downloaded via unified pipeline with way-stitching",
-        "processing_date": "2025-09-11",
+        "processing_date": "2025-09-12",
         "polygon_count": 2,
         "total_points": 2155
       }

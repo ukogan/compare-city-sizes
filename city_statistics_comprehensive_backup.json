@@ -5136,6 +5136,3012 @@
         ],
         "cultural_significance_score": 10
       }
+    },
+    {
+      "basic_info": {
+        "name": "Dubai",
+        "country": "United Arab Emirates",
+        "coordinates": [
+          25.2048,
+          55.2708
+        ],
+        "founded": 1200,
+        "timezone": "MSK"
+      },
+      "demographics": {
+        "population_city": 300000,
+        "population_metro": 450000,
+        "population_density": 3000,
+        "population_growth_rate": 1.0
+      },
+      "geography": {
+        "area_city_km2": 60,
+        "area_metro_km2": 500,
+        "elevation_m": 200,
+        "coastline_km": 0,
+        "green_space_percent": 8.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 3.0,
+        "gdp_per_capita_usd": 5000,
+        "cost_of_living_index": 40,
+        "unemployment_rate": 7.0
+      },
+      "infrastructure": {
+        "airports": 1,
+        "metro_stations": 0,
+        "metro_lines": 0,
+        "universities": 5,
+        "hospitals": 10,
+        "museums": 5
+      },
+      "climate": {
+        "avg_temp_celsius": 22.0,
+        "annual_rainfall_mm": 200,
+        "sunny_days_per_year": 300
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 5,
+        "parks_count": 20,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 30
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 16,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "Local language"
+        ],
+        "cultural_significance_score": 10
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Dublin",
+        "country": "Ireland",
+        "coordinates": [
+          53.3498,
+          -6.2603
+        ],
+        "founded": 1200,
+        "timezone": "GMT/UTC"
+      },
+      "demographics": {
+        "population_city": 300000,
+        "population_metro": 450000,
+        "population_density": 3000,
+        "population_growth_rate": 1.0
+      },
+      "geography": {
+        "area_city_km2": 60,
+        "area_metro_km2": 500,
+        "elevation_m": 200,
+        "coastline_km": 50,
+        "green_space_percent": 8.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 3.0,
+        "gdp_per_capita_usd": 5000,
+        "cost_of_living_index": 40,
+        "unemployment_rate": 7.0
+      },
+      "infrastructure": {
+        "airports": 1,
+        "metro_stations": 0,
+        "metro_lines": 0,
+        "universities": 5,
+        "hospitals": 10,
+        "museums": 5
+      },
+      "climate": {
+        "avg_temp_celsius": 8.0,
+        "annual_rainfall_mm": 800,
+        "sunny_days_per_year": 150
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 5,
+        "parks_count": 20,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 30
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 1.0,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "Local language"
+        ],
+        "cultural_significance_score": 10
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Dushanbe",
+        "country": "Tajikistan",
+        "coordinates": [
+          38.5598,
+          68.787
+        ],
+        "founded": 1200,
+        "timezone": "MSK"
+      },
+      "demographics": {
+        "population_city": 300000,
+        "population_metro": 450000,
+        "population_density": 3000,
+        "population_growth_rate": 1.0
+      },
+      "geography": {
+        "area_city_km2": 60,
+        "area_metro_km2": 500,
+        "elevation_m": 200,
+        "coastline_km": 0,
+        "green_space_percent": 8.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 3.0,
+        "gdp_per_capita_usd": 5000,
+        "cost_of_living_index": 40,
+        "unemployment_rate": 7.0
+      },
+      "infrastructure": {
+        "airports": 1,
+        "metro_stations": 0,
+        "metro_lines": 0,
+        "universities": 5,
+        "hospitals": 10,
+        "museums": 5
+      },
+      "climate": {
+        "avg_temp_celsius": 15.0,
+        "annual_rainfall_mm": 800,
+        "sunny_days_per_year": 150
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 5,
+        "parks_count": 20,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 30
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 1.0,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "Local language"
+        ],
+        "cultural_significance_score": 10
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Edmonton",
+        "country": "Canada",
+        "coordinates": [
+          53.5444,
+          -113.4909
+        ],
+        "founded": 1800,
+        "timezone": "CST/CDT"
+      },
+      "demographics": {
+        "population_city": 300000,
+        "population_metro": 450000,
+        "population_density": 3000,
+        "population_growth_rate": 1.0
+      },
+      "geography": {
+        "area_city_km2": 60,
+        "area_metro_km2": 500,
+        "elevation_m": 200,
+        "coastline_km": 0,
+        "green_space_percent": 25.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 12.0,
+        "gdp_per_capita_usd": 48000,
+        "cost_of_living_index": 70,
+        "unemployment_rate": 7.0
+      },
+      "infrastructure": {
+        "airports": 1,
+        "metro_stations": 0,
+        "metro_lines": 0,
+        "universities": 5,
+        "hospitals": 10,
+        "museums": 5
+      },
+      "climate": {
+        "avg_temp_celsius": 8.0,
+        "annual_rainfall_mm": 800,
+        "sunny_days_per_year": 150
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 5,
+        "parks_count": 20,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 30
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 1.0,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "Local language"
+        ],
+        "cultural_significance_score": 10
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Fortaleza",
+        "country": "Brazil",
+        "coordinates": [
+          -3.717,
+          -38.543
+        ],
+        "founded": 1500,
+        "timezone": "AST"
+      },
+      "demographics": {
+        "population_city": 1200000,
+        "population_metro": 1800000,
+        "population_density": 12000,
+        "population_growth_rate": 1.0
+      },
+      "geography": {
+        "area_city_km2": 240,
+        "area_metro_km2": 1800,
+        "elevation_m": 200,
+        "coastline_km": 0,
+        "green_space_percent": 8.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 18.0,
+        "gdp_per_capita_usd": 8000,
+        "cost_of_living_index": 30,
+        "unemployment_rate": 11.0
+      },
+      "infrastructure": {
+        "airports": 1,
+        "metro_stations": 0,
+        "metro_lines": 0,
+        "universities": 6,
+        "hospitals": 12,
+        "museums": 5
+      },
+      "climate": {
+        "avg_temp_celsius": 27.0,
+        "annual_rainfall_mm": 1800,
+        "sunny_days_per_year": 150
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 5,
+        "parks_count": 24,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 30
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 1.0,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "Portuguese"
+        ],
+        "cultural_significance_score": 10
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Frankfurt",
+        "country": "Germany",
+        "coordinates": [
+          50.1109,
+          8.6821
+        ],
+        "founded": 1200,
+        "timezone": "GMT/UTC"
+      },
+      "demographics": {
+        "population_city": 500000,
+        "population_metro": 750000,
+        "population_density": 5000,
+        "population_growth_rate": -0.5
+      },
+      "geography": {
+        "area_city_km2": 100,
+        "area_metro_km2": 750,
+        "elevation_m": 200,
+        "coastline_km": 50,
+        "green_space_percent": 25.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 25.0,
+        "gdp_per_capita_usd": 50000,
+        "cost_of_living_index": 70,
+        "unemployment_rate": 3.5
+      },
+      "infrastructure": {
+        "airports": 1,
+        "metro_stations": 50,
+        "metro_lines": 3,
+        "universities": 5,
+        "hospitals": 10,
+        "museums": 5
+      },
+      "climate": {
+        "avg_temp_celsius": 8.0,
+        "annual_rainfall_mm": 800,
+        "sunny_days_per_year": 150
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 5,
+        "parks_count": 20,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 30
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 1.0,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "German"
+        ],
+        "cultural_significance_score": 10
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Gaborone",
+        "country": "Botswana",
+        "coordinates": [
+          -24.6282,
+          25.9231
+        ],
+        "founded": 1200,
+        "timezone": "CET/CEST"
+      },
+      "demographics": {
+        "population_city": 300000,
+        "population_metro": 450000,
+        "population_density": 3000,
+        "population_growth_rate": 1.0
+      },
+      "geography": {
+        "area_city_km2": 60,
+        "area_metro_km2": 500,
+        "elevation_m": 200,
+        "coastline_km": 0,
+        "green_space_percent": 8.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 3.0,
+        "gdp_per_capita_usd": 5000,
+        "cost_of_living_index": 40,
+        "unemployment_rate": 7.0
+      },
+      "infrastructure": {
+        "airports": 1,
+        "metro_stations": 0,
+        "metro_lines": 0,
+        "universities": 5,
+        "hospitals": 10,
+        "museums": 5
+      },
+      "climate": {
+        "avg_temp_celsius": 22.0,
+        "annual_rainfall_mm": 200,
+        "sunny_days_per_year": 300
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 5,
+        "parks_count": 20,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 30
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 1.0,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "Local language"
+        ],
+        "cultural_significance_score": 10
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Georgetown",
+        "country": "Guyana",
+        "coordinates": [
+          6.8013,
+          -58.1551
+        ],
+        "founded": 1200,
+        "timezone": "AST"
+      },
+      "demographics": {
+        "population_city": 300000,
+        "population_metro": 450000,
+        "population_density": 3000,
+        "population_growth_rate": 1.0
+      },
+      "geography": {
+        "area_city_km2": 60,
+        "area_metro_km2": 500,
+        "elevation_m": 200,
+        "coastline_km": 0,
+        "green_space_percent": 8.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 3.0,
+        "gdp_per_capita_usd": 5000,
+        "cost_of_living_index": 40,
+        "unemployment_rate": 7.0
+      },
+      "infrastructure": {
+        "airports": 1,
+        "metro_stations": 0,
+        "metro_lines": 0,
+        "universities": 5,
+        "hospitals": 10,
+        "museums": 5
+      },
+      "climate": {
+        "avg_temp_celsius": 27.0,
+        "annual_rainfall_mm": 1800,
+        "sunny_days_per_year": 150
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 5,
+        "parks_count": 20,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 30
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 1.0,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "Local language"
+        ],
+        "cultural_significance_score": 10
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Glasgow",
+        "country": "United Kingdom",
+        "coordinates": [
+          55.8642,
+          -4.2518
+        ],
+        "founded": 1200,
+        "timezone": "GMT/UTC"
+      },
+      "demographics": {
+        "population_city": 400000,
+        "population_metro": 600000,
+        "population_density": 4000,
+        "population_growth_rate": 1.0
+      },
+      "geography": {
+        "area_city_km2": 80,
+        "area_metro_km2": 600,
+        "elevation_m": 200,
+        "coastline_km": 50,
+        "green_space_percent": 8.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 20.0,
+        "gdp_per_capita_usd": 45000,
+        "cost_of_living_index": 75,
+        "unemployment_rate": 4.2
+      },
+      "infrastructure": {
+        "airports": 1,
+        "metro_stations": 50,
+        "metro_lines": 3,
+        "universities": 5,
+        "hospitals": 10,
+        "museums": 5
+      },
+      "climate": {
+        "avg_temp_celsius": 8.0,
+        "annual_rainfall_mm": 800,
+        "sunny_days_per_year": 150
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 5,
+        "parks_count": 20,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 30
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 1.0,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "English"
+        ],
+        "cultural_significance_score": 10
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Goi\u00e2nia",
+        "country": "Brazil",
+        "coordinates": [
+          -16.686,
+          -49.255
+        ],
+        "founded": 1500,
+        "timezone": "AST"
+      },
+      "demographics": {
+        "population_city": 1200000,
+        "population_metro": 1800000,
+        "population_density": 12000,
+        "population_growth_rate": 1.0
+      },
+      "geography": {
+        "area_city_km2": 240,
+        "area_metro_km2": 1800,
+        "elevation_m": 800,
+        "coastline_km": 0,
+        "green_space_percent": 8.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 18.0,
+        "gdp_per_capita_usd": 8000,
+        "cost_of_living_index": 30,
+        "unemployment_rate": 11.0
+      },
+      "infrastructure": {
+        "airports": 1,
+        "metro_stations": 0,
+        "metro_lines": 0,
+        "universities": 6,
+        "hospitals": 12,
+        "museums": 5
+      },
+      "climate": {
+        "avg_temp_celsius": 22.0,
+        "annual_rainfall_mm": 800,
+        "sunny_days_per_year": 150
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 5,
+        "parks_count": 24,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 30
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 1.0,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "Portuguese"
+        ],
+        "cultural_significance_score": 10
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Gothenburg",
+        "country": "Sweden",
+        "coordinates": [
+          57.7089,
+          11.9746
+        ],
+        "founded": 1200,
+        "timezone": "GMT/UTC"
+      },
+      "demographics": {
+        "population_city": 300000,
+        "population_metro": 450000,
+        "population_density": 3000,
+        "population_growth_rate": 1.0
+      },
+      "geography": {
+        "area_city_km2": 60,
+        "area_metro_km2": 500,
+        "elevation_m": 200,
+        "coastline_km": 50,
+        "green_space_percent": 25.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 3.0,
+        "gdp_per_capita_usd": 5000,
+        "cost_of_living_index": 40,
+        "unemployment_rate": 7.0
+      },
+      "infrastructure": {
+        "airports": 1,
+        "metro_stations": 0,
+        "metro_lines": 0,
+        "universities": 5,
+        "hospitals": 10,
+        "museums": 5
+      },
+      "climate": {
+        "avg_temp_celsius": 8.0,
+        "annual_rainfall_mm": 800,
+        "sunny_days_per_year": 150
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 5,
+        "parks_count": 20,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 30
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 1.0,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "Local language"
+        ],
+        "cultural_significance_score": 10
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Guangzhou",
+        "country": "China",
+        "coordinates": [
+          23.129,
+          113.264
+        ],
+        "founded": 800,
+        "timezone": "CST"
+      },
+      "demographics": {
+        "population_city": 13500000,
+        "population_metro": 13500000,
+        "population_density": 135000,
+        "population_growth_rate": 1.0
+      },
+      "geography": {
+        "area_city_km2": 2700,
+        "area_metro_km2": 13500,
+        "elevation_m": 20,
+        "coastline_km": 50,
+        "green_space_percent": 8.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 270.0,
+        "gdp_per_capita_usd": 12000,
+        "cost_of_living_index": 40,
+        "unemployment_rate": 5.0
+      },
+      "infrastructure": {
+        "airports": 3,
+        "metro_stations": 135,
+        "metro_lines": 13,
+        "universities": 67,
+        "hospitals": 135,
+        "museums": 45
+      },
+      "climate": {
+        "avg_temp_celsius": 22.0,
+        "annual_rainfall_mm": 800,
+        "sunny_days_per_year": 150
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 67,
+        "bridges": 27,
+        "parks_count": 270,
+        "restaurants_per_1000": 15,
+        "avg_commute_minutes": 60
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 6.75,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "Mandarin"
+        ],
+        "cultural_significance_score": 10
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Guayaquil",
+        "country": "Ecuador",
+        "coordinates": [
+          -2.171,
+          -79.897
+        ],
+        "founded": 1200,
+        "timezone": "EST/EDT"
+      },
+      "demographics": {
+        "population_city": 300000,
+        "population_metro": 450000,
+        "population_density": 3000,
+        "population_growth_rate": 1.0
+      },
+      "geography": {
+        "area_city_km2": 60,
+        "area_metro_km2": 500,
+        "elevation_m": 20,
+        "coastline_km": 50,
+        "green_space_percent": 8.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 3.0,
+        "gdp_per_capita_usd": 5000,
+        "cost_of_living_index": 40,
+        "unemployment_rate": 7.0
+      },
+      "infrastructure": {
+        "airports": 1,
+        "metro_stations": 0,
+        "metro_lines": 0,
+        "universities": 5,
+        "hospitals": 10,
+        "museums": 5
+      },
+      "climate": {
+        "avg_temp_celsius": 27.0,
+        "annual_rainfall_mm": 1800,
+        "sunny_days_per_year": 150
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 5,
+        "parks_count": 20,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 30
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 1.0,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "Local language"
+        ],
+        "cultural_significance_score": 10
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Hamburg",
+        "country": "Germany",
+        "coordinates": [
+          53.5511,
+          9.9937
+        ],
+        "founded": 1200,
+        "timezone": "GMT/UTC"
+      },
+      "demographics": {
+        "population_city": 500000,
+        "population_metro": 750000,
+        "population_density": 5000,
+        "population_growth_rate": -0.5
+      },
+      "geography": {
+        "area_city_km2": 100,
+        "area_metro_km2": 750,
+        "elevation_m": 200,
+        "coastline_km": 50,
+        "green_space_percent": 25.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 25.0,
+        "gdp_per_capita_usd": 50000,
+        "cost_of_living_index": 70,
+        "unemployment_rate": 3.5
+      },
+      "infrastructure": {
+        "airports": 1,
+        "metro_stations": 50,
+        "metro_lines": 3,
+        "universities": 5,
+        "hospitals": 10,
+        "museums": 5
+      },
+      "climate": {
+        "avg_temp_celsius": 8.0,
+        "annual_rainfall_mm": 800,
+        "sunny_days_per_year": 150
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 5,
+        "parks_count": 20,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 30
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 1.0,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "German"
+        ],
+        "cultural_significance_score": 10
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Helsinki",
+        "country": "Finland",
+        "coordinates": [
+          60.1699,
+          24.9384
+        ],
+        "founded": 1200,
+        "timezone": "CET/CEST"
+      },
+      "demographics": {
+        "population_city": 300000,
+        "population_metro": 450000,
+        "population_density": 3000,
+        "population_growth_rate": 1.0
+      },
+      "geography": {
+        "area_city_km2": 60,
+        "area_metro_km2": 500,
+        "elevation_m": 200,
+        "coastline_km": 50,
+        "green_space_percent": 8.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 3.0,
+        "gdp_per_capita_usd": 5000,
+        "cost_of_living_index": 40,
+        "unemployment_rate": 7.0
+      },
+      "infrastructure": {
+        "airports": 1,
+        "metro_stations": 0,
+        "metro_lines": 0,
+        "universities": 5,
+        "hospitals": 10,
+        "museums": 5
+      },
+      "climate": {
+        "avg_temp_celsius": 2.0,
+        "annual_rainfall_mm": 800,
+        "sunny_days_per_year": 150
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 5,
+        "parks_count": 20,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 30
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 1.0,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "Local language"
+        ],
+        "cultural_significance_score": 10
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Hong Kong",
+        "country": "Hong Kong",
+        "coordinates": [
+          22.3193,
+          114.1694
+        ],
+        "founded": 1200,
+        "timezone": "CST"
+      },
+      "demographics": {
+        "population_city": 7500000,
+        "population_metro": 7500000,
+        "population_density": 150000,
+        "population_growth_rate": 1.0
+      },
+      "geography": {
+        "area_city_km2": 1500,
+        "area_metro_km2": 7500,
+        "elevation_m": 20,
+        "coastline_km": 50,
+        "green_space_percent": 8.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 75.0,
+        "gdp_per_capita_usd": 5000,
+        "cost_of_living_index": 40,
+        "unemployment_rate": 7.0
+      },
+      "infrastructure": {
+        "airports": 2,
+        "metro_stations": 75,
+        "metro_lines": 7,
+        "universities": 37,
+        "hospitals": 75,
+        "museums": 25
+      },
+      "climate": {
+        "avg_temp_celsius": 22.0,
+        "annual_rainfall_mm": 800,
+        "sunny_days_per_year": 150
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 15,
+        "parks_count": 150,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 45
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 3.75,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "Local language"
+        ],
+        "cultural_significance_score": 10
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Honolulu",
+        "country": "United States",
+        "coordinates": [
+          21.3099,
+          -157.8581
+        ],
+        "founded": 1800,
+        "timezone": "PST/PDT"
+      },
+      "demographics": {
+        "population_city": 800000,
+        "population_metro": 1200000,
+        "population_density": 8000,
+        "population_growth_rate": 1.0
+      },
+      "geography": {
+        "area_city_km2": 160,
+        "area_metro_km2": 1200,
+        "elevation_m": 20,
+        "coastline_km": 0,
+        "green_space_percent": 8.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 64.0,
+        "gdp_per_capita_usd": 70000,
+        "cost_of_living_index": 85,
+        "unemployment_rate": 4.0
+      },
+      "infrastructure": {
+        "airports": 1,
+        "metro_stations": 0,
+        "metro_lines": 0,
+        "universities": 5,
+        "hospitals": 10,
+        "museums": 5
+      },
+      "climate": {
+        "avg_temp_celsius": 22.0,
+        "annual_rainfall_mm": 800,
+        "sunny_days_per_year": 150
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 5,
+        "parks_count": 20,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 30
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 1.0,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "English",
+          "Spanish"
+        ],
+        "cultural_significance_score": 10
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Houston",
+        "country": "United States",
+        "coordinates": [
+          29.7604,
+          -95.3698
+        ],
+        "founded": 1800,
+        "timezone": "CST/CDT"
+      },
+      "demographics": {
+        "population_city": 800000,
+        "population_metro": 1200000,
+        "population_density": 8000,
+        "population_growth_rate": 1.0
+      },
+      "geography": {
+        "area_city_km2": 160,
+        "area_metro_km2": 1200,
+        "elevation_m": 20,
+        "coastline_km": 50,
+        "green_space_percent": 8.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 64.0,
+        "gdp_per_capita_usd": 70000,
+        "cost_of_living_index": 85,
+        "unemployment_rate": 4.0
+      },
+      "infrastructure": {
+        "airports": 1,
+        "metro_stations": 0,
+        "metro_lines": 0,
+        "universities": 5,
+        "hospitals": 10,
+        "museums": 5
+      },
+      "climate": {
+        "avg_temp_celsius": 22.0,
+        "annual_rainfall_mm": 800,
+        "sunny_days_per_year": 150
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 5,
+        "parks_count": 20,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 30
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 1.0,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "English",
+          "Spanish"
+        ],
+        "cultural_significance_score": 10
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Hyderabad",
+        "country": "India",
+        "coordinates": [
+          17.385,
+          78.486
+        ],
+        "founded": 800,
+        "timezone": "MSK"
+      },
+      "demographics": {
+        "population_city": 6900000,
+        "population_metro": 10000000,
+        "population_density": 69000,
+        "population_growth_rate": 2.5
+      },
+      "geography": {
+        "area_city_km2": 1380,
+        "area_metro_km2": 10000,
+        "elevation_m": 200,
+        "coastline_km": 0,
+        "green_space_percent": 8.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 69.0,
+        "gdp_per_capita_usd": 2500,
+        "cost_of_living_index": 20,
+        "unemployment_rate": 6.0
+      },
+      "infrastructure": {
+        "airports": 2,
+        "metro_stations": 69,
+        "metro_lines": 6,
+        "universities": 34,
+        "hospitals": 69,
+        "museums": 23
+      },
+      "climate": {
+        "avg_temp_celsius": 22.0,
+        "annual_rainfall_mm": 800,
+        "sunny_days_per_year": 150
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 13,
+        "parks_count": 138,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 45
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 3.45,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "Hindi",
+          "English"
+        ],
+        "cultural_significance_score": 10
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Ibadan",
+        "country": "Nigeria",
+        "coordinates": [
+          7.378,
+          3.906
+        ],
+        "founded": 1200,
+        "timezone": "GMT/UTC"
+      },
+      "demographics": {
+        "population_city": 300000,
+        "population_metro": 450000,
+        "population_density": 3000,
+        "population_growth_rate": 2.5
+      },
+      "geography": {
+        "area_city_km2": 60,
+        "area_metro_km2": 500,
+        "elevation_m": 200,
+        "coastline_km": 0,
+        "green_space_percent": 8.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 3.0,
+        "gdp_per_capita_usd": 5000,
+        "cost_of_living_index": 40,
+        "unemployment_rate": 7.0
+      },
+      "infrastructure": {
+        "airports": 1,
+        "metro_stations": 0,
+        "metro_lines": 0,
+        "universities": 5,
+        "hospitals": 10,
+        "museums": 5
+      },
+      "climate": {
+        "avg_temp_celsius": 27.0,
+        "annual_rainfall_mm": 1800,
+        "sunny_days_per_year": 150
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 5,
+        "parks_count": 20,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 30
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 1.0,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "Local language"
+        ],
+        "cultural_significance_score": 10
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Islamabad",
+        "country": "Pakistan",
+        "coordinates": [
+          33.6844,
+          73.0479
+        ],
+        "founded": 1200,
+        "timezone": "MSK"
+      },
+      "demographics": {
+        "population_city": 300000,
+        "population_metro": 450000,
+        "population_density": 3000,
+        "population_growth_rate": 2.5
+      },
+      "geography": {
+        "area_city_km2": 60,
+        "area_metro_km2": 500,
+        "elevation_m": 1500,
+        "coastline_km": 0,
+        "green_space_percent": 8.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 3.0,
+        "gdp_per_capita_usd": 5000,
+        "cost_of_living_index": 40,
+        "unemployment_rate": 7.0
+      },
+      "infrastructure": {
+        "airports": 1,
+        "metro_stations": 0,
+        "metro_lines": 0,
+        "universities": 5,
+        "hospitals": 10,
+        "museums": 5
+      },
+      "climate": {
+        "avg_temp_celsius": 15.0,
+        "annual_rainfall_mm": 800,
+        "sunny_days_per_year": 150
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 5,
+        "parks_count": 20,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 30
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 1.0,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "Local language"
+        ],
+        "cultural_significance_score": 10
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Istanbul",
+        "country": "Turkey",
+        "coordinates": [
+          41.0082,
+          28.9784
+        ],
+        "founded": 330,
+        "timezone": "CET/CEST"
+      },
+      "demographics": {
+        "population_city": 15400000,
+        "population_metro": 15400000,
+        "population_density": 154000,
+        "population_growth_rate": 1.0
+      },
+      "geography": {
+        "area_city_km2": 3080,
+        "area_metro_km2": 15400,
+        "elevation_m": 200,
+        "coastline_km": 50,
+        "green_space_percent": 8.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 154.0,
+        "gdp_per_capita_usd": 9000,
+        "cost_of_living_index": 30,
+        "unemployment_rate": 10.0
+      },
+      "infrastructure": {
+        "airports": 3,
+        "metro_stations": 154,
+        "metro_lines": 15,
+        "universities": 77,
+        "hospitals": 154,
+        "museums": 51
+      },
+      "climate": {
+        "avg_temp_celsius": 15.0,
+        "annual_rainfall_mm": 800,
+        "sunny_days_per_year": 150
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 30,
+        "parks_count": 308,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 60
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 7.7,
+        "unesco_sites": 1,
+        "languages_spoken": [
+          "Turkish"
+        ],
+        "cultural_significance_score": 20
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Jerusalem",
+        "country": "Israel/Palestine",
+        "coordinates": [
+          31.771,
+          35.217
+        ],
+        "founded": -1000,
+        "timezone": "CET/CEST"
+      },
+      "demographics": {
+        "population_city": 300000,
+        "population_metro": 450000,
+        "population_density": 3000,
+        "population_growth_rate": 1.0
+      },
+      "geography": {
+        "area_city_km2": 60,
+        "area_metro_km2": 500,
+        "elevation_m": 200,
+        "coastline_km": 0,
+        "green_space_percent": 8.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 3.0,
+        "gdp_per_capita_usd": 5000,
+        "cost_of_living_index": 40,
+        "unemployment_rate": 7.0
+      },
+      "infrastructure": {
+        "airports": 1,
+        "metro_stations": 0,
+        "metro_lines": 0,
+        "universities": 5,
+        "hospitals": 10,
+        "museums": 5
+      },
+      "climate": {
+        "avg_temp_celsius": 15.0,
+        "annual_rainfall_mm": 200,
+        "sunny_days_per_year": 300
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 5,
+        "parks_count": 20,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 30
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 1.0,
+        "unesco_sites": 1,
+        "languages_spoken": [
+          "Local language"
+        ],
+        "cultural_significance_score": 21
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Kabul",
+        "country": "Afghanistan",
+        "coordinates": [
+          34.5553,
+          69.2075
+        ],
+        "founded": 1200,
+        "timezone": "MSK"
+      },
+      "demographics": {
+        "population_city": 300000,
+        "population_metro": 450000,
+        "population_density": 3000,
+        "population_growth_rate": 1.0
+      },
+      "geography": {
+        "area_city_km2": 60,
+        "area_metro_km2": 500,
+        "elevation_m": 1500,
+        "coastline_km": 0,
+        "green_space_percent": 8.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 3.0,
+        "gdp_per_capita_usd": 5000,
+        "cost_of_living_index": 40,
+        "unemployment_rate": 7.0
+      },
+      "infrastructure": {
+        "airports": 1,
+        "metro_stations": 0,
+        "metro_lines": 0,
+        "universities": 5,
+        "hospitals": 10,
+        "museums": 5
+      },
+      "climate": {
+        "avg_temp_celsius": 15.0,
+        "annual_rainfall_mm": 800,
+        "sunny_days_per_year": 150
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 5,
+        "parks_count": 20,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 30
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 1.0,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "Local language"
+        ],
+        "cultural_significance_score": 10
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Kampala",
+        "country": "Uganda",
+        "coordinates": [
+          0.347,
+          32.582
+        ],
+        "founded": 1200,
+        "timezone": "CET/CEST"
+      },
+      "demographics": {
+        "population_city": 300000,
+        "population_metro": 450000,
+        "population_density": 3000,
+        "population_growth_rate": 1.0
+      },
+      "geography": {
+        "area_city_km2": 60,
+        "area_metro_km2": 500,
+        "elevation_m": 200,
+        "coastline_km": 0,
+        "green_space_percent": 8.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 3.0,
+        "gdp_per_capita_usd": 5000,
+        "cost_of_living_index": 40,
+        "unemployment_rate": 7.0
+      },
+      "infrastructure": {
+        "airports": 1,
+        "metro_stations": 0,
+        "metro_lines": 0,
+        "universities": 5,
+        "hospitals": 10,
+        "museums": 5
+      },
+      "climate": {
+        "avg_temp_celsius": 27.0,
+        "annual_rainfall_mm": 1800,
+        "sunny_days_per_year": 150
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 5,
+        "parks_count": 20,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 30
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 1.0,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "Local language"
+        ],
+        "cultural_significance_score": 10
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Kano",
+        "country": "Nigeria",
+        "coordinates": [
+          12.0,
+          8.517
+        ],
+        "founded": 1200,
+        "timezone": "GMT/UTC"
+      },
+      "demographics": {
+        "population_city": 300000,
+        "population_metro": 450000,
+        "population_density": 3000,
+        "population_growth_rate": 2.5
+      },
+      "geography": {
+        "area_city_km2": 60,
+        "area_metro_km2": 500,
+        "elevation_m": 200,
+        "coastline_km": 0,
+        "green_space_percent": 8.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 3.0,
+        "gdp_per_capita_usd": 5000,
+        "cost_of_living_index": 40,
+        "unemployment_rate": 7.0
+      },
+      "infrastructure": {
+        "airports": 1,
+        "metro_stations": 0,
+        "metro_lines": 0,
+        "universities": 5,
+        "hospitals": 10,
+        "museums": 5
+      },
+      "climate": {
+        "avg_temp_celsius": 22.0,
+        "annual_rainfall_mm": 800,
+        "sunny_days_per_year": 150
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 5,
+        "parks_count": 20,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 30
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 1.0,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "Local language"
+        ],
+        "cultural_significance_score": 10
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Kanpur",
+        "country": "India",
+        "coordinates": [
+          26.449,
+          80.349
+        ],
+        "founded": 800,
+        "timezone": "MSK"
+      },
+      "demographics": {
+        "population_city": 1500000,
+        "population_metro": 2250000,
+        "population_density": 15000,
+        "population_growth_rate": 2.5
+      },
+      "geography": {
+        "area_city_km2": 300,
+        "area_metro_km2": 2250,
+        "elevation_m": 1500,
+        "coastline_km": 0,
+        "green_space_percent": 8.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 15.0,
+        "gdp_per_capita_usd": 2500,
+        "cost_of_living_index": 20,
+        "unemployment_rate": 6.0
+      },
+      "infrastructure": {
+        "airports": 1,
+        "metro_stations": 0,
+        "metro_lines": 0,
+        "universities": 7,
+        "hospitals": 15,
+        "museums": 5
+      },
+      "climate": {
+        "avg_temp_celsius": 22.0,
+        "annual_rainfall_mm": 800,
+        "sunny_days_per_year": 150
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 5,
+        "parks_count": 30,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 30
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 1.0,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "Hindi",
+          "English"
+        ],
+        "cultural_significance_score": 10
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Kathmandu",
+        "country": "Nepal",
+        "coordinates": [
+          27.7172,
+          85.324
+        ],
+        "founded": 1200,
+        "timezone": "MSK"
+      },
+      "demographics": {
+        "population_city": 300000,
+        "population_metro": 450000,
+        "population_density": 3000,
+        "population_growth_rate": 1.0
+      },
+      "geography": {
+        "area_city_km2": 60,
+        "area_metro_km2": 500,
+        "elevation_m": 1500,
+        "coastline_km": 0,
+        "green_space_percent": 8.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 3.0,
+        "gdp_per_capita_usd": 5000,
+        "cost_of_living_index": 40,
+        "unemployment_rate": 7.0
+      },
+      "infrastructure": {
+        "airports": 1,
+        "metro_stations": 0,
+        "metro_lines": 0,
+        "universities": 5,
+        "hospitals": 10,
+        "museums": 5
+      },
+      "climate": {
+        "avg_temp_celsius": 22.0,
+        "annual_rainfall_mm": 800,
+        "sunny_days_per_year": 150
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 5,
+        "parks_count": 20,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 30
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 1.0,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "Local language"
+        ],
+        "cultural_significance_score": 10
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Khartoum",
+        "country": "Sudan",
+        "coordinates": [
+          15.5,
+          32.553
+        ],
+        "founded": 1200,
+        "timezone": "CET/CEST"
+      },
+      "demographics": {
+        "population_city": 300000,
+        "population_metro": 450000,
+        "population_density": 3000,
+        "population_growth_rate": 1.0
+      },
+      "geography": {
+        "area_city_km2": 60,
+        "area_metro_km2": 500,
+        "elevation_m": 200,
+        "coastline_km": 0,
+        "green_space_percent": 8.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 3.0,
+        "gdp_per_capita_usd": 5000,
+        "cost_of_living_index": 40,
+        "unemployment_rate": 7.0
+      },
+      "infrastructure": {
+        "airports": 1,
+        "metro_stations": 0,
+        "metro_lines": 0,
+        "universities": 5,
+        "hospitals": 10,
+        "museums": 5
+      },
+      "climate": {
+        "avg_temp_celsius": 22.0,
+        "annual_rainfall_mm": 800,
+        "sunny_days_per_year": 150
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 5,
+        "parks_count": 20,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 30
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 1.0,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "Local language"
+        ],
+        "cultural_significance_score": 10
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Kinshasa",
+        "country": "DR Congo",
+        "coordinates": [
+          -4.325,
+          15.307
+        ],
+        "founded": 1200,
+        "timezone": "CET/CEST"
+      },
+      "demographics": {
+        "population_city": 300000,
+        "population_metro": 450000,
+        "population_density": 3000,
+        "population_growth_rate": 1.0
+      },
+      "geography": {
+        "area_city_km2": 60,
+        "area_metro_km2": 500,
+        "elevation_m": 200,
+        "coastline_km": 0,
+        "green_space_percent": 8.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 3.0,
+        "gdp_per_capita_usd": 5000,
+        "cost_of_living_index": 40,
+        "unemployment_rate": 7.0
+      },
+      "infrastructure": {
+        "airports": 1,
+        "metro_stations": 0,
+        "metro_lines": 0,
+        "universities": 5,
+        "hospitals": 10,
+        "museums": 5
+      },
+      "climate": {
+        "avg_temp_celsius": 27.0,
+        "annual_rainfall_mm": 1800,
+        "sunny_days_per_year": 150
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 5,
+        "parks_count": 20,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 30
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 1.0,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "Local language"
+        ],
+        "cultural_significance_score": 10
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Kolkata",
+        "country": "India",
+        "coordinates": [
+          22.573,
+          88.363
+        ],
+        "founded": 800,
+        "timezone": "MSK"
+      },
+      "demographics": {
+        "population_city": 14900000,
+        "population_metro": 14900000,
+        "population_density": 149000,
+        "population_growth_rate": 2.5
+      },
+      "geography": {
+        "area_city_km2": 2980,
+        "area_metro_km2": 14900,
+        "elevation_m": 200,
+        "coastline_km": 0,
+        "green_space_percent": 8.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 149.0,
+        "gdp_per_capita_usd": 2500,
+        "cost_of_living_index": 20,
+        "unemployment_rate": 6.0
+      },
+      "infrastructure": {
+        "airports": 3,
+        "metro_stations": 149,
+        "metro_lines": 14,
+        "universities": 74,
+        "hospitals": 149,
+        "museums": 49
+      },
+      "climate": {
+        "avg_temp_celsius": 22.0,
+        "annual_rainfall_mm": 800,
+        "sunny_days_per_year": 150
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 29,
+        "parks_count": 298,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 60
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 7.45,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "Hindi",
+          "English"
+        ],
+        "cultural_significance_score": 10
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Krakow",
+        "country": "Poland",
+        "coordinates": [
+          50.0647,
+          19.945
+        ],
+        "founded": 1200,
+        "timezone": "CET/CEST"
+      },
+      "demographics": {
+        "population_city": 300000,
+        "population_metro": 450000,
+        "population_density": 3000,
+        "population_growth_rate": 1.0
+      },
+      "geography": {
+        "area_city_km2": 60,
+        "area_metro_km2": 500,
+        "elevation_m": 200,
+        "coastline_km": 50,
+        "green_space_percent": 8.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 3.0,
+        "gdp_per_capita_usd": 5000,
+        "cost_of_living_index": 40,
+        "unemployment_rate": 7.0
+      },
+      "infrastructure": {
+        "airports": 1,
+        "metro_stations": 0,
+        "metro_lines": 0,
+        "universities": 5,
+        "hospitals": 10,
+        "museums": 5
+      },
+      "climate": {
+        "avg_temp_celsius": 8.0,
+        "annual_rainfall_mm": 800,
+        "sunny_days_per_year": 150
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 5,
+        "parks_count": 20,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 30
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 1.0,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "Local language"
+        ],
+        "cultural_significance_score": 10
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Kuala Lumpur",
+        "country": "Malaysia",
+        "coordinates": [
+          3.139,
+          101.6869
+        ],
+        "founded": 1200,
+        "timezone": "CST"
+      },
+      "demographics": {
+        "population_city": 1800000,
+        "population_metro": 7600000,
+        "population_density": 18000,
+        "population_growth_rate": 1.0
+      },
+      "geography": {
+        "area_city_km2": 360,
+        "area_metro_km2": 7600,
+        "elevation_m": 20,
+        "coastline_km": 50,
+        "green_space_percent": 8.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 18.0,
+        "gdp_per_capita_usd": 5000,
+        "cost_of_living_index": 40,
+        "unemployment_rate": 7.0
+      },
+      "infrastructure": {
+        "airports": 1,
+        "metro_stations": 0,
+        "metro_lines": 0,
+        "universities": 9,
+        "hospitals": 18,
+        "museums": 6
+      },
+      "climate": {
+        "avg_temp_celsius": 27.0,
+        "annual_rainfall_mm": 1800,
+        "sunny_days_per_year": 150
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 5,
+        "parks_count": 36,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 30
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 1.0,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "Local language"
+        ],
+        "cultural_significance_score": 10
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Kumasi",
+        "country": "Ghana",
+        "coordinates": [
+          6.687,
+          -1.609
+        ],
+        "founded": 1200,
+        "timezone": "GMT/UTC"
+      },
+      "demographics": {
+        "population_city": 300000,
+        "population_metro": 450000,
+        "population_density": 3000,
+        "population_growth_rate": 1.0
+      },
+      "geography": {
+        "area_city_km2": 60,
+        "area_metro_km2": 500,
+        "elevation_m": 200,
+        "coastline_km": 0,
+        "green_space_percent": 8.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 3.0,
+        "gdp_per_capita_usd": 5000,
+        "cost_of_living_index": 40,
+        "unemployment_rate": 7.0
+      },
+      "infrastructure": {
+        "airports": 1,
+        "metro_stations": 0,
+        "metro_lines": 0,
+        "universities": 5,
+        "hospitals": 10,
+        "museums": 5
+      },
+      "climate": {
+        "avg_temp_celsius": 27.0,
+        "annual_rainfall_mm": 1800,
+        "sunny_days_per_year": 150
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 5,
+        "parks_count": 20,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 30
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 1.0,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "Local language"
+        ],
+        "cultural_significance_score": 10
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Kuwait City",
+        "country": "Kuwait",
+        "coordinates": [
+          29.3759,
+          47.9774
+        ],
+        "founded": 1200,
+        "timezone": "MSK"
+      },
+      "demographics": {
+        "population_city": 300000,
+        "population_metro": 450000,
+        "population_density": 3000,
+        "population_growth_rate": 1.0
+      },
+      "geography": {
+        "area_city_km2": 60,
+        "area_metro_km2": 500,
+        "elevation_m": 200,
+        "coastline_km": 0,
+        "green_space_percent": 8.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 3.0,
+        "gdp_per_capita_usd": 5000,
+        "cost_of_living_index": 40,
+        "unemployment_rate": 7.0
+      },
+      "infrastructure": {
+        "airports": 1,
+        "metro_stations": 0,
+        "metro_lines": 0,
+        "universities": 5,
+        "hospitals": 10,
+        "museums": 5
+      },
+      "climate": {
+        "avg_temp_celsius": 22.0,
+        "annual_rainfall_mm": 200,
+        "sunny_days_per_year": 300
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 5,
+        "parks_count": 20,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 30
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 1.0,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "Local language"
+        ],
+        "cultural_significance_score": 10
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Lagos",
+        "country": "Nigeria",
+        "coordinates": [
+          6.465,
+          3.406
+        ],
+        "founded": 1200,
+        "timezone": "GMT/UTC"
+      },
+      "demographics": {
+        "population_city": 14800000,
+        "population_metro": 14800000,
+        "population_density": 148000,
+        "population_growth_rate": 2.5
+      },
+      "geography": {
+        "area_city_km2": 2960,
+        "area_metro_km2": 14800,
+        "elevation_m": 200,
+        "coastline_km": 0,
+        "green_space_percent": 8.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 148.0,
+        "gdp_per_capita_usd": 5000,
+        "cost_of_living_index": 40,
+        "unemployment_rate": 7.0
+      },
+      "infrastructure": {
+        "airports": 3,
+        "metro_stations": 148,
+        "metro_lines": 14,
+        "universities": 74,
+        "hospitals": 148,
+        "museums": 49
+      },
+      "climate": {
+        "avg_temp_celsius": 27.0,
+        "annual_rainfall_mm": 1800,
+        "sunny_days_per_year": 150
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 29,
+        "parks_count": 296,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 60
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 7.4,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "Local language"
+        ],
+        "cultural_significance_score": 10
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Las Vegas",
+        "country": "United States",
+        "coordinates": [
+          36.1699,
+          -115.1398
+        ],
+        "founded": 1800,
+        "timezone": "CST/CDT"
+      },
+      "demographics": {
+        "population_city": 800000,
+        "population_metro": 1200000,
+        "population_density": 8000,
+        "population_growth_rate": 1.0
+      },
+      "geography": {
+        "area_city_km2": 160,
+        "area_metro_km2": 1200,
+        "elevation_m": 1500,
+        "coastline_km": 50,
+        "green_space_percent": 8.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 64.0,
+        "gdp_per_capita_usd": 70000,
+        "cost_of_living_index": 85,
+        "unemployment_rate": 4.0
+      },
+      "infrastructure": {
+        "airports": 1,
+        "metro_stations": 0,
+        "metro_lines": 0,
+        "universities": 5,
+        "hospitals": 10,
+        "museums": 5
+      },
+      "climate": {
+        "avg_temp_celsius": 15.0,
+        "annual_rainfall_mm": 800,
+        "sunny_days_per_year": 150
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 5,
+        "parks_count": 20,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 30
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 1.0,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "English",
+          "Spanish"
+        ],
+        "cultural_significance_score": 10
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Lhasa",
+        "country": "Tibet/China",
+        "coordinates": [
+          29.66,
+          91.14
+        ],
+        "founded": 1200,
+        "timezone": "CST"
+      },
+      "demographics": {
+        "population_city": 300000,
+        "population_metro": 450000,
+        "population_density": 3000,
+        "population_growth_rate": 1.0
+      },
+      "geography": {
+        "area_city_km2": 60,
+        "area_metro_km2": 500,
+        "elevation_m": 200,
+        "coastline_km": 0,
+        "green_space_percent": 8.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 3.0,
+        "gdp_per_capita_usd": 5000,
+        "cost_of_living_index": 40,
+        "unemployment_rate": 7.0
+      },
+      "infrastructure": {
+        "airports": 1,
+        "metro_stations": 0,
+        "metro_lines": 0,
+        "universities": 5,
+        "hospitals": 10,
+        "museums": 5
+      },
+      "climate": {
+        "avg_temp_celsius": 22.0,
+        "annual_rainfall_mm": 800,
+        "sunny_days_per_year": 150
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 5,
+        "parks_count": 20,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 30
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 1.0,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "Local language"
+        ],
+        "cultural_significance_score": 10
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Lima",
+        "country": "Peru",
+        "coordinates": [
+          -12.046,
+          -77.043
+        ],
+        "founded": 1200,
+        "timezone": "EST/EDT"
+      },
+      "demographics": {
+        "population_city": 10700000,
+        "population_metro": 10700000,
+        "population_density": 107000,
+        "population_growth_rate": 1.0
+      },
+      "geography": {
+        "area_city_km2": 2140,
+        "area_metro_km2": 10700,
+        "elevation_m": 800,
+        "coastline_km": 50,
+        "green_space_percent": 8.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 107.0,
+        "gdp_per_capita_usd": 5000,
+        "cost_of_living_index": 40,
+        "unemployment_rate": 7.0
+      },
+      "infrastructure": {
+        "airports": 3,
+        "metro_stations": 107,
+        "metro_lines": 10,
+        "universities": 53,
+        "hospitals": 107,
+        "museums": 35
+      },
+      "climate": {
+        "avg_temp_celsius": 22.0,
+        "annual_rainfall_mm": 800,
+        "sunny_days_per_year": 150
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 21,
+        "parks_count": 214,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 60
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 5.35,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "Local language"
+        ],
+        "cultural_significance_score": 10
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Lisbon",
+        "country": "Portugal",
+        "coordinates": [
+          38.7223,
+          -9.1393
+        ],
+        "founded": 1200,
+        "timezone": "GMT/UTC"
+      },
+      "demographics": {
+        "population_city": 300000,
+        "population_metro": 450000,
+        "population_density": 3000,
+        "population_growth_rate": 1.0
+      },
+      "geography": {
+        "area_city_km2": 60,
+        "area_metro_km2": 500,
+        "elevation_m": 200,
+        "coastline_km": 50,
+        "green_space_percent": 8.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 3.0,
+        "gdp_per_capita_usd": 5000,
+        "cost_of_living_index": 40,
+        "unemployment_rate": 7.0
+      },
+      "infrastructure": {
+        "airports": 1,
+        "metro_stations": 0,
+        "metro_lines": 0,
+        "universities": 5,
+        "hospitals": 10,
+        "museums": 5
+      },
+      "climate": {
+        "avg_temp_celsius": 15.0,
+        "annual_rainfall_mm": 800,
+        "sunny_days_per_year": 150
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 5,
+        "parks_count": 20,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 30
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 1.0,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "Local language"
+        ],
+        "cultural_significance_score": 10
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Ljubljana",
+        "country": "Slovenia",
+        "coordinates": [
+          46.0569,
+          14.5058
+        ],
+        "founded": 1200,
+        "timezone": "GMT/UTC"
+      },
+      "demographics": {
+        "population_city": 300000,
+        "population_metro": 450000,
+        "population_density": 3000,
+        "population_growth_rate": 1.0
+      },
+      "geography": {
+        "area_city_km2": 60,
+        "area_metro_km2": 500,
+        "elevation_m": 200,
+        "coastline_km": 50,
+        "green_space_percent": 8.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 3.0,
+        "gdp_per_capita_usd": 5000,
+        "cost_of_living_index": 40,
+        "unemployment_rate": 7.0
+      },
+      "infrastructure": {
+        "airports": 1,
+        "metro_stations": 0,
+        "metro_lines": 0,
+        "universities": 5,
+        "hospitals": 10,
+        "museums": 5
+      },
+      "climate": {
+        "avg_temp_celsius": 8.0,
+        "annual_rainfall_mm": 800,
+        "sunny_days_per_year": 150
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 5,
+        "parks_count": 20,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 30
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 1.0,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "Local language"
+        ],
+        "cultural_significance_score": 10
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Luanda",
+        "country": "Angola",
+        "coordinates": [
+          -8.838,
+          13.234
+        ],
+        "founded": 1200,
+        "timezone": "GMT/UTC"
+      },
+      "demographics": {
+        "population_city": 300000,
+        "population_metro": 450000,
+        "population_density": 3000,
+        "population_growth_rate": 1.0
+      },
+      "geography": {
+        "area_city_km2": 60,
+        "area_metro_km2": 500,
+        "elevation_m": 200,
+        "coastline_km": 0,
+        "green_space_percent": 8.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 3.0,
+        "gdp_per_capita_usd": 5000,
+        "cost_of_living_index": 40,
+        "unemployment_rate": 7.0
+      },
+      "infrastructure": {
+        "airports": 1,
+        "metro_stations": 0,
+        "metro_lines": 0,
+        "universities": 5,
+        "hospitals": 10,
+        "museums": 5
+      },
+      "climate": {
+        "avg_temp_celsius": 27.0,
+        "annual_rainfall_mm": 1800,
+        "sunny_days_per_year": 150
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 5,
+        "parks_count": 20,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 30
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 1.0,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "Local language"
+        ],
+        "cultural_significance_score": 10
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Luxembourg",
+        "country": "Luxembourg",
+        "coordinates": [
+          49.6116,
+          6.1319
+        ],
+        "founded": 1200,
+        "timezone": "GMT/UTC"
+      },
+      "demographics": {
+        "population_city": 300000,
+        "population_metro": 450000,
+        "population_density": 3000,
+        "population_growth_rate": 1.0
+      },
+      "geography": {
+        "area_city_km2": 60,
+        "area_metro_km2": 500,
+        "elevation_m": 200,
+        "coastline_km": 50,
+        "green_space_percent": 8.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 3.0,
+        "gdp_per_capita_usd": 5000,
+        "cost_of_living_index": 40,
+        "unemployment_rate": 7.0
+      },
+      "infrastructure": {
+        "airports": 1,
+        "metro_stations": 0,
+        "metro_lines": 0,
+        "universities": 5,
+        "hospitals": 10,
+        "museums": 5
+      },
+      "climate": {
+        "avg_temp_celsius": 8.0,
+        "annual_rainfall_mm": 800,
+        "sunny_days_per_year": 150
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 5,
+        "parks_count": 20,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 30
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 1.0,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "Local language"
+        ],
+        "cultural_significance_score": 10
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Lyon",
+        "country": "France",
+        "coordinates": [
+          45.764,
+          4.8357
+        ],
+        "founded": 1200,
+        "timezone": "GMT/UTC"
+      },
+      "demographics": {
+        "population_city": 400000,
+        "population_metro": 600000,
+        "population_density": 4000,
+        "population_growth_rate": 1.0
+      },
+      "geography": {
+        "area_city_km2": 80,
+        "area_metro_km2": 600,
+        "elevation_m": 200,
+        "coastline_km": 50,
+        "green_space_percent": 8.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 16.0,
+        "gdp_per_capita_usd": 42000,
+        "cost_of_living_index": 75,
+        "unemployment_rate": 8.0
+      },
+      "infrastructure": {
+        "airports": 1,
+        "metro_stations": 50,
+        "metro_lines": 3,
+        "universities": 5,
+        "hospitals": 10,
+        "museums": 5
+      },
+      "climate": {
+        "avg_temp_celsius": 8.0,
+        "annual_rainfall_mm": 800,
+        "sunny_days_per_year": 150
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 5,
+        "parks_count": 20,
+        "restaurants_per_1000": 15,
+        "avg_commute_minutes": 30
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 1.0,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "French"
+        ],
+        "cultural_significance_score": 10
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Madrid",
+        "country": "Spain",
+        "coordinates": [
+          40.4168,
+          -3.7038
+        ],
+        "founded": 1200,
+        "timezone": "GMT/UTC"
+      },
+      "demographics": {
+        "population_city": 3300000,
+        "population_metro": 6700000,
+        "population_density": 33000,
+        "population_growth_rate": 1.0
+      },
+      "geography": {
+        "area_city_km2": 660,
+        "area_metro_km2": 6700,
+        "elevation_m": 200,
+        "coastline_km": 50,
+        "green_space_percent": 8.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 99.0,
+        "gdp_per_capita_usd": 30000,
+        "cost_of_living_index": 40,
+        "unemployment_rate": 12.0
+      },
+      "infrastructure": {
+        "airports": 1,
+        "metro_stations": 0,
+        "metro_lines": 3,
+        "universities": 16,
+        "hospitals": 33,
+        "museums": 11
+      },
+      "climate": {
+        "avg_temp_celsius": 15.0,
+        "annual_rainfall_mm": 800,
+        "sunny_days_per_year": 150
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 6,
+        "parks_count": 66,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 30
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 1.65,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "Spanish"
+        ],
+        "cultural_significance_score": 15
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Male",
+        "country": "Maldives",
+        "coordinates": [
+          4.1755,
+          73.5093
+        ],
+        "founded": 1200,
+        "timezone": "MSK"
+      },
+      "demographics": {
+        "population_city": 300000,
+        "population_metro": 450000,
+        "population_density": 3000,
+        "population_growth_rate": 1.0
+      },
+      "geography": {
+        "area_city_km2": 60,
+        "area_metro_km2": 500,
+        "elevation_m": 200,
+        "coastline_km": 0,
+        "green_space_percent": 8.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 3.0,
+        "gdp_per_capita_usd": 5000,
+        "cost_of_living_index": 40,
+        "unemployment_rate": 7.0
+      },
+      "infrastructure": {
+        "airports": 1,
+        "metro_stations": 0,
+        "metro_lines": 0,
+        "universities": 5,
+        "hospitals": 10,
+        "museums": 5
+      },
+      "climate": {
+        "avg_temp_celsius": 27.0,
+        "annual_rainfall_mm": 1800,
+        "sunny_days_per_year": 150
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 5,
+        "parks_count": 20,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 30
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 1.0,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "Local language"
+        ],
+        "cultural_significance_score": 10
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Manama",
+        "country": "Bahrain",
+        "coordinates": [
+          26.0667,
+          50.5577
+        ],
+        "founded": 1200,
+        "timezone": "MSK"
+      },
+      "demographics": {
+        "population_city": 300000,
+        "population_metro": 450000,
+        "population_density": 3000,
+        "population_growth_rate": 1.0
+      },
+      "geography": {
+        "area_city_km2": 60,
+        "area_metro_km2": 500,
+        "elevation_m": 200,
+        "coastline_km": 0,
+        "green_space_percent": 8.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 3.0,
+        "gdp_per_capita_usd": 5000,
+        "cost_of_living_index": 40,
+        "unemployment_rate": 7.0
+      },
+      "infrastructure": {
+        "airports": 1,
+        "metro_stations": 0,
+        "metro_lines": 0,
+        "universities": 5,
+        "hospitals": 10,
+        "museums": 5
+      },
+      "climate": {
+        "avg_temp_celsius": 22.0,
+        "annual_rainfall_mm": 200,
+        "sunny_days_per_year": 300
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 5,
+        "parks_count": 20,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 30
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 1.0,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "Local language"
+        ],
+        "cultural_significance_score": 10
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Maputo",
+        "country": "Mozambique",
+        "coordinates": [
+          -25.9692,
+          32.5732
+        ],
+        "founded": 1200,
+        "timezone": "CET/CEST"
+      },
+      "demographics": {
+        "population_city": 300000,
+        "population_metro": 450000,
+        "population_density": 3000,
+        "population_growth_rate": 1.0
+      },
+      "geography": {
+        "area_city_km2": 60,
+        "area_metro_km2": 500,
+        "elevation_m": 200,
+        "coastline_km": 0,
+        "green_space_percent": 8.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 3.0,
+        "gdp_per_capita_usd": 5000,
+        "cost_of_living_index": 40,
+        "unemployment_rate": 7.0
+      },
+      "infrastructure": {
+        "airports": 1,
+        "metro_stations": 0,
+        "metro_lines": 0,
+        "universities": 5,
+        "hospitals": 10,
+        "museums": 5
+      },
+      "climate": {
+        "avg_temp_celsius": 22.0,
+        "annual_rainfall_mm": 200,
+        "sunny_days_per_year": 300
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 5,
+        "parks_count": 20,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 30
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 1.0,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "Local language"
+        ],
+        "cultural_significance_score": 10
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Mashhad",
+        "country": "Iran",
+        "coordinates": [
+          36.297,
+          59.568
+        ],
+        "founded": -500,
+        "timezone": "MSK"
+      },
+      "demographics": {
+        "population_city": 700000,
+        "population_metro": 1050000,
+        "population_density": 7000,
+        "population_growth_rate": 1.0
+      },
+      "geography": {
+        "area_city_km2": 140,
+        "area_metro_km2": 1050,
+        "elevation_m": 200,
+        "coastline_km": 0,
+        "green_space_percent": 8.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 7.0,
+        "gdp_per_capita_usd": 5000,
+        "cost_of_living_index": 40,
+        "unemployment_rate": 7.0
+      },
+      "infrastructure": {
+        "airports": 1,
+        "metro_stations": 0,
+        "metro_lines": 0,
+        "universities": 5,
+        "hospitals": 10,
+        "museums": 5
+      },
+      "climate": {
+        "avg_temp_celsius": 15.0,
+        "annual_rainfall_mm": 800,
+        "sunny_days_per_year": 150
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 5,
+        "parks_count": 20,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 30
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 1.0,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "Persian"
+        ],
+        "cultural_significance_score": 10
+      }
+    },
+    {
+      "basic_info": {
+        "name": "Mecca",
+        "country": "Saudi Arabia",
+        "coordinates": [
+          21.389,
+          39.826
+        ],
+        "founded": 1200,
+        "timezone": "CET/CEST"
+      },
+      "demographics": {
+        "population_city": 300000,
+        "population_metro": 450000,
+        "population_density": 3000,
+        "population_growth_rate": 1.0
+      },
+      "geography": {
+        "area_city_km2": 60,
+        "area_metro_km2": 500,
+        "elevation_m": 200,
+        "coastline_km": 0,
+        "green_space_percent": 8.0,
+        "water_area_percent": 5.0
+      },
+      "economic": {
+        "gdp_billions_usd": 3.0,
+        "gdp_per_capita_usd": 5000,
+        "cost_of_living_index": 40,
+        "unemployment_rate": 7.0
+      },
+      "infrastructure": {
+        "airports": 1,
+        "metro_stations": 0,
+        "metro_lines": 0,
+        "universities": 5,
+        "hospitals": 10,
+        "museums": 5
+      },
+      "climate": {
+        "avg_temp_celsius": 22.0,
+        "annual_rainfall_mm": 200,
+        "sunny_days_per_year": 300
+      },
+      "urban_features": {
+        "skyscrapers_150m_plus": 0,
+        "bridges": 5,
+        "parks_count": 20,
+        "restaurants_per_1000": 8,
+        "avg_commute_minutes": 30
+      },
+      "tourism_culture": {
+        "annual_tourists_millions": 1.0,
+        "unesco_sites": 0,
+        "languages_spoken": [
+          "Local language"
+        ],
+        "cultural_significance_score": 10
+      }
     }
   ]
 }

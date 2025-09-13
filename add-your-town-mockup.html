@@ -1,0 +1,1683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Your Town - City Compare</title>
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <style>
+        /* CSS Custom Properties for theming */
+        :root {
+            --primary-color: #2563eb;
+            --primary-hover: #1d4ed8;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --error-color: #ef4444;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --border-color: #e5e7eb;
+            --bg-gray: #f9fafb;
+            --bg-white: #ffffff;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --transition: all 0.2s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--bg-white);
+            border-radius: 16px;
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            animation: slideUp 0.4s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), #7c3aed);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            padding: 20px 30px;
+            background: var(--bg-gray);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .progress-step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .progress-step::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            right: -50%;
+            height: 2px;
+            background: var(--border-color);
+            z-index: -1;
+        }
+
+        .progress-step:last-child::before {
+            display: none;
+        }
+
+        .progress-step.active::before,
+        .progress-step.completed::before {
+            background: var(--primary-color);
+        }
+
+        .step-circle {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--bg-white);
+            border: 2px solid var(--border-color);
+            margin: 0 auto 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .progress-step.active .step-circle {
+            border-color: var(--primary-color);
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .progress-step.completed .step-circle {
+            border-color: var(--success-color);
+            background: var(--success-color);
+            color: white;
+        }
+
+        .step-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .progress-step.active .step-label,
+        .progress-step.completed .step-label {
+            color: var(--text-primary);
+        }
+
+        /* Content Area */
+        .content {
+            padding: 30px;
+            min-height: 400px;
+        }
+
+        .step-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .step-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateX(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        .required {
+            color: var(--error-color);
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 15px;
+            transition: var(--transition);
+            background: var(--bg-white);
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .input-hint {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .error-message {
+            color: var(--error-color);
+            font-size: 13px;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .form-group.error input,
+        .form-group.error select {
+            border-color: var(--error-color);
+        }
+
+        .form-group.error .error-message {
+            display: block;
+        }
+
+        /* Map Container */
+        #map-container {
+            height: 400px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .map-instructions {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            box-shadow: var(--shadow-md);
+            z-index: 1000;
+        }
+
+        /* Boundary Options */
+        .boundary-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .boundary-option {
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .boundary-option:hover {
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-md);
+        }
+
+        .boundary-option.selected {
+            border-color: var(--primary-color);
+            background: rgba(37, 99, 235, 0.05);
+        }
+
+        .boundary-option.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 24px;
+            height: 24px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .option-icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .option-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .option-description {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        /* File Upload */
+        .upload-area {
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            padding: 40px 20px;
+            text-align: center;
+            transition: var(--transition);
+            cursor: pointer;
+            background: var(--bg-gray);
+            margin-top: 16px;
+            display: none;
+        }
+
+        .upload-area.active {
+            display: block;
+        }
+
+        .upload-area.dragover {
+            border-color: var(--primary-color);
+            background: rgba(37, 99, 235, 0.05);
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .file-info {
+            background: var(--bg-white);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-top: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .file-name {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .file-size {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .remove-file {
+            color: var(--error-color);
+            cursor: pointer;
+            font-size: 20px;
+            line-height: 1;
+        }
+
+        /* Review Summary */
+        .review-section {
+            background: var(--bg-gray);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .review-section h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+
+        .review-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .review-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .review-label {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .review-value {
+            color: var(--text-primary);
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        /* Status Page */
+        .status-card {
+            background: var(--bg-gray);
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .status-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+        }
+
+        .status-icon.pending {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning-color);
+        }
+
+        .status-icon.processing {
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary-color);
+            animation: pulse 2s infinite;
+        }
+
+        .status-icon.complete {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+        }
+
+        .status-icon.failed {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error-color);
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 0.7;
+            }
+        }
+
+        .status-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .status-message {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .status-timeline {
+            text-align: left;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 30px;
+            bottom: -20px;
+            width: 2px;
+            background: var(--border-color);
+        }
+
+        .timeline-item:last-child::before {
+            display: none;
+        }
+
+        .timeline-item.completed::before {
+            background: var(--success-color);
+        }
+
+        .timeline-dot {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--bg-white);
+            border: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            flex-shrink: 0;
+        }
+
+        .timeline-item.completed .timeline-dot {
+            border-color: var(--success-color);
+            background: var(--success-color);
+            color: white;
+        }
+
+        .timeline-item.active .timeline-dot {
+            border-color: var(--primary-color);
+            background: var(--primary-color);
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        .timeline-content {
+            flex: 1;
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+            font-size: 14px;
+        }
+
+        .timeline-time {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* Buttons */
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .btn {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-secondary {
+            background: var(--bg-gray);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border-color);
+        }
+
+        .btn-success {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn:disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Tooltips */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            color: var(--text-secondary);
+            cursor: help;
+            margin-left: 4px;
+            font-size: 14px;
+        }
+
+        .tooltip .tooltip-text {
+            visibility: hidden;
+            width: 250px;
+            background-color: var(--text-primary);
+            color: white;
+            text-align: left;
+            border-radius: 8px;
+            padding: 12px;
+            position: absolute;
+            z-index: 1000;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -125px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 13px;
+            line-height: 1.4;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Alert Messages */
+        .alert {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .alert-info {
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary-color);
+            border: 1px solid rgba(37, 99, 235, 0.2);
+        }
+
+        .alert-success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .alert-warning {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning-color);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .alert-error {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error-color);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 640px) {
+            .container {
+                margin: 0;
+                border-radius: 0;
+                min-height: 100vh;
+            }
+
+            .header {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .progress-step .step-label {
+                display: none;
+            }
+
+            .boundary-options {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                flex-direction: column-reverse;
+                gap: 12px;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .tooltip .tooltip-text {
+                width: 200px;
+                margin-left: -100px;
+            }
+        }
+
+        /* Success Animation */
+        @keyframes checkmark {
+            0% {
+                stroke-dashoffset: 100;
+            }
+            100% {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        .success-checkmark {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto;
+        }
+
+        .success-checkmark circle {
+            stroke: var(--success-color);
+            stroke-width: 2;
+            fill: none;
+            animation: scale 0.3s ease;
+        }
+
+        .success-checkmark path {
+            stroke: var(--success-color);
+            stroke-width: 3;
+            fill: none;
+            stroke-dasharray: 100;
+            stroke-dashoffset: 100;
+            animation: checkmark 0.3s ease 0.3s forwards;
+        }
+
+        @keyframes scale {
+            0% {
+                transform: scale(0);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Add Your Town</h1>
+            <p>Help us expand our database by adding your hometown</p>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-steps">
+                <div class="progress-step active" data-step="1">
+                    <div class="step-circle">1</div>
+                    <div class="step-label">Basic Info</div>
+                </div>
+                <div class="progress-step" data-step="2">
+                    <div class="step-circle">2</div>
+                    <div class="step-label">Location</div>
+                </div>
+                <div class="progress-step" data-step="3">
+                    <div class="step-circle">3</div>
+                    <div class="step-label">Boundaries</div>
+                </div>
+                <div class="progress-step" data-step="4">
+                    <div class="step-circle">4</div>
+                    <div class="step-label">Review</div>
+                </div>
+                <div class="progress-step" data-step="5">
+                    <div class="step-circle">5</div>
+                    <div class="step-label">Submit</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Area -->
+        <div class="content">
+            <!-- Step 1: Basic Information -->
+            <div class="step-content active" id="step1">
+                <h2>Tell us about your town</h2>
+                <p style="color: var(--text-secondary); margin-bottom: 24px;">
+                    Let's start with some basic information about your town or city.
+                </p>
+
+                <form id="basicInfoForm">
+                    <div class="form-group">
+                        <label for="townName">
+                            Town/City Name <span class="required">*</span>
+                            <span class="tooltip">ℹ
+                                <span class="tooltip-text">
+                                    Enter the official name of your town or city as it appears on maps and official documents.
+                                </span>
+                            </span>
+                        </label>
+                        <input type="text" id="townName" placeholder="e.g., Springfield" required>
+                        <div class="error-message">Please enter a valid town name</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="country">
+                            Country <span class="required">*</span>
+                        </label>
+                        <select id="country" required>
+                            <option value="">Select a country</option>
+                            <option value="US">United States</option>
+                            <option value="CA">Canada</option>
+                            <option value="GB">United Kingdom</option>
+                            <option value="AU">Australia</option>
+                            <option value="DE">Germany</option>
+                            <option value="FR">France</option>
+                            <option value="IT">Italy</option>
+                            <option value="ES">Spain</option>
+                            <option value="JP">Japan</option>
+                            <option value="CN">China</option>
+                            <option value="IN">India</option>
+                            <option value="BR">Brazil</option>
+                            <option value="MX">Mexico</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <div class="error-message">Please select a country</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="stateRegion">
+                            State/Province/Region <span class="required">*</span>
+                            <span class="tooltip">ℹ
+                                <span class="tooltip-text">
+                                    This helps us distinguish between towns with the same name in different regions.
+                                </span>
+                            </span>
+                        </label>
+                        <input type="text" id="stateRegion" placeholder="e.g., Illinois" required>
+                        <div class="error-message">Please enter a state or region</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="population">
+                            Approximate Population
+                            <span class="tooltip">ℹ
+                                <span class="tooltip-text">
+                                    An estimate is fine. This helps us categorize your town and provide appropriate comparisons.
+                                </span>
+                            </span>
+                        </label>
+                        <input type="number" id="population" placeholder="e.g., 25000" min="0">
+                        <div class="input-hint">Optional but helpful for categorization</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="additionalInfo">
+                            Additional Information
+                        </label>
+                        <textarea id="additionalInfo" rows="3" placeholder="Any special notes about your town (e.g., 'includes surrounding suburbs', 'historic district only')"></textarea>
+                        <div class="input-hint">Optional - Help us understand any unique aspects</div>
+                    </div>
+                </form>
+
+                <div class="button-group">
+                    <div></div>
+                    <button class="btn btn-primary" onclick="validateAndNextStep(1)">
+                        Continue
+                        <span>→</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 2: Location Verification -->
+            <div class="step-content" id="step2">
+                <h2>Confirm your town's location</h2>
+                <p style="color: var(--text-secondary); margin-bottom: 24px;">
+                    Click on the map to mark the center of your town, or search for it using the box below.
+                </p>
+
+                <div class="form-group">
+                    <label for="locationSearch">Search for your town</label>
+                    <input type="text" id="locationSearch" placeholder="Search..." onkeyup="searchLocation(event)">
+                </div>
+
+                <div id="map-container">
+                    <div class="map-instructions">📍 Click to place marker at town center</div>
+                </div>
+
+                <div class="alert alert-info">
+                    <span>💡</span>
+                    <span>The marker should be placed at the approximate center of your town. This will be used as the reference point for boundary detection.</span>
+                </div>
+
+                <div class="form-group">
+                    <label>Selected Coordinates</label>
+                    <div style="display: flex; gap: 12px;">
+                        <input type="text" id="latitude" placeholder="Latitude" readonly style="flex: 1;">
+                        <input type="text" id="longitude" placeholder="Longitude" readonly style="flex: 1;">
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-secondary" onclick="previousStep(2)">
+                        <span>←</span>
+                        Back
+                    </button>
+                    <button class="btn btn-primary" onclick="validateAndNextStep(2)" id="locationNextBtn" disabled>
+                        Continue
+                        <span>→</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 3: Boundary Selection -->
+            <div class="step-content" id="step3">
+                <h2>Define your town's boundaries</h2>
+                <p style="color: var(--text-secondary); margin-bottom: 24px;">
+                    Choose how you'd like to provide boundary information for your town.
+                </p>
+
+                <div class="boundary-options">
+                    <div class="boundary-option" onclick="selectBoundaryOption('auto')" data-option="auto">
+                        <div class="option-icon">🤖</div>
+                        <div class="option-title">Automatic Detection</div>
+                        <div class="option-description">
+                            We'll try to find official boundaries using our database
+                        </div>
+                    </div>
+
+                    <div class="boundary-option" onclick="selectBoundaryOption('upload')" data-option="upload">
+                        <div class="option-icon">📁</div>
+                        <div class="option-title">Upload File</div>
+                        <div class="option-description">
+                            Have a GeoJSON or KML file? Upload it here
+                        </div>
+                    </div>
+
+                    <div class="boundary-option" onclick="selectBoundaryOption('draw')" data-option="draw">
+                        <div class="option-icon">✏️</div>
+                        <div class="option-title">Draw Manually</div>
+                        <div class="option-description">
+                            Draw the boundaries yourself on a map
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upload Area (hidden by default) -->
+                <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()" 
+                     ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)">
+                    <input type="file" id="fileInput" accept=".geojson,.json,.kml" style="display: none;" onchange="handleFileSelect(event)">
+                    <div class="upload-icon">📤</div>
+                    <div>
+                        <strong>Drop your boundary file here</strong><br>
+                        or click to browse
+                    </div>
+                    <div class="input-hint" style="margin-top: 12px;">Accepts GeoJSON or KML files (max 10MB)</div>
+                </div>
+
+                <div id="fileInfo" style="display: none;">
+                    <div class="file-info">
+                        <div>
+                            <div class="file-name" id="fileName">boundary-file.geojson</div>
+                            <div class="file-size" id="fileSize">2.3 MB</div>
+                        </div>
+                        <span class="remove-file" onclick="removeFile()">×</span>
+                    </div>
+                </div>
+
+                <!-- Draw Instructions (hidden by default) -->
+                <div class="alert alert-info" id="drawInstructions" style="display: none;">
+                    <span>✏️</span>
+                    <span>You'll be able to draw boundaries in the next step. We'll provide an interactive map where you can click to create boundary points.</span>
+                </div>
+
+                <!-- Auto Detection Result (hidden by default) -->
+                <div class="alert alert-success" id="autoDetectionResult" style="display: none;">
+                    <span>✅</span>
+                    <span>Great! We'll attempt to automatically detect boundaries for <strong id="autoTownName"></strong> after submission.</span>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-secondary" onclick="previousStep(3)">
+                        <span>←</span>
+                        Back
+                    </button>
+                    <button class="btn btn-primary" onclick="validateAndNextStep(3)" id="boundaryNextBtn" disabled>
+                        Continue
+                        <span>→</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 4: Review -->
+            <div class="step-content" id="step4">
+                <h2>Review your submission</h2>
+                <p style="color: var(--text-secondary); margin-bottom: 24px;">
+                    Please review the information below before submitting.
+                </p>
+
+                <div class="review-section">
+                    <h3>📍 Location Details</h3>
+                    <div class="review-item">
+                        <span class="review-label">Town/City Name</span>
+                        <span class="review-value" id="reviewTownName">-</span>
+                    </div>
+                    <div class="review-item">
+                        <span class="review-label">Country</span>
+                        <span class="review-value" id="reviewCountry">-</span>
+                    </div>
+                    <div class="review-item">
+                        <span class="review-label">State/Region</span>
+                        <span class="review-value" id="reviewStateRegion">-</span>
+                    </div>
+                    <div class="review-item">
+                        <span class="review-label">Population</span>
+                        <span class="review-value" id="reviewPopulation">-</span>
+                    </div>
+                </div>
+
+                <div class="review-section">
+                    <h3>🗺️ Geographic Data</h3>
+                    <div class="review-item">
+                        <span class="review-label">Coordinates</span>
+                        <span class="review-value" id="reviewCoordinates">-</span>
+                    </div>
+                    <div class="review-item">
+                        <span class="review-label">Boundary Method</span>
+                        <span class="review-value" id="reviewBoundaryMethod">-</span>
+                    </div>
+                    <div class="review-item" id="reviewFileRow" style="display: none;">
+                        <span class="review-label">Uploaded File</span>
+                        <span class="review-value" id="reviewFileName">-</span>
+                    </div>
+                </div>
+
+                <div class="review-section" id="reviewNotesSection" style="display: none;">
+                    <h3>📝 Additional Notes</h3>
+                    <p style="color: var(--text-secondary); font-size: 14px;" id="reviewNotes">-</p>
+                </div>
+
+                <div class="alert alert-warning">
+                    <span>⏱️</span>
+                    <span>Processing typically takes 1-3 business days. We'll notify you once your town has been added to the database.</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="emailNotification">
+                        Email for notifications (optional)
+                        <span class="tooltip">ℹ
+                            <span class="tooltip-text">
+                                We'll only use this to notify you when your town has been processed. No spam, promise!
+                            </span>
+                        </span>
+                    </label>
+                    <input type="email" id="emailNotification" placeholder="your.email@example.com">
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-secondary" onclick="previousStep(4)">
+                        <span>←</span>
+                        Back
+                    </button>
+                    <button class="btn btn-success" onclick="submitForm()">
+                        Submit Town
+                        <span>✓</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 5: Status -->
+            <div class="step-content" id="step5">
+                <div class="status-card">
+                    <div class="status-icon processing" id="statusIcon">
+                        <span id="statusEmoji">⚙️</span>
+                    </div>
+                    <h2 class="status-title" id="statusTitle">Processing Your Submission</h2>
+                    <p class="status-message" id="statusMessage">
+                        We're validating and processing your town data. This usually takes just a moment...
+                    </p>
+
+                    <div class="status-timeline" id="statusTimeline">
+                        <div class="timeline-item completed">
+                            <div class="timeline-dot">✓</div>
+                            <div class="timeline-content">
+                                <div class="timeline-title">Submission Received</div>
+                                <div class="timeline-time">Just now</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item active" id="validationStep">
+                            <div class="timeline-dot">
+                                <div class="spinner" style="width: 16px; height: 16px; border-width: 2px;"></div>
+                            </div>
+                            <div class="timeline-content">
+                                <div class="timeline-title">Validating Data</div>
+                                <div class="timeline-time">In progress...</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item" id="boundaryStep">
+                            <div class="timeline-dot">3</div>
+                            <div class="timeline-content">
+                                <div class="timeline-title">Processing Boundaries</div>
+                                <div class="timeline-time">Pending</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item" id="integrationStep">
+                            <div class="timeline-dot">4</div>
+                            <div class="timeline-content">
+                                <div class="timeline-title">Database Integration</div>
+                                <div class="timeline-time">Pending</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="alert alert-info" id="submissionIdAlert">
+                    <span>🔖</span>
+                    <span>Your submission ID: <strong id="submissionId">TOWN-2024-0342</strong> - Save this to track your submission status</span>
+                </div>
+
+                <div class="button-group" id="statusButtons">
+                    <button class="btn btn-secondary" onclick="resetForm()">
+                        Add Another Town
+                    </button>
+                    <button class="btn btn-primary" onclick="checkStatus()">
+                        <span class="spinner" id="refreshSpinner" style="display: none;"></span>
+                        <span id="refreshText">Refresh Status</span>
+                    </button>
+                </div>
+
+                <div class="button-group" id="completeButtons" style="display: none;">
+                    <button class="btn btn-secondary" onclick="resetForm()">
+                        Add Another Town
+                    </button>
+                    <button class="btn btn-primary" onclick="viewInApp()">
+                        View in City Compare
+                        <span>→</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script>
+        // Global state management
+        const formData = {
+            townName: '',
+            country: '',
+            stateRegion: '',
+            population: null,
+            additionalInfo: '',
+            latitude: null,
+            longitude: null,
+            boundaryMethod: null,
+            uploadedFile: null,
+            email: ''
+        };
+
+        let currentStep = 1;
+        let map = null;
+        let marker = null;
+        let processingStatus = 'pending';
+        let statusCheckCount = 0;
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add event listeners for form validation
+            document.getElementById('townName').addEventListener('input', clearError);
+            document.getElementById('country').addEventListener('change', clearError);
+            document.getElementById('stateRegion').addEventListener('input', clearError);
+            
+            // Generate random submission ID
+            const randomId = 'TOWN-' + new Date().getFullYear() + '-' + 
+                           String(Math.floor(Math.random() * 10000)).padStart(4, '0');
+            document.getElementById('submissionId').textContent = randomId;
+        });
+
+        // Step navigation
+        function nextStep(step) {
+            // Mark current step as completed
+            document.querySelector(`.progress-step[data-step="${step}"]`).classList.add('completed');
+            document.querySelector(`.progress-step[data-step="${step}"]`).classList.remove('active');
+            
+            // Hide current step content
+            document.getElementById(`step${step}`).classList.remove('active');
+            
+            // Show next step
+            currentStep = step + 1;
+            document.querySelector(`.progress-step[data-step="${currentStep}"]`).classList.add('active');
+            document.getElementById(`step${currentStep}`).classList.add('active');
+            
+            // Initialize map if moving to step 2
+            if (currentStep === 2 && !map) {
+                setTimeout(initializeMap, 100);
+            }
+            
+            // Populate review if moving to step 4
+            if (currentStep === 4) {
+                populateReview();
+            }
+            
+            // Start processing animation if moving to step 5
+            if (currentStep === 5) {
+                startProcessing();
+            }
+        }
+
+        function previousStep(step) {
+            // Remove active from current step
+            document.querySelector(`.progress-step[data-step="${step}"]`).classList.remove('active');
+            document.getElementById(`step${step}`).classList.remove('active');
+            
+            // Go back to previous step
+            currentStep = step - 1;
+            document.querySelector(`.progress-step[data-step="${currentStep}"]`).classList.remove('completed');
+            document.querySelector(`.progress-step[data-step="${currentStep}"]`).classList.add('active');
+            document.getElementById(`step${currentStep}`).classList.add('active');
+        }
+
+        // Validation functions
+        function validateAndNextStep(step) {
+            let isValid = true;
+            
+            if (step === 1) {
+                // Validate basic info
+                const townName = document.getElementById('townName');
+                const country = document.getElementById('country');
+                const stateRegion = document.getElementById('stateRegion');
+                
+                if (!townName.value.trim()) {
+                    showError(townName);
+                    isValid = false;
+                }
+                if (!country.value) {
+                    showError(country);
+                    isValid = false;
+                }
+                if (!stateRegion.value.trim()) {
+                    showError(stateRegion);
+                    isValid = false;
+                }
+                
+                if (isValid) {
+                    // Save form data
+                    formData.townName = townName.value;
+                    formData.country = country.options[country.selectedIndex].text;
+                    formData.stateRegion = stateRegion.value;
+                    formData.population = document.getElementById('population').value || 'Not specified';
+                    formData.additionalInfo = document.getElementById('additionalInfo').value;
+                    
+                    nextStep(step);
+                }
+            } else if (step === 2) {
+                // Validate location
+                if (!formData.latitude || !formData.longitude) {
+                    alert('Please select a location on the map');
+                    isValid = false;
+                } else {
+                    nextStep(step);
+                }
+            } else if (step === 3) {
+                // Validate boundary selection
+                if (!formData.boundaryMethod) {
+                    alert('Please select a boundary method');
+                    isValid = false;
+                } else if (formData.boundaryMethod === 'upload' && !formData.uploadedFile) {
+                    alert('Please upload a boundary file');
+                    isValid = false;
+                } else {
+                    nextStep(step);
+                }
+            } else {
+                nextStep(step);
+            }
+        }
+
+        function showError(element) {
+            element.closest('.form-group').classList.add('error');
+        }
+
+        function clearError(event) {
+            event.target.closest('.form-group').classList.remove('error');
+        }
+
+        // Map initialization
+        function initializeMap() {
+            // Initialize Leaflet map
+            map = L.map('map-container').setView([40.7128, -74.0060], 2);
+            
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+                attribution: '© OpenStreetMap contributors © CARTO',
+                subdomains: 'abcd',
+                maxZoom: 19
+            }).addTo(map);
+            
+            // Add click handler
+            map.on('click', function(e) {
+                placeMarker(e.latlng.lat, e.latlng.lng);
+            });
+        }
+
+        function placeMarker(lat, lng) {
+            // Remove existing marker
+            if (marker) {
+                map.removeLayer(marker);
+            }
+            
+            // Add new marker
+            marker = L.marker([lat, lng]).addTo(map);
+            
+            // Update coordinates
+            formData.latitude = lat.toFixed(6);
+            formData.longitude = lng.toFixed(6);
+            
+            document.getElementById('latitude').value = formData.latitude;
+            document.getElementById('longitude').value = formData.longitude;
+            
+            // Enable next button
+            document.getElementById('locationNextBtn').disabled = false;
+            
+            // Update instructions
+            document.querySelector('.map-instructions').textContent = '✅ Location selected - Click elsewhere to change';
+        }
+
+        function searchLocation(event) {
+            if (event.key === 'Enter') {
+                const searchTerm = event.target.value;
+                // Simulate geocoding - in real app would call geocoding API
+                if (searchTerm.toLowerCase().includes('new york')) {
+                    map.setView([40.7128, -74.0060], 10);
+                    placeMarker(40.7128, -74.0060);
+                } else if (searchTerm.toLowerCase().includes('london')) {
+                    map.setView([51.5074, -0.1278], 10);
+                    placeMarker(51.5074, -0.1278);
+                } else if (searchTerm.toLowerCase().includes('tokyo')) {
+                    map.setView([35.6762, 139.6503], 10);
+                    placeMarker(35.6762, 139.6503);
+                } else {
+                    // Random location for demo
+                    const lat = (Math.random() * 180 - 90).toFixed(6);
+                    const lng = (Math.random() * 360 - 180).toFixed(6);
+                    map.setView([lat, lng], 10);
+                    placeMarker(lat, lng);
+                }
+            }
+        }
+
+        // Boundary selection
+        function selectBoundaryOption(option) {
+            // Remove previous selection
+            document.querySelectorAll('.boundary-option').forEach(el => {
+                el.classList.remove('selected');
+            });
+            
+            // Add selection
+            document.querySelector(`[data-option="${option}"]`).classList.add('selected');
+            formData.boundaryMethod = option;
+            
+            // Show/hide relevant sections
+            document.getElementById('uploadArea').classList.toggle('active', option === 'upload');
+            document.getElementById('drawInstructions').style.display = option === 'draw' ? 'flex' : 'none';
+            document.getElementById('autoDetectionResult').style.display = option === 'auto' ? 'flex' : 'none';
+            
+            if (option === 'auto') {
+                document.getElementById('autoTownName').textContent = formData.townName;
+            }
+            
+            // Enable next button for auto and draw methods
+            if (option === 'auto' || option === 'draw') {
+                document.getElementById('boundaryNextBtn').disabled = false;
+            } else if (option === 'upload') {
+                document.getElementById('boundaryNextBtn').disabled = !formData.uploadedFile;
+            }
+        }
+
+        // File upload handling
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            e.currentTarget.classList.add('dragover');
+        }
+
+        function handleDragLeave(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            e.currentTarget.classList.remove('dragover');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            e.currentTarget.classList.remove('dragover');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                processFile(files[0]);
+            }
+        }
+
+        function handleFileSelect(e) {
+            const files = e.target.files;
+            if (files.length > 0) {
+                processFile(files[0]);
+            }
+        }
+
+        function processFile(file) {
+            // Validate file type
+            const validTypes = ['application/json', 'application/geo+json', 'application/vnd.google-earth.kml+xml'];
+            const validExtensions = ['.geojson', '.json', '.kml'];
+            const extension = '.' + file.name.split('.').pop().toLowerCase();
+            
+            if (!validExtensions.includes(extension)) {
+                alert('Please upload a GeoJSON or KML file');
+                return;
+            }
+            
+            // Check file size (10MB limit)
+            if (file.size > 10 * 1024 * 1024) {
+                alert('File size must be less than 10MB');
+                return;
+            }
+            
+            // Store file info
+            formData.uploadedFile = file;
+            
+            // Display file info
+            document.getElementById('fileName').textContent = file.name;
+            document.getElementById('fileSize').textContent = (file.size / 1024 / 1024).toFixed(2) + ' MB';
+            document.getElementById('fileInfo').style.display = 'block';
+            document.getElementById('uploadArea').style.display = 'none';
+            
+            // Enable next button
+            document.getElementById('boundaryNextBtn').disabled = false;
+        }
+
+        function removeFile() {
+            formData.uploadedFile = null;
+            document.getElementById('fileInfo').style.display = 'none';
+            document.getElementById('uploadArea').style.display = 'block';
+            document.getElementById('fileInput').value = '';
+            document.getElementById('boundaryNextBtn').disabled = true;
+        }
+
+        // Review population
+        function populateReview() {
+            document.getElementById('reviewTownName').textContent = formData.townName;
+            document.getElementById('reviewCountry').textContent = formData.country;
+            document.getElementById('reviewStateRegion').textContent = formData.stateRegion;
+            document.getElementById('reviewPopulation').textContent = formData.population || 'Not specified';
+            document.getElementById('reviewCoordinates').textContent = `${formData.latitude}, ${formData.longitude}`;
+            
+            // Boundary method
+            let methodText = '';
+            switch (formData.boundaryMethod) {
+                case 'auto':
+                    methodText = 'Automatic Detection';
+                    break;
+                case 'upload':
+                    methodText = 'File Upload';
+                    document.getElementById('reviewFileRow').style.display = 'flex';
+                    document.getElementById('reviewFileName').textContent = formData.uploadedFile.name;
+                    break;
+                case 'draw':
+                    methodText = 'Manual Drawing';
+                    break;
+            }
+            document.getElementById('reviewBoundaryMethod').textContent = methodText;
+            
+            // Additional notes
+            if (formData.additionalInfo) {
+                document.getElementById('reviewNotesSection').style.display = 'block';
+                document.getElementById('reviewNotes').textContent = formData.additionalInfo;
+            }
+        }
+
+        // Form submission
+        function submitForm() {
+            // Save email if provided
+            formData.email = document.getElementById('emailNotification').value;
+            
+            // Move to status step
+            nextStep(4);
+        }
+
+        // Processing simulation
+        function startProcessing() {
+            // Simulate processing steps
+            setTimeout(() => {
+                // Complete validation
+                document.getElementById('validationStep').classList.remove('active');
+                document.getElementById('validationStep').classList.add('completed');
+                document.querySelector('#validationStep .timeline-dot').innerHTML = '✓';
+                document.querySelector('#validationStep .timeline-time').textContent = 'Completed';
+                
+                // Start boundary processing
+                document.getElementById('boundaryStep').classList.add('active');
+                document.querySelector('#boundaryStep .timeline-dot').innerHTML = '<div class="spinner" style="width: 16px; height: 16px; border-width: 2px;"></div>';
+                document.querySelector('#boundaryStep .timeline-time').textContent = 'In progress...';
+            }, 2000);
+            
+            setTimeout(() => {
+                // Complete boundary processing
+                document.getElementById('boundaryStep').classList.remove('active');
+                document.getElementById('boundaryStep').classList.add('completed');
+                document.querySelector('#boundaryStep .timeline-dot').innerHTML = '✓';
+                document.querySelector('#boundaryStep .timeline-time').textContent = 'Completed';
+                
+                // Start integration
+                document.getElementById('integrationStep').classList.add('active');
+                document.querySelector('#integrationStep .timeline-dot').innerHTML = '<div class="spinner" style="width: 16px; height: 16px; border-width: 2px;"></div>';
+                document.querySelector('#integrationStep .timeline-time').textContent = 'In progress...';
+            }, 4000);
+            
+            setTimeout(() => {
+                // Complete everything
+                document.getElementById('integrationStep').classList.remove('active');
+                document.getElementById('integrationStep').classList.add('completed');
+                document.querySelector('#integrationStep .timeline-dot').innerHTML = '✓';
+                document.querySelector('#integrationStep .timeline-time').textContent = 'Completed';
+                
+                // Update status
+                showSuccessStatus();
+            }, 6000);
+        }
+
+        function showSuccessStatus() {
+            const statusIcon = document.getElementById('statusIcon');
+            statusIcon.className = 'status-icon complete';
+            document.getElementById('statusEmoji').textContent = '✅';
+            
+            document.getElementById('statusTitle').textContent = 'Successfully Added!';
+            document.getElementById('statusMessage').textContent = 
+                `${formData.townName} has been added to our database and is now available for comparison.`;
+            
+            // Switch buttons
+            document.getElementById('statusButtons').style.display = 'none';
+            document.getElementById('completeButtons').style.display = 'flex';
+            
+            // Show success alert
+            const successAlert = document.createElement('div');
+            successAlert.className = 'alert alert-success';
+            successAlert.innerHTML = `
+                <span>🎉</span>
+                <span>Your town is now live! You can start comparing ${formData.townName} with cities around the world.</span>
+            `;
+            document.getElementById('submissionIdAlert').after(successAlert);
+        }
+
+        function checkStatus() {
+            // Show loading state
+            document.getElementById('refreshSpinner').style.display = 'inline-block';
+            document.getElementById('refreshText').textContent = 'Checking...';
+            
+            // Simulate status check
+            setTimeout(() => {
+                statusCheckCount++;
+                
+                if (statusCheckCount >= 2) {
+                    // Show success after 2 checks
+                    showSuccessStatus();
+                } else {
+                    // Still processing
+                    document.getElementById('refreshSpinner').style.display = 'none';
+                    document.getElementById('refreshText').textContent = 'Refresh Status';
+                    
+                    // Update message
+                    document.getElementById('statusMessage').textContent = 
+                        'Still processing... This usually takes 1-3 minutes. Check back shortly!';
+                }
+            }, 1500);
+        }
+
+        function resetForm() {
+            // Reset all form data
+            Object.keys(formData).forEach(key => {
+                formData[key] = null;
+            });
+            
+            // Reset form fields
+            document.getElementById('basicInfoForm').reset();
+            document.getElementById('emailNotification').value = '';
+            
+            // Reset progress
+            document.querySelectorAll('.progress-step').forEach(el => {
+                el.classList.remove('active', 'completed');
+            });
+            document.querySelector('.progress-step[data-step="1"]').classList.add('active');
+            
+            // Reset content
+            document.querySelectorAll('.step-content').forEach(el => {
+                el.classList.remove('active');
+            });
+            document.getElementById('step1').classList.add('active');
+            
+            // Reset map
+            if (marker) {
+                map.removeLayer(marker);
+                marker = null;
+            }
+            
+            // Reset other states
+            currentStep = 1;
+            statusCheckCount = 0;
+            document.getElementById('locationNextBtn').disabled = true;
+            document.getElementById('boundaryNextBtn').disabled = true;
+            
+            // Generate new submission ID
+            const randomId = 'TOWN-' + new Date().getFullYear() + '-' + 
+                           String(Math.floor(Math.random() * 10000)).padStart(4, '0');
+            document.getElementById('submissionId').textContent = randomId;
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        function viewInApp() {
+            // In real app, would navigate to the main application with the town pre-selected
+            alert(`Opening City Compare with ${formData.townName} selected...`);
+        }
+    </style>
+</body>
+</html>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fixed Boundaries Contact Sheet</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .city-card {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .city-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .city-info {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        .city-map {
+            width: 100%;
+            height: 200px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+        }
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 200px;
+            background: #f9f9f9;
+            border-radius: 6px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Fixed Boundaries Contact Sheet</h1>
+        <p>Cities that need boundary fixes - tracking progress</p>
+    </div>
+    
+    <div class="grid" id="cityGrid">
+        <div class="loading">Loading cities...</div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        const targetCities = [
+            'shanghai', 'cape-town', 'tokyo', 'tampa', 'ottawa', 'lisbon', 
+            'hong-kong', 'new-orleans', 'kuala-lumpur', 'nashville', 'tucson', 
+            'san-jose', 'sapporo', 'singapore', 'glasgow', 'madrid', 'raleigh', 
+            'montreal', 'rochester', 'salt-lake-city', 'valencia', 'new-york', 
+            'stockholm', 'portland', 'orlando', 'richmond', 'munich', 'birmingham', 
+            'melbourne', 'pittsburgh', 'warsaw', 'st-louis', 'toulouse', 'bordeaux', 
+            'lyon', 'minneapolis', 'porto', 'perth', 'brisbane', 'kinshasa'
+        ];
+
+        async function loadCitiesData() {
+            try {
+                const response = await fetch('cities-database.json');
+                const data = await response.json();
+                return data.cities;
+            } catch (error) {
+                console.error('Error loading cities data:', error);
+                return [];
+            }
+        }
+
+        async function loadBoundaryFile(cityId) {
+            // Try regular boundary file first (these are the "fixed" ones)
+            try {
+                const response = await fetch(`${cityId}.geojson`);
+                if (response.ok) {
+                    const data = await response.json();
+                    data._boundaryType = 'regular';
+                    return data;
+                }
+            } catch (error) {
+                // Ignore, try pipeline backup
+            }
+            
+            // Try pipeline backup as fallback
+            try {
+                const response = await fetch(`${cityId}-pipeline-backup.geojson`);
+                if (response.ok) {
+                    const data = await response.json();
+                    data._boundaryType = 'pipeline';
+                    return data;
+                }
+            } catch (error) {
+                console.error(`Error loading boundary for ${cityId}:`, error);
+            }
+            
+            return null;
+        }
+
+        function calculateArea(geojson) {
+            if (!geojson || !geojson.features || geojson.features.length === 0) return 0;
+            
+            const geometry = geojson.features[0].geometry;
+            if (!geometry || !geometry.coordinates) return 0;
+            
+            let totalArea = 0;
+            const coords = geometry.type === 'MultiPolygon' 
+                ? geometry.coordinates.flat(2) 
+                : geometry.coordinates[0];
+            
+            if (coords.length < 3) return 0;
+            
+            // Simple bounding box area estimate
+            const lons = coords.map(c => c[0]);
+            const lats = coords.map(c => c[1]);
+            const width = Math.max(...lons) - Math.min(...lons);
+            const height = Math.max(...lats) - Math.min(...lats);
+            
+            return Math.round(width * height * 12100); // Rough km² conversion
+        }
+
+        function createCityCard(city, geojson) {
+            const area = calculateArea(geojson);
+            const boundaryType = geojson._boundaryType || 'unknown';
+            const status = boundaryType === 'regular' ? '✅ Fixed' : 
+                          boundaryType === 'pipeline' ? '🔄 Pipeline Backup' : 
+                          '❌ Missing';
+            const statusColor = boundaryType === 'regular' ? '#22c55e' : 
+                               boundaryType === 'pipeline' ? '#f59e0b' : 
+                               '#ef4444';
+            
+            const card = document.createElement('div');
+            card.className = 'city-card';
+            card.innerHTML = `
+                <div class="city-title">${city.name}, ${city.country}</div>
+                <div class="city-info">
+                    <span style="color: ${statusColor}; font-weight: 600;">${status}</span> | 
+                    Area: ~${area.toLocaleString()} km² | 
+                    ${geojson.features[0].geometry.coordinates[0].length} points
+                </div>
+                <div class="city-map" id="map-${city.id}"></div>
+            `;
+            
+            return card;
+        }
+
+        function createMap(cityId, city, geojson) {
+            const map = L.map(`map-${cityId}`, {
+                zoomControl: false,
+                attributionControl: false
+            });
+
+            // Add base map
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png').addTo(map);
+
+            // Add boundary
+            const geoLayer = L.geoJSON(geojson, {
+                style: {
+                    color: '#007AFF',
+                    weight: 2,
+                    fillColor: '#007AFF',
+                    fillOpacity: 0.2
+                }
+            }).addTo(map);
+
+            // Fit map to boundary
+            map.fitBounds(geoLayer.getBounds(), { padding: [10, 10] });
+        }
+
+        async function init() {
+            const allCities = await loadCitiesData();
+            const cityGrid = document.getElementById('cityGrid');
+            cityGrid.innerHTML = '';
+
+            for (const cityId of targetCities) {
+                const city = allCities.find(c => c.id === cityId);
+                if (!city) continue;
+
+                const geojson = await loadBoundaryFile(cityId);
+                
+                if (!geojson) {
+                    // Show cities without boundaries too
+                    const card = document.createElement('div');
+                    card.className = 'city-card';
+                    card.innerHTML = `
+                        <div class="city-title">${city.name}, ${city.country}</div>
+                        <div class="city-info">
+                            <span style="color: #ef4444; font-weight: 600;">❌ No Boundary</span> | 
+                            Waiting for fix...
+                        </div>
+                        <div style="height: 200px; background: #f9f9f9; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #999;">
+                            No boundary data available
+                        </div>
+                    `;
+                    cityGrid.appendChild(card);
+                    continue;
+                }
+
+                const card = createCityCard(city, geojson);
+                cityGrid.appendChild(card);
+
+                // Create map after card is added to DOM
+                setTimeout(() => createMap(cityId, city, geojson), 100);
+            }
+
+            if (cityGrid.children.length === 0) {
+                cityGrid.innerHTML = '<div class="loading">No cities found</div>';
+            }
+        }
+
+        init();
+    </script>
+</body>
+</html>

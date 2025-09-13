@@ -9181,9 +9181,9 @@
       "properties": {
         "name": "Auckland Boundary",
         "source": "OpenStreetMap",
-        "osm_relation_id": 17000522,
+        "osm_relation_id": 2094141,
         "note": "Downloaded via unified pipeline with way-stitching",
-        "processing_date": "2025-09-11",
+        "processing_date": "2025-09-12",
         "polygon_count": 1,
         "total_points": 2292
       }

@@ -502,7 +502,7 @@ def main():
     
     # Load existing statistics
     try:
-        with open('city_statistics_comprehensive.json', 'r') as f:
+        with open('cities-database.json', 'r') as f:
             existing_stats = json.load(f)
         existing_cities = {city['basic_info']['name']: city for city in existing_stats['cities']}
     except FileNotFoundError:
@@ -558,13 +558,13 @@ def main():
                 print(f"   ❌ Error: {str(e)}")
     
     # Save updated statistics
-    with open('city_statistics_comprehensive.json', 'w') as f:
+    with open('cities-database.json', 'w') as f:
         json.dump(existing_stats, f, indent=2)
     
     print(f"\n🎉 Statistics gathering complete!")
     print(f"📊 Processed {processed} new cities")
     print(f"📈 Total cities with statistics: {len(existing_stats['cities'])}")
-    print(f"💾 Saved to: city_statistics_comprehensive.json")
+    print(f"💾 Updated main database: cities-database.json")
 
 if __name__ == "__main__":
     main()
