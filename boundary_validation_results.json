@@ -1,0 +1,72 @@
+{
+  "new-york": {
+    "city_name": "New York",
+    "overall_status": "fail",
+    "area_km2": 5.7828508353248894e-06,
+    "tests": {
+      "population_density": {
+        "status": "fail",
+        "reason": "density_too_high",
+        "density": 1441644828373.2405,
+        "issue": "Implausibly high density: 1,441,644,828,373/km\u00b2 - likely tiny boundary"
+      },
+      "geometric_plausibility": {
+        "status": "pass",
+        "points": 183,
+        "aspect_ratio": 1.4634881574852114,
+        "message": "Plausible geometry: 183 points, aspect 1.46"
+      },
+      "coordinate_range": {
+        "status": "pass",
+        "distance": 0.036204371138310085,
+        "message": "Location accurate: 0.036\u00b0 from expected"
+      },
+      "area_vs_population": {
+        "status": "warn",
+        "reason": "area_too_small",
+        "area": 5.7828508353248894e-06,
+        "expected_range": [
+          100,
+          2000
+        ],
+        "issue": "Area 0.0km\u00b2 seems small for population 8,336,817"
+      }
+    },
+    "coordinates": []
+  },
+  "new-orleans": {
+    "city_name": "New Orleans",
+    "overall_status": "fail",
+    "area_km2": 0.27812993187954704,
+    "tests": {
+      "population_density": {
+        "status": "fail",
+        "reason": "density_too_high",
+        "density": 1380638.888468509,
+        "issue": "Implausibly high density: 1,380,639/km\u00b2 - likely tiny boundary"
+      },
+      "geometric_plausibility": {
+        "status": "pass",
+        "points": 408,
+        "aspect_ratio": 1.5412371350090874,
+        "message": "Plausible geometry: 408 points, aspect 1.54"
+      },
+      "coordinate_range": {
+        "status": "pass",
+        "distance": 0.1877027162352716,
+        "message": "Location accurate: 0.188\u00b0 from expected"
+      },
+      "area_vs_population": {
+        "status": "warn",
+        "reason": "area_too_small",
+        "area": 0.27812993187954704,
+        "expected_range": [
+          10,
+          800
+        ],
+        "issue": "Area 0.3km\u00b2 seems small for population 383,997"
+      }
+    },
+    "coordinates": []
+  }
+}
